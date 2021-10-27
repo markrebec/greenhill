@@ -85,8 +85,6 @@ ROUTE
   template 'app/policies/public_policy.rb'
   template 'app/policies/user_policy.rb'
   template 'app/policies/admin/user_policy.rb'
-  # template 'app/policies/active_admin/page_policy.rb'
-  # template 'app/policies/active_admin/comment_policy.rb'
 
   # reconfigure active_admin
   remove_file 'config/initializers/active_admin.rb'
