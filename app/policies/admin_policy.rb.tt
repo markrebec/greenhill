@@ -1,0 +1,35 @@
+class AdminPolicy < AuthenticatedPolicy
+  def index?
+    super && user.present?
+  end
+
+  def show?
+    super && user.present?
+  end
+
+  def create?
+    super && user.present?
+  end
+
+  def new?
+    create?
+  end
+
+  def update?
+    super && user.present?
+  end
+
+  def edit?
+    update?
+  end
+
+  def destroy?
+    super && user.present?
+  end
+
+  class Scope < Scope
+    def resolve
+      scope.all
+    end
+  end
+end
