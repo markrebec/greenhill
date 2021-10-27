@@ -1,0 +1,4 @@
+class ApplicationInteraction < ActiveInteraction::Base
+  # put any application level interaction logic here
+  # i.e. any custom/global inputs, callbacks, etc.
+end

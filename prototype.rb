@@ -20,8 +20,8 @@ gem 'devise'
 gem 'pundit'
 gem 'activeadmin'
 gem 'sidekiq'
+gem 'active_interaction'
 # graphql
-# interactions
 # logging
 gem_group :development, :test do
   gem 'amazing_print'
@@ -87,6 +87,9 @@ ROUTE
   append_to_file 'db/seeds.rb',
     "User.create!(email: 'admin@example.com', password: 'password', password_confirmation: 'password', admin: true) if Rails.env.development?"
 
+
+  # copy default application interaction
+  template 'app/interactions/application_interaction.rb'
 
   # copy default pundit policies
   template 'app/policies/authenticated_policy.rb'
