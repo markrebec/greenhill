@@ -69,4 +69,4 @@ test:
 # for a full overview on how database connection configuration can be specified.
 #
 production:
-  url: <%%= ENV['<%= app_name.upcase %>_DATABASE_URL'] %>
+  url: <%%= ENV['<%= app_name.underscore.upcase %>_DATABASE_URL'] %>
