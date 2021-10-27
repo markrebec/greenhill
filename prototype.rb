@@ -36,8 +36,12 @@ gem_group :development do
   gem 'annotate'
 end
 
+gsub_file 'Gemfile',
+  /gem 'tzinfo-data'/,
+  "# gem 'tzinfo-data'"
+
 #
-# Additional configuration, tasks, etc.
+# Additional configuration, templates, etc.
 #
 environment "config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }", env: 'development'
 template 'lib/tasks/auto_annotate_models.rake'
@@ -45,6 +49,11 @@ template 'lib/tasks/auto_annotate_models.rake'
 environment 'config.active_job.queue_adapter = :sidekiq'
 template 'config/initializers/sidekiq.rb'
 template 'config/sidekiq.yml'
+
+template 'Procfile'
+template '.env'
+template '.env', '.env.example'
+append_to_file '.gitignore', '.env'
 
 
 
