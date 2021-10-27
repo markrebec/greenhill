@@ -1,14 +1,14 @@
 class AdminPolicy < AuthenticatedPolicy
   def index?
-    super && user.present?
+    super && user.admin?
   end
 
   def show?
-    super && user.present?
+    super && user.admin?
   end
 
   def create?
-    super && user.present?
+    super && user.admin?
   end
 
   def new?
@@ -16,7 +16,7 @@ class AdminPolicy < AuthenticatedPolicy
   end
 
   def update?
-    super && user.present?
+    super && user.admin?
   end
 
   def edit?
@@ -24,7 +24,7 @@ class AdminPolicy < AuthenticatedPolicy
   end
 
   def destroy?
-    super && user.present?
+    super && user.admin?
   end
 
   class Scope < Scope
