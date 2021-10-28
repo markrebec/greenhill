@@ -47,6 +47,10 @@ environment 'config.active_job.queue_adapter = :sidekiq'
 template 'config/initializers/sidekiq.rb'
 template 'config/sidekiq.yml'
 
+# configure active_record to use UUIDs by default for primary keys and enable the extension in postgres
+template 'db/migrate/enable_extensions.rb', "db/migrate/#{DateTime.now.strftime '%Y%m%d%H%M%S'}_enable_extensions.rb"
+template 'config/initializers/active_record.rb'
+
 template 'Procfile'
 template '.env'
 template '.env', '.env.example'
