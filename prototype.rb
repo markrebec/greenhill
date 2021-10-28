@@ -17,11 +17,12 @@ template 'config/databases/postgresql.yml', 'config/database.yml'
 # Add default starter gems
 #
 gem 'devise'
+gem 'jwt'
 gem 'pundit'
 gem 'activeadmin'
 gem 'sidekiq'
 gem 'active_interaction'
-# graphql
+# graphql + batch
 # logging
 gem_group :development, :test do
   gem 'amazing_print'
@@ -35,10 +36,6 @@ gem_group :development do
   gem 'solargraph'
   gem 'annotate'
 end
-
-gsub_file 'Gemfile',
-  /gem 'tzinfo-data'/,
-  "# gem 'tzinfo-data'"
 
 #
 # Additional configuration, templates, etc.
@@ -57,6 +54,9 @@ append_to_file '.gitignore', '.env'
 
 
 
+##### TODO:
+## sidekiq link in admin
+## default to UUID for active record
 
 
 
@@ -69,7 +69,13 @@ after_bundle do
   generate 'pundit:install'
   generate "active_admin:install --skip-users #{webpack_install? ? '--use-webpacker' : ''}"
 
-  # configure sidekiq web ui routes
+  # configure devise with JWT
+  remove_file 'config/initializers/devise.rb'
+  template 'config/initializers/devise.rb'
+  template 'lib/devise/jwt.rb'
+  template 'lib/devise/strategies/json_web_token.rb'  
+
+  # configure sidekiq web UI admin routes
   sidekiq_route = <<-ROUTE
 \n  authenticate :user, ->(user) { user.admin? } do
     mount Sidekiq::Web => '/admin/sidekiq'
