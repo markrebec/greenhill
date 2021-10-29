@@ -16,7 +16,10 @@ module Devise
         return fail! unless claims
         return fail! unless claims.has_key?('uuid')
 
-        success! User.find claims['uuid']
+        user = User.find_by_id claims['uuid']
+        return fail! unless user.present?
+
+        success! user
       end
 
       protected
