@@ -3,6 +3,21 @@ def source_paths
   [TEMPLATE_PATH]
 end
 
+####
+# TODO
+# - break up each coherent bit into separate little chunks (i.e. auth: users/devise/pundit/jwt, admin: activeadmin, jobs: sidekiq, etc.)
+#   - move into lib/generators
+#   - break up sub-groups (i.e. separate devise/pundit/jwt)
+#   - move into /lib/generators/
+#
+# - /templates/ directory
+#   - also templates/ subdirs for generators above (i.e. /lib/generators/users/devise/config/initializers/devise.rb)
+#
+# - generic & basic layouts for rails views (and eventually SPA)
+#   - include flash messages
+#   - still use components?? maybe "react-rails"?? allows for (potentially) re-using the same UI across rails views and the SPA... would have to account for context/theming, etc. though
+####
+
 #
 # Setup and launch Postgres and Redis via docker-compose
 #
@@ -12,6 +27,11 @@ run "docker-compose up -d"
 # configure app for docker postgres
 remove_file 'config/database.yml'
 template 'config/databases/postgresql.yml', 'config/database.yml'
+
+# configure active_record to use UUIDs by default for primary keys and enable the extension in postgres
+template 'db/migrate/enable_extensions.rb', "db/migrate/#{DateTime.now.strftime '%Y%m%d%H%M%S'}_enable_extensions.rb"
+template 'config/initializers/active_record.rb'
+
 
 #
 # Add default starter gems
@@ -23,7 +43,7 @@ gem 'activeadmin'
 gem 'sidekiq'
 gem 'active_interaction'
 # graphql + batch
-# logging
+# logging (structured, lograge, etc.)
 gem_group :development, :test do
   gem 'amazing_print'
   gem 'dotenv-rails'
@@ -47,20 +67,12 @@ environment 'config.active_job.queue_adapter = :sidekiq'
 template 'config/initializers/sidekiq.rb'
 template 'config/sidekiq.yml'
 
-# configure active_record to use UUIDs by default for primary keys and enable the extension in postgres
-template 'db/migrate/enable_extensions.rb', "db/migrate/#{DateTime.now.strftime '%Y%m%d%H%M%S'}_enable_extensions.rb"
-template 'config/initializers/active_record.rb'
-
 template 'Procfile'
 template '.env'
 template '.env', '.env.example'
 append_to_file '.gitignore', '.env'
 
 
-
-##### TODO:
-## sidekiq link in admin
-## default to UUID for active record
 
 
 
@@ -113,13 +125,13 @@ ROUTE
   template 'config/initializers/active_admin.rb'
 
   # configure simplecov to work with rspec
-  prepend_to_file 'spec/spec_helper.rb', <<-SCOV
+  prepend_to_file 'spec/spec_helper.rb', <<-COVERAGE
 # Load and launch SimpleCov at the very top of your spec_helper.rb
 # SimpleCov.start must be issued before any of your application code is required
 # See https://github.com/simplecov-ruby/simplecov#getting-started
 require 'simplecov'
 SimpleCov.start\n
-SCOV
+COVERAGE
 
 
   #
