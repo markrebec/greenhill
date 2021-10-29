@@ -3,34 +3,33 @@ def source_paths
   [TEMPLATE_PATH]
 end
 
+def commit(message)
+  git add: "."
+  git commit: %Q{ -m '#{message.gsub(/'/, "\'")}' }
+end
+
 ####
 # TODO
 # - break up each coherent bit into separate little chunks (i.e. auth: users/devise/pundit/jwt, admin: activeadmin, jobs: sidekiq, etc.)
 #   - move into lib/generators
 #   - break up sub-groups (i.e. separate devise/pundit/jwt)
 #   - move into /lib/generators/
+#   - MAYBE create actual generators for a lot of these chunks? could have a simple template, which would call the additional generators... i.e. /lib/generators/database.rb + /lib/generators/database/generator.rb + /lib/generators/database/templates/*
+#   - git commit along the way, to highlight each step
 #
 # - /templates/ directory
 #   - also templates/ subdirs for generators above (i.e. /lib/generators/users/devise/config/initializers/devise.rb)
 #
 # - generic & basic layouts for rails views (and eventually SPA)
 #   - include flash messages
+#   - add a default homepage with instructions?
 #   - still use components?? maybe "react-rails"?? allows for (potentially) re-using the same UI across rails views and the SPA... would have to account for context/theming, etc. though
+#
+# - fill out stuff like specs, factories, etc. (for included stuff like users)
 ####
 
-#
-# Setup and launch Postgres and Redis via docker-compose
-#
-template 'docker-compose.yml'
-run "docker-compose up -d"
 
-# configure app for docker postgres
-remove_file 'config/database.yml'
-template 'config/databases/postgresql.yml', 'config/database.yml'
-
-# configure active_record to use UUIDs by default for primary keys and enable the extension in postgres
-template 'db/migrate/enable_extensions.rb', "db/migrate/#{DateTime.now.strftime '%Y%m%d%H%M%S'}_enable_extensions.rb"
-template 'config/initializers/active_record.rb'
+commit "initializes rails app for #{app_name}"
 
 
 #
@@ -57,6 +56,31 @@ gem_group :development do
   gem 'annotate'
 end
 
+
+commit "adds default starter gems to Gemfile"
+
+
+#
+# Setup and launch Postgres and Redis via docker-compose
+#
+template 'docker-compose.yml'
+run "docker-compose up -d"
+
+# configure app for docker postgres
+remove_file 'config/database.yml'
+template 'config/databases/postgresql.yml', 'config/database.yml'
+
+commit "runs postgres and redis via docker-compose"
+
+# configure active_record to use UUIDs by default for primary keys and enable the extension in postgres
+template 'db/migrate/enable_extensions.rb', "db/migrate/#{DateTime.now.strftime '%Y%m%d%H%M%S'}_enable_extensions.rb"
+template 'config/initializers/active_record.rb'
+
+commit "enables postgres extensions and configures activerecord to use UUIDs for primary keys"
+
+
+
+
 #
 # Additional configuration, templates, etc.
 #
@@ -72,11 +96,14 @@ template '.env'
 template '.env', '.env.example'
 append_to_file '.gitignore', '.env'
 
+commit "performs some additional configuration"
 
 
 
 
 after_bundle do
+  commit "runs bundler and sets up webpack"
+
   #
   # Run additional generators, installers, etc.
   #
@@ -85,11 +112,15 @@ after_bundle do
   generate 'pundit:install'
   generate "active_admin:install --skip-users #{webpack_install? ? '--use-webpacker' : ''}"
 
+  commit "runs install generators for relevant gems"
+
   # configure devise with JWT
   remove_file 'config/initializers/devise.rb'
   template 'config/initializers/devise.rb'
   template 'lib/devise/jwt.rb'
   template 'lib/devise/strategies/json_web_token.rb'  
+
+  commit "configures devise to work with JWT"
 
   # configure sidekiq web UI admin routes
   sidekiq_route = <<-ROUTE
@@ -100,6 +131,8 @@ ROUTE
   prepend_to_file 'config/routes.rb', "require 'sidekiq/web'\n"
   inject_into_file 'config/routes.rb', sidekiq_route, after: 'ActiveAdmin.routes(self)'
 
+  commit "configures sidekiq web UI admin routes"
+
   # TODO typescript, react, styled*, apollo, etc.
 
   # setup and generate users
@@ -109,9 +142,13 @@ ROUTE
   append_to_file 'db/seeds.rb',
     "User.create!(email: 'admin@example.com', password: 'password', password_confirmation: 'password', admin: true) if Rails.env.development?"
 
+  commit "generates user model, admin resource, and a development seed account"
+
 
   # copy default application interaction
   template 'app/interactions/application_interaction.rb'
+
+  commit "adds a default application interaction"
 
   # copy default pundit policies
   template 'app/policies/authenticated_policy.rb'
@@ -120,9 +157,13 @@ ROUTE
   template 'app/policies/user_policy.rb'
   template 'app/policies/admin/user_policy.rb'
 
+  commit "adds some initial pundit policies"
+
   # reconfigure active_admin
   remove_file 'config/initializers/active_admin.rb'
   template 'config/initializers/active_admin.rb'
+
+  commit "configures activeadmin to work with devise + pundit"
 
   # configure simplecov to work with rspec
   prepend_to_file 'spec/spec_helper.rb', <<-COVERAGE
@@ -133,23 +174,12 @@ require 'simplecov'
 SimpleCov.start\n
 COVERAGE
 
+  commit "integrates simplecov with rspec"
 
   #
   # Initialize the application database
   #
   rails_command "db:create db:migrate db:seed", abort_on_failure: true
 
-  #
-  # Commit initial app repo
-  #
-  git add: "."
-  git commit: %Q{ -m 'Initial commit of #{app_name}' }
+  commit "initializes database"
 end
-
-# after_bundle do
-#   puts <<-BANNER
-# ####################
-# # 2ND AFTER BUNDLE #
-# ####################
-# BANNER
-# end
