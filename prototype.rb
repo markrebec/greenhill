@@ -25,11 +25,11 @@ end
 #   - add a default homepage with instructions?
 #   - still use components?? maybe "react-rails"?? allows for (potentially) re-using the same UI across rails views and the SPA... would have to account for context/theming, etc. though
 #
-# - fill out stuff like specs, factories, etc. (for included stuff like users)
+# - fill out stuff like specs, factories, types, etc. (for included stuff like users)
 ####
 
 
-commit "initializes rails app for #{app_name}"
+commit "initializes new rails app #{app_name}"
 
 
 #
@@ -41,8 +41,9 @@ gem 'pundit'
 gem 'activeadmin'
 gem 'sidekiq'
 gem 'active_interaction'
-# graphql + batch
-# logging (structured, lograge, etc.)
+gem 'graphql'
+gem 'graphiql-rails'
+# TODO logging (structured, lograge, etc.)
 gem_group :development, :test do
   gem 'amazing_print'
   gem 'dotenv-rails'
@@ -110,7 +111,13 @@ after_bundle do
   generate 'rspec:install'
   generate 'devise:install'
   generate 'pundit:install'
+  generate 'graphql:install'
   generate "active_admin:install --skip-users #{webpack_install? ? '--use-webpacker' : ''}"
+  route <<-ROUTE
+  authenticate :user, ->(user) { user.admin? } do
+    mount GraphiQL::Rails::Engine, at: '/admin/graphiql', graphql_path: '/graphql'
+  end
+ROUTE
 
   commit "runs install generators for relevant gems"
 
@@ -123,13 +130,13 @@ after_bundle do
   commit "configures devise to work with JWT"
 
   # configure sidekiq web UI admin routes
-  sidekiq_route = <<-ROUTE
-\n  authenticate :user, ->(user) { user.admin? } do
+  prepend_to_file 'config/routes.rb', "require 'sidekiq/web'\n"
+  route <<-ROUTE
+  authenticate :user, ->(user) { user.admin? } do
     mount Sidekiq::Web => '/admin/sidekiq'
   end
 ROUTE
-  prepend_to_file 'config/routes.rb', "require 'sidekiq/web'\n"
-  inject_into_file 'config/routes.rb', sidekiq_route, after: 'ActiveAdmin.routes(self)'
+
 
   commit "configures sidekiq web UI admin routes"
 
