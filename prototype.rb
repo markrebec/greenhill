@@ -1,3 +1,5 @@
+require 'byebug'
+
 TEMPLATE_PATH = File.expand_path(File.dirname(__FILE__))
 def source_paths
   [TEMPLATE_PATH]
@@ -26,6 +28,15 @@ end
 #   - still use components?? maybe "react-rails"?? allows for (potentially) re-using the same UI across rails views and the SPA... would have to account for context/theming, etc. though
 #
 # - fill out stuff like specs, factories, types, etc. (for included stuff like users)
+#
+# - integrate graphql types w/ typescript via codegen (once frontend stuff is fleshed out)
+#
+# - 
+#
+# - various security stuff
+#   - lock down jwt cookie
+#   - check additional security attrs in jwt.rb
+#   - cors (especially for potential subdomain/multi-tenant stuff)
 ####
 
 
@@ -103,7 +114,7 @@ commit "performs some additional configuration"
 
 
 after_bundle do
-  commit "runs bundler and sets up webpack"
+  commit "bundles and prepares application"
 
   #
   # Run additional generators, installers, etc.
