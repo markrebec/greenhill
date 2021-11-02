@@ -47,7 +47,7 @@ commit "initializes new rails app #{app_name}"
 # Add default starter gems
 #
 gem 'devise'
-gem 'jwt'
+gem 'devise-jwt'
 gem 'pundit'
 gem 'activeadmin'
 gem 'sidekiq'
@@ -116,9 +116,8 @@ commit "performs some additional configuration"
 after_bundle do
   commit "bundles and prepares application"
 
-  #
-  # Run additional generators, installers, etc.
-  #
+
+  # run additional generators, installers, etc.
   generate 'rspec:install'
   generate 'devise:install'
   generate 'pundit:install'
@@ -132,13 +131,21 @@ ROUTE
 
   commit "runs install generators for relevant gems"
 
-  # configure devise with JWT
-  remove_file 'config/initializers/devise.rb'
-  template 'config/initializers/devise.rb'
-  template 'lib/devise/jwt.rb'
-  template 'lib/devise/strategies/json_web_token.rb'  
+
+
+  # configure devise-jwt secret
+  devise_jwt = <<-DEVISE_JWT
+  # ==> Configure JWT for :jwt_authenticatable
+  config.jwt do |jwt|
+    jwt.secret = ENV.fetch('JWT_SECRET')
+  end
+
+DEVISE_JWT
+  inject_into_file 'config/initializers/devise.rb', devise_jwt, before: "  # ==> Controller configuration"
 
   commit "configures devise to work with JWT"
+
+
 
   # configure sidekiq web UI admin routes
   prepend_to_file 'config/routes.rb', "require 'sidekiq/web'\n"
@@ -148,10 +155,11 @@ ROUTE
   end
 ROUTE
 
-
   commit "configures sidekiq web UI admin routes"
 
   # TODO typescript, react, styled*, apollo, etc.
+
+
 
   # setup and generate users
   generate 'devise User'
@@ -160,6 +168,9 @@ ROUTE
   append_to_file 'db/seeds.rb',
     "User.create!(email: 'admin@example.com', password: 'password', password_confirmation: 'password', admin: true) if Rails.env.development?"
 
+  inject_into_file 'app/models/user.rb', ",\n         :jwt_authenticatable, jwt_revocation_strategy: Devise::JWT::RevocationStrategies::Null",
+    after: ':recoverable, :rememberable, :validatable'
+
   commit "generates user model, admin resource, and a development seed account"
 
 
@@ -167,6 +178,8 @@ ROUTE
   template 'app/interactions/application_interaction.rb'
 
   commit "adds a default application interaction"
+
+
 
   # copy default pundit policies
   template 'app/policies/authenticated_policy.rb'
@@ -177,11 +190,15 @@ ROUTE
 
   commit "adds some initial pundit policies"
 
+
+
   # reconfigure active_admin
   remove_file 'config/initializers/active_admin.rb'
   template 'config/initializers/active_admin.rb'
 
   commit "configures activeadmin to work with devise + pundit"
+
+
 
   # configure simplecov to work with rspec
   prepend_to_file 'spec/spec_helper.rb', <<-COVERAGE
