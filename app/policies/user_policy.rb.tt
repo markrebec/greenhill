@@ -1,7 +1,43 @@
-class UserPolicy < ApplicationPolicy
+class UserPolicy < AuthenticatedPolicy
+  def current_user?
+    user == record
+  end
+
+  def index?
+    user.present?
+  end
+
+  def show?
+    user&.admin? || current_user?
+  end
+
+  def create?
+    user.nil? || user.admin?
+  end
+
+  def new?
+    create?
+  end
+
+  def update?
+    user&.admin? || current_user?
+  end
+
+  def edit?
+    update?
+  end
+
+  def destroy?
+    update?
+  end
+
   class Scope < Scope
     def resolve
-      scope.all
+      if user.admin?
+        scope.all
+      else
+        scope.where(id: user.id)
+      end
     end
   end
 end

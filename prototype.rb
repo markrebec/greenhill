@@ -143,7 +143,11 @@ ROUTE
 DEVISE_JWT
   inject_into_file 'config/initializers/devise.rb', devise_jwt, before: "  # ==> Controller configuration"
 
-  commit "configures devise to work with JWT"
+  gsub_file 'app/controllers/graphql_controller.rb',
+    /# current_user: current_user/,
+    'current_user: current_user'
+
+  commit "configures devise to work with JWT and GraphQL"
 
 
 
@@ -174,6 +178,14 @@ ROUTE
   commit "generates user model, admin resource, and a development seed account"
 
 
+
+  # initialize the application database
+  rails_command "db:create db:migrate db:seed", abort_on_failure: true
+
+  commit "initializes database"
+  
+
+
   # copy default application interaction
   template 'app/interactions/application_interaction.rb'
 
@@ -200,6 +212,31 @@ ROUTE
 
 
 
+  # configure graphql + pundit via zuul
+  # byebug
+  directory 'vendor/zuul'
+
+  prepend_to_file "app/graphql/#{app_name.underscore}_schema.rb", "require 'zuul/pundit'\n\n"
+
+  inject_into_file "app/graphql/types/base_object.rb",
+    "\n    extend Zuul::Pundit::Object",
+    after: "class BaseObject < GraphQL::Schema::Object"
+
+  inject_into_file "app/graphql/types/base_field.rb",
+    "\n    include Zuul::Pundit::Field",
+    after: "class BaseField < GraphQL::Schema::Field"
+
+  inject_into_file "app/graphql/types/base_argument.rb",
+    "\n    include Zuul::Pundit::Argument",
+    after: "class BaseArgument < GraphQL::Schema::Argument"
+
+  generate 'graphql:object User'
+  # TODO clean up user type
+
+  commit "configures graphql with pundit via zuul"
+
+
+
   # configure simplecov to work with rspec
   prepend_to_file 'spec/spec_helper.rb', <<-COVERAGE
 # Load and launch SimpleCov at the very top of your spec_helper.rb
@@ -210,11 +247,4 @@ SimpleCov.start\n
 COVERAGE
 
   commit "integrates simplecov with rspec"
-
-  #
-  # Initialize the application database
-  #
-  rails_command "db:create db:migrate db:seed", abort_on_failure: true
-
-  commit "initializes database"
 end
