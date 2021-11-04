@@ -29,14 +29,22 @@ end
 #
 # - fill out stuff like specs, factories, types, etc. (for included stuff like users)
 #
-# - integrate graphql types w/ typescript via codegen (once frontend stuff is fleshed out)
-#
 # - 
 #
 # - various security stuff
 #   - lock down jwt cookie
 #   - check additional security attrs in jwt.rb
 #   - cors (especially for potential subdomain/multi-tenant stuff)
+#
+#
+#
+##################################
+#
+# - break out zuul, write tests
+#
+# - integrate graphql types w/ typescript via codegen (once frontend stuff is fleshed out)
+#
+# - audits
 ####
 
 
@@ -52,7 +60,10 @@ gem 'pundit'
 gem 'activeadmin'
 gem 'sidekiq'
 gem 'active_interaction'
+# TODO AUDITED
+# gem 'audited'
 gem 'graphql'
+gem 'graphql-batch'
 gem 'graphiql-rails'
 # TODO logging (structured, lograge, etc.)
 gem_group :development, :test do
@@ -98,6 +109,8 @@ commit "enables postgres extensions and configures activerecord to use UUIDs for
 #
 environment "config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }", env: 'development'
 template 'lib/tasks/auto_annotate_models.rake'
+# TODO AUDITED
+# template 'config/initializers/audited.rb'
 
 environment 'config.active_job.queue_adapter = :sidekiq'
 template 'config/initializers/sidekiq.rb'
@@ -122,6 +135,8 @@ after_bundle do
   generate 'devise:install'
   generate 'pundit:install'
   generate 'graphql:install'
+  # TODO AUDITED
+  # generate 'audited:install --audited-user-id-column-type uuid --audited-changes-column-type jsonb'
   generate "active_admin:install --skip-users #{webpack_install? ? '--use-webpacker' : ''}"
   route <<-ROUTE
   authenticate :user, ->(user) { user.admin? } do
@@ -174,6 +189,9 @@ ROUTE
 
   inject_into_file 'app/models/user.rb', ",\n         :jwt_authenticatable, jwt_revocation_strategy: Devise::JWT::RevocationStrategies::Null",
     after: ':recoverable, :rememberable, :validatable'
+  # TODO AUDITED
+  # inject_into_file 'app/models/user.rb', "\n\n  audited",
+  #   after: 'jwt_revocation_strategy: Devise::JWT::RevocationStrategies::Null'
 
   commit "generates user model, admin resource, and a development seed account"
 
@@ -212,8 +230,19 @@ ROUTE
 
 
 
+  # configure graphql-batch loaders
+  prepend_to_file "app/graphql/#{app_name.underscore}_schema.rb", "require 'graphql/batch'\n\n"
+  inject_into_file "app/graphql/#{app_name.underscore}_schema.rb",
+    "\n  use GraphQL::Batch",
+    after: "query(Types::QueryType)"
+
+  template 'app/graphql/record_loader.rb'
+  template 'app/graphql/association_loader.rb'
+
+  commit "configures graphql with graphql-batch and basic batch loaders"
+
+
   # configure graphql + pundit via zuul
-  # byebug
   directory 'vendor/zuul'
 
   prepend_to_file "app/graphql/#{app_name.underscore}_schema.rb", "require 'zuul/pundit'\n\n"

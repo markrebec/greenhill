@@ -1,30 +1,53 @@
 module Zuul
   module Pundit
     module Argument
-      def initialize(*args, policy_visible: :index?, policy_authorized: :show?, **kwargs, &block)
-        @policy_visible = policy_visible
-        @policy_authorized = policy_authorized
+      def initialize(*args, policy_class: nil, policy_method: nil, visible_policy: nil, authorized_policy: nil, **kwargs, &block)
+        @policy_class = policy_class
+        @policy_method = policy_method
+        @visible_policy = visible_policy
+        @authorized_policy = authorized_policy
         super(*args, **kwargs, &block)
       end
 
       def policy_class
-        @_policy_class ||= "#{self.name.demodulize.gsub(/Argument$/, '')}Policy".constantize
-      rescue
-        nil
+        @policy_class ||= owner.try(:policy_class) || owner.owner_type.try(:policy_class) || Zuul::Pundit.policy_class(owner.owner_type)
       end
-      
-      def policy(context, object=nil)
-        policy_class && policy_class.new(context[:current_user], object)
+
+      def policy_object(context, object=nil)
+        return unless policy_class
+        policy_class.new(context[:current_user], object)
       end
-      
+
+      def policy_method
+        @policy_method ||= "#{owner.name}_#{name}?".to_sym
+      end
+
       def visible?(context)
-        return super unless policy_class
-        super && policy(context).send(@policy_visible)
+        result = super
+        return result unless result
+
+        policy = policy_object(context)
+        return result unless policy
+        
+        return policy.send(@visible_policy) if @visible_policy
+        return policy.send(policy_method) if policy.respond_to?(policy_method)
+        return policy.send(owner.visible_policy) if owner.respond_to?(:visible_policy)
+        return policy.send(owner.owner_type.visible_policy) if owner.owner_type.respond_to?(:visible_policy)
+        return result
       end
-      
+
       def authorized?(object, arguments, context)
-        return super unless policy_class
-        super && policy(context, object).send(@policy_authorized)
+        result = super
+        return result unless result
+
+        policy = policy_object(context, object)
+        return result unless policy
+
+        return policy.send(@authorized_policy) if @authorized_policy
+        return policy.send(policy_method) if policy.respond_to?(policy_method)
+        return policy.send(owner.authorized_policy) if owner.respond_to?(:authorized_policy)
+        return policy.send(owner.owner_type.authorized_policy) if owner.owner_type.respond_to?(:authorized_policy)
+        return result
       end
     end
   end
