@@ -65,6 +65,7 @@ gem 'active_interaction'
 gem 'graphql'
 gem 'graphql-batch'
 gem 'graphiql-rails'
+gem 'zuul', path: './vendor/zuul'
 # TODO logging (structured, lograge, etc.)
 gem_group :development, :test do
   gem 'amazing_print'
@@ -79,6 +80,9 @@ gem_group :development do
   gem 'annotate'
 end
 
+gsub_file 'Gemfile', /gem 'tzinfo-data'/, "# gem 'tzinfo-data'"
+
+directory 'vendor/zuul'
 
 commit "adds default starter gems to Gemfile"
 
@@ -132,49 +136,74 @@ after_bundle do
 
   # run additional generators, installers, etc.
   generate 'rspec:install'
+  commit "runs rspec install generator"
+
   generate 'devise:install'
+  commit "runs devise install generator"
+
   generate 'pundit:install'
+  commit "runs pundit install generator"
+
   generate 'graphql:install'
+  commit "runs graphql install generator"
+
+  generate "zuul:install #{app_name}"
+  commit "runs zuul install generator"
+
   # TODO AUDITED
   # generate 'audited:install --audited-user-id-column-type uuid --audited-changes-column-type jsonb'
+
   generate "active_admin:install --skip-users #{webpack_install? ? '--use-webpacker' : ''}"
-  route <<-ROUTE
-  authenticate :user, ->(user) { user.admin? } do
-    mount GraphiQL::Rails::Engine, at: '/admin/graphiql', graphql_path: '/graphql'
-  end
-ROUTE
+  commit "runs active_admin install generator"
 
-  commit "runs install generators for relevant gems"
-
-
-
-  # configure devise-jwt secret
-  devise_jwt = <<-DEVISE_JWT
-  # ==> Configure JWT for :jwt_authenticatable
-  config.jwt do |jwt|
-    jwt.secret = ENV.fetch('JWT_SECRET')
-  end
-
-DEVISE_JWT
-  inject_into_file 'config/initializers/devise.rb', devise_jwt, before: "  # ==> Controller configuration"
-
-  gsub_file 'app/controllers/graphql_controller.rb',
-    /# current_user: current_user/,
-    'current_user: current_user'
-
-  commit "configures devise to work with JWT and GraphQL"
-
-
-
-  # configure sidekiq web UI admin routes
   prepend_to_file 'config/routes.rb', "require 'sidekiq/web'\n"
   route <<-ROUTE
   authenticate :user, ->(user) { user.admin? } do
     mount Sidekiq::Web => '/admin/sidekiq'
+    mount GraphiQL::Rails::Engine, at: '/admin/graphiql', graphql_path: '/graphql'
   end
 ROUTE
+  commit "mounts graphiql and sidekiq within the admin namespace wrapped in auth"
 
-  commit "configures sidekiq web UI admin routes"
+  # copy default application interaction
+  template 'app/interactions/application_interaction.rb'
+  commit "adds a default application interaction"
+
+  # copy default pundit policies
+  template 'app/policies/authenticated_policy.rb'
+  template 'app/policies/admin_policy.rb'
+  template 'app/policies/public_policy.rb'
+  template 'app/policies/user_policy.rb'
+  template 'app/policies/admin/user_policy.rb'  
+  commit "adds some initial pundit policies"
+
+  # reconfigure active_admin
+  remove_file 'config/initializers/active_admin.rb'
+  template 'config/initializers/active_admin.rb'
+  commit "configures activeadmin to work with devise + pundit"
+
+  
+
+
+
+  # configure devise-jwt secret
+  inject_into_file 'config/initializers/devise.rb',
+  before: "  # ==> Controller configuration\n" do <<-DEVISE
+    # ==> Configure JWT for :jwt_authenticatable
+    config.jwt do |jwt|
+      jwt.secret = ENV.fetch('JWT_SECRET')
+    end  
+DEVISE
+  end
+  commit "configures devise JWT secret via env vars"
+
+
+  gsub_file 'app/controllers/graphql_controller.rb',
+    /# current_user: current_user/,
+    'current_user: current_user'
+  commit "configures graphql context with devise current_user"
+
+
 
   # TODO typescript, react, styled*, apollo, etc.
 
@@ -187,49 +216,25 @@ ROUTE
   append_to_file 'db/seeds.rb',
     "User.create!(email: 'admin@example.com', password: 'password', password_confirmation: 'password', admin: true) if Rails.env.development?"
 
-  inject_into_file 'app/models/user.rb', ",\n         :jwt_authenticatable, jwt_revocation_strategy: Devise::JWT::RevocationStrategies::Null",
-    after: ':recoverable, :rememberable, :validatable'
+  inject_into_file 'app/models/user.rb',
+    ",         :jwt_authenticatable, jwt_revocation_strategy: Devise::JWT::RevocationStrategies::Null",
+    after: ":recoverable, :rememberable, :validatable\n"
   # TODO AUDITED
   # inject_into_file 'app/models/user.rb', "\n\n  audited",
   #   after: 'jwt_revocation_strategy: Devise::JWT::RevocationStrategies::Null'
 
-  commit "generates user model, admin resource, and a development seed account"
+  # TODO specs / factories
+  commit "generates user model & admin resource, and a development seed account"
 
 
 
   # initialize the application database
   rails_command "db:create db:migrate db:seed", abort_on_failure: true
-
   commit "initializes database"
   
 
 
-  # copy default application interaction
-  template 'app/interactions/application_interaction.rb'
-
-  commit "adds a default application interaction"
-
-
-
-  # copy default pundit policies
-  template 'app/policies/authenticated_policy.rb'
-  template 'app/policies/admin_policy.rb'
-  template 'app/policies/public_policy.rb'
-  template 'app/policies/user_policy.rb'
-  template 'app/policies/admin/user_policy.rb'
-
-  commit "adds some initial pundit policies"
-
-
-
-  # reconfigure active_admin
-  remove_file 'config/initializers/active_admin.rb'
-  template 'config/initializers/active_admin.rb'
-
-  commit "configures activeadmin to work with devise + pundit"
-
-
-
+  # TODO try installing graphql with the batch flag instead of doing this manually
   # configure graphql-batch loaders
   prepend_to_file "app/graphql/#{app_name.underscore}_schema.rb", "require 'graphql/batch'\n\n"
   inject_into_file "app/graphql/#{app_name.underscore}_schema.rb",
@@ -242,27 +247,13 @@ ROUTE
   commit "configures graphql with graphql-batch and basic batch loaders"
 
 
-  # configure graphql + pundit via zuul
-  directory 'vendor/zuul'
 
-  prepend_to_file "app/graphql/#{app_name.underscore}_schema.rb", "require 'zuul/pundit'\n\n"
-
-  inject_into_file "app/graphql/types/base_object.rb",
-    "\n    extend Zuul::Pundit::Object",
-    after: "class BaseObject < GraphQL::Schema::Object"
-
-  inject_into_file "app/graphql/types/base_field.rb",
-    "\n    include Zuul::Pundit::Field",
-    after: "class BaseField < GraphQL::Schema::Field"
-
-  inject_into_file "app/graphql/types/base_argument.rb",
-    "\n    include Zuul::Pundit::Argument",
-    after: "class BaseArgument < GraphQL::Schema::Argument"
-
+  # generate user type for graphql
   generate 'graphql:object User'
-  # TODO clean up user type
-
-  commit "configures graphql with pundit via zuul"
+  inject_into_file "app/graphql/types/user_type.rb",
+    "\n    pundit_role :admin",
+    after: "class UserType < Types::BaseObject"
+  commit "generates basic user type for graphql"
 
 
 

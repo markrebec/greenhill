@@ -3,8 +3,12 @@ class UserPolicy < AuthenticatedPolicy
     user.present? && user.admin?
   end
 
-  def current_user?
+  def owner?
     user.present? && user == record
+  end
+
+  def admin_or_owner?
+    admin? || owner?
   end
 
   def index?
@@ -12,7 +16,7 @@ class UserPolicy < AuthenticatedPolicy
   end
 
   def show?
-    admin? || current_user?
+    admin_or_owner?
   end
 
   def create?
@@ -24,7 +28,7 @@ class UserPolicy < AuthenticatedPolicy
   end
 
   def update?
-    admin? || current_user?
+    admin_or_owner?
   end
 
   def edit?
