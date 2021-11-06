@@ -217,8 +217,8 @@ DEVISE
     "User.create!(email: 'admin@example.com', password: 'password', password_confirmation: 'password', admin: true) if Rails.env.development?"
 
   inject_into_file 'app/models/user.rb',
-    ",         :jwt_authenticatable, jwt_revocation_strategy: Devise::JWT::RevocationStrategies::Null",
-    after: ":recoverable, :rememberable, :validatable\n"
+    ",\n         :jwt_authenticatable, jwt_revocation_strategy: Devise::JWT::RevocationStrategies::Null",
+    after: ":recoverable, :rememberable, :validatable"
   # TODO AUDITED
   # inject_into_file 'app/models/user.rb', "\n\n  audited",
   #   after: 'jwt_revocation_strategy: Devise::JWT::RevocationStrategies::Null'
