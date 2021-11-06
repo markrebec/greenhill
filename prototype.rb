@@ -49,6 +49,7 @@ end
 #############################
 #
 # - custom generators (graphql type, admin resource [HOOKS hook_for]), scaffolds (skip stylesheets, javascript, controller, etc.), etc.
+# - handle flags (i.e. skip postgres, skip rspec)... OR MAYBE enforce those flags by default (if possible)?
 #
 # ON MODEL: generate policy, generate type
 ####

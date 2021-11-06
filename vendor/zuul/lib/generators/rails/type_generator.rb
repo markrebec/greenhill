@@ -17,13 +17,25 @@ module Rails
           custom_fields,
           'created_at:datetime',
           'updated_at:datetime',
-        ].flatten.map do |c|
-          name, type = c.split(':')
-          null = !name.in?(['id', 'created_at', 'updated_at'])
+        ].flatten.map do |col|
+          name, type = col.split(':')
+          null = !(name.in?(['id', 'created_at', 'updated_at']) || type == 'references')
+          type = name if type == 'references'
           col = Struct.new(:name, :type, :null).new(name, type, null)
           generate_column_string(col)
         end
         columns
+      end
+
+      private
+
+      def column_type_string(column)
+        id_column?(column) ? "ID" : column.type.to_s.camelize
+      end
+
+      def id_column?(column)
+        column.type.in?(['references', 'uuid']) ||
+          column.name.match(/^([a-z0-9_]*_)?id$/)
       end
     end
   end
