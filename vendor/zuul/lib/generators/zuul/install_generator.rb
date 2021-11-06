@@ -6,7 +6,7 @@ module Zuul
   module Generators
     class InstallGenerator < Rails::Generators::NamedBase
       desc "Install Zuul boilerplate for GraphQL + Pundit"
-      source_root File.expand_path('../templates', __FILE__)
+      # source_root File.expand_path('../templates', __FILE__)
 
       def inject_zuul_into_schema
         inject_into_file "app/graphql/#{name.underscore}_schema.rb",

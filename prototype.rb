@@ -45,6 +45,12 @@ end
 # - integrate graphql types w/ typescript via codegen (once frontend stuff is fleshed out)
 #
 # - audits
+#
+#############################
+#
+# - custom generators (graphql type, admin resource [HOOKS hook_for]), scaffolds (skip stylesheets, javascript, controller, etc.), etc.
+#
+# ON MODEL: generate policy, generate type
 ####
 
 

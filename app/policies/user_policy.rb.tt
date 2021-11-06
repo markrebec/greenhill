@@ -1,4 +1,4 @@
-class UserPolicy < AuthenticatedPolicy
+class UserPolicy < ApplicationPolicy
   def admin?
     user.present? && user.admin?
   end
