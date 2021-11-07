@@ -17,8 +17,6 @@ module Greenhill
           template 'authenticated_policy.rb', 'app/policies/authenticated_policy.rb'
           template 'admin_policy.rb', 'app/policies/admin_policy.rb'
           template 'public_policy.rb', 'app/policies/public_policy.rb'
-          template 'user_policy.rb', 'app/policies/user_policy.rb' # TODO THIS IS GREENHILL SPECIFIC
-          template 'admin/user_policy.rb', 'app/policies/admin/user_policy.rb' # TODO THIS IS GREENHILL SPECIFIC
         end
       end
     end
