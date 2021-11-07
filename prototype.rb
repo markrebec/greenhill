@@ -136,7 +136,18 @@ append_to_file '.gitignore', '.env'
 
 commit "performs some additional configuration"
 
+# copy default application interaction
+template 'app/interactions/application_interaction.rb'
+commit "adds a default application interaction"
 
+prepend_to_file 'config/routes.rb', "require 'sidekiq/web'\n"
+route <<-ROUTE
+  authenticate :user, ->(user) { user.admin? } do
+    mount Sidekiq::Web => '/admin/sidekiq'
+    mount GraphiQL::Rails::Engine, at: '/admin/graphiql', graphql_path: '/graphql'
+  end
+ROUTE
+commit "mounts graphiql and sidekiq within the admin namespace wrapped in auth"
 
 
 after_bundle do
@@ -150,8 +161,8 @@ after_bundle do
   generate 'devise:install'
   commit "runs devise install generator"
 
-  generate 'pundit:install'
-  commit "runs pundit install generator"
+  generate 'greenhill:pundit:install'
+  commit "runs greenhill pundit install generator"
 
   generate 'graphql:install'
   commit "runs graphql install generator"
@@ -165,26 +176,9 @@ after_bundle do
   generate "active_admin:install --skip-users #{webpack_install? ? '--use-webpacker' : ''}"
   commit "runs active_admin install generator"
 
-  prepend_to_file 'config/routes.rb', "require 'sidekiq/web'\n"
-  route <<-ROUTE
-  authenticate :user, ->(user) { user.admin? } do
-    mount Sidekiq::Web => '/admin/sidekiq'
-    mount GraphiQL::Rails::Engine, at: '/admin/graphiql', graphql_path: '/graphql'
-  end
-ROUTE
-  commit "mounts graphiql and sidekiq within the admin namespace wrapped in auth"
 
-  # copy default application interaction
-  template 'app/interactions/application_interaction.rb'
-  commit "adds a default application interaction"
 
-  # copy default pundit policies
-  template 'app/policies/authenticated_policy.rb'
-  template 'app/policies/admin_policy.rb'
-  template 'app/policies/public_policy.rb'
-  template 'app/policies/user_policy.rb'
-  template 'app/policies/admin/user_policy.rb'  
-  commit "adds some initial pundit policies"
+
 
   # reconfigure active_admin
   remove_file 'config/initializers/active_admin.rb'
