@@ -73,6 +73,7 @@ gem 'graphql'
 gem 'graphql-batch'
 gem 'graphiql-rails'
 gem 'zuul', path: './vendor/zuul'
+gem 'greenhill', path: './vendor/greenhill'
 # TODO logging (structured, lograge, etc.)
 gem_group :development, :test do
   gem 'amazing_print'
@@ -90,6 +91,7 @@ end
 gsub_file 'Gemfile', /gem 'tzinfo-data'/, "# gem 'tzinfo-data'"
 
 directory 'vendor/zuul'
+directory 'vendor/greenhill'
 
 commit "adds default starter gems to Gemfile"
 
@@ -189,6 +191,19 @@ ROUTE
   template 'config/initializers/active_admin.rb'
   commit "configures activeadmin to work with devise + pundit"
 
+
+
+  # TODO try installing graphql with the batch flag instead of doing this manually
+  # configure graphql-batch loaders
+  prepend_to_file "app/graphql/#{app_name.underscore}_schema.rb", "require 'graphql/batch'\n\n"
+  inject_into_file "app/graphql/#{app_name.underscore}_schema.rb",
+    "\n  use GraphQL::Batch",
+    after: "query(Types::QueryType)"
+
+  template 'app/graphql/record_loader.rb'
+  template 'app/graphql/association_loader.rb'
+
+  commit "configures graphql with graphql-batch and basic batch loaders"
   
 
 
@@ -219,7 +234,7 @@ DEVISE
   # setup and generate users
   generate 'devise User'
   generate 'migration add_admin_to_users admin:boolean'
-  template 'app/admin/user.rb'
+  template 'app/admin/users.rb'
   append_to_file 'db/seeds.rb',
     "User.create!(email: 'admin@example.com', password: 'password', password_confirmation: 'password', admin: true) if Rails.env.development?"
 
@@ -238,20 +253,7 @@ DEVISE
   # initialize the application database
   rails_command "db:create db:migrate db:seed", abort_on_failure: true
   commit "initializes database"
-  
 
-
-  # TODO try installing graphql with the batch flag instead of doing this manually
-  # configure graphql-batch loaders
-  prepend_to_file "app/graphql/#{app_name.underscore}_schema.rb", "require 'graphql/batch'\n\n"
-  inject_into_file "app/graphql/#{app_name.underscore}_schema.rb",
-    "\n  use GraphQL::Batch",
-    after: "query(Types::QueryType)"
-
-  template 'app/graphql/record_loader.rb'
-  template 'app/graphql/association_loader.rb'
-
-  commit "configures graphql with graphql-batch and basic batch loaders"
 
 
 

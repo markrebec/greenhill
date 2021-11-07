@@ -2,14 +2,15 @@
 require 'rails/generators'
 require 'generators/graphql/object_generator'
 
-module Rails
+module Zuul
   module Generators
     class TypeGenerator < ::Graphql::Generators::ObjectGenerator
+      desc "Generates a GraphQL type for a resource via Zuul"
       source_root ::Graphql::Generators::ObjectGenerator.source_root
 
       # normally this would be read from the schema, but we can do a pretty good job
       # by basing it on the provided field arguments and piggybacking on that
-      # feature from the graphql:object generator in the meantime.
+      # feature from the graphql:object generator.
       def fields
         columns = []
         columns += [
