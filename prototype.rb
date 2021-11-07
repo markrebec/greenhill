@@ -12,14 +12,6 @@ end
 
 ####
 # TODO
-# - break up each coherent bit into separate little chunks (i.e. auth: users/devise/pundit/jwt, admin: activeadmin, jobs: sidekiq, etc.)
-#   - move into lib/generators
-#   - break up sub-groups (i.e. separate devise/pundit/jwt)
-#   - MAYBE create actual generators for a lot of these chunks? could have a simple template, which would call the additional generators... i.e. /lib/generators/database.rb + /lib/generators/database/generator.rb + /lib/generators/database/templates/*
-#   - git commit along the way, to highlight each step
-#
-# - /templates/ directory
-#   - also templates/ subdirs for generators above (i.e. /lib/generators/users/devise/config/initializers/devise.rb)
 #
 # - generic & basic layouts for rails views (and eventually SPA)
 #   - include flash messages
@@ -31,15 +23,11 @@ end
 # - 
 #
 # - various security stuff
-#   - lock down jwt cookie
-#   - check additional security attrs in jwt.rb
 #   - cors (especially for potential subdomain/multi-tenant stuff)
 #
 #
 #
 ##################################
-#
-# - break out zuul, write tests
 #
 # - integrate graphql types w/ typescript via codegen (once frontend stuff is fleshed out)
 #
@@ -47,10 +35,8 @@ end
 #
 #############################
 #
-# - custom generators (graphql type, admin resource [HOOKS hook_for]), scaffolds (skip stylesheets, javascript, controller, etc.), etc.
-# - handle flags (i.e. skip postgres, skip rspec)... OR MAYBE enforce those flags by default (if possible)?
+# - handle more generator flags (i.e. skip postgres, skip rspec)... OR MAYBE enforce those flags by default (if possible)?
 #
-# ON MODEL: generate policy, generate type
 ####
 
 
@@ -95,39 +81,36 @@ run "cp -r #{File.join(source_paths.first, 'vendor/greenhill')} #{File.join(dest
 commit "adds default gems to Gemfile (and vendors greenhill/zuul for now)"
 
 
-#
 # Setup and launch Postgres and Redis via docker-compose
-#
 ## TODO make the docker compose template able to handle different databases (postgres, mysql, none/sqlite)
 template 'docker-compose.yml'
 run "docker-compose up -d"
-
 # configure app for docker postgres
 remove_file 'config/database.yml'
 template 'config/databases/postgresql.yml', 'config/database.yml'
-
 commit "runs supporting services via docker-compose in development"
+
+
 
 # configure active_record to use UUIDs by default for primary keys and enable the extension in postgres
 template 'db/migrate/enable_extensions.rb', "db/migrate/#{DateTime.now.strftime '%Y%m%d%H%M%S'}_enable_extensions.rb"
 template 'config/initializers/active_record.rb'
-
 commit "enables postgres extensions and configures activerecord to use UUIDs for primary keys"
 
 
-#
+
 # Additional configuration, templates, etc.
-#
 environment "config.action_mailer.default_url_options = { host: 'localhost', port: ENV.fetch('PORT', 3000) }", env: 'development'
 template 'lib/tasks/auto_annotate_models.rake'
 # TODO AUDITED
 # template 'config/initializers/audited.rb'
 template 'Procfile'
-template '.env' # TODO break out ENV vars into their relevant generators with append_to_file
+# TODO break out ENV vars into their relevant generators with append_to_file
+template '.env'
 template '.env', '.env.example'
 append_to_file '.gitignore', '.env'
-
 commit "performs some additional configuration"
+
 
 # copy default application interaction
 template 'app/interactions/application_interaction.rb'
@@ -168,7 +151,7 @@ after_bundle do
   # TODO AUDITED
   # inject_into_file 'app/models/user.rb', "\n\n  audited",
   #   after: 'jwt_revocation_strategy: Devise::JWT::RevocationStrategies::Null'
-  commit "generates user model & admin resource, and a development seed account"
+  commit "generates user model, policies, graphql type and admin resource, and a development seed account"
 
   # initialize the application database
   rails_command "db:create db:migrate db:seed", abort_on_failure: true
