@@ -1,9 +1,3 @@
-# TODO generate devise user
-#      generate admin migration
-#      generate policies (zuul?)
-#      generate type (zuul?)
-#      generate admin
-
 # frozen_string_literal: true
 require 'rails/generators'
 require 'rails/generators/named_base'
