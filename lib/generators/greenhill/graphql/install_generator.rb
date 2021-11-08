@@ -1,11 +1,14 @@
 # frozen_string_literal: true
 require 'rails/generators'
 require 'rails/generators/base'
+require 'greenhill/generators/commit_helper'
 
 module Greenhill
   module Graphql
     module Generators
       class InstallGenerator < Rails::Generators::Base
+        include Greenhill::Generators::CommitHelper
+
         desc "Install and configure GraphQL with GraphQL Batch and GraphiQL via Greenhill"
         source_root File.expand_path('../templates', __FILE__)
 
@@ -13,6 +16,7 @@ module Greenhill
 
         def install_graphql
           generate 'graphql:install'
+          commit "runs graphql:install generator"
         end
 
         def configure_batch_loaders
@@ -22,12 +26,16 @@ module Greenhill
           prepend_to_file schema_file_path, "require 'graphql/batch'\n\n"
           inject_into_file schema_file_path, "\n  use(GraphQL::Batch)",
             after: "query(Types::QueryType)"
+
+          commit "configures graphql to use graphql-batch with default loaders"
         end
 
         def enable_user_context
           gsub_file 'app/controllers/graphql_controller.rb',
             /# current_user: current_user/,
             'current_user: current_user'
+
+          commit "enables current_user context in graphql controller"
         end
 
         def mount_graphiql
@@ -36,6 +44,8 @@ module Greenhill
     mount GraphiQL::Rails::Engine, at: '/admin/graphiql', graphql_path: '/graphql'
   end
 ROUTE
+
+          commit "mounts graphiql within admin namespace and wrapped in admin user auth"
         end
 
         private

@@ -129,28 +129,18 @@ COVERAGE
   commit "runs rspec install generator"
 
   generate 'greenhill:sidekiq:install'
-  commit "runs greenhill sidekiq install generator"
-
   generate 'greenhill:devise:install'
-  commit "runs greenhill devise install generator"
-
   generate 'greenhill:pundit:install'
-  commit "runs greenhill pundit install generator"
-
   generate 'greenhill:graphql:install'
-  commit "runs greenhill graphql install generator"
-
   generate "greenhill:admin:install #{webpack_install? ? '--use-webpacker' : ''}"
-  commit "runs greenhill active_admin install generator"
 
-  generate "zuul:install #{app_name}"
-  commit "runs zuul install generator"
+  generate "zuul:install"
+  commit "runs zuul:install generator"
 
   # TODO typescript, react, styled*, apollo, etc.
 
   # TODO specs / factories
   generate 'greenhill:user User'
-  commit "generates user model, policies, graphql type and admin resource, and a development seed account"
 
   # initialize the application database
   rails_command "db:create db:migrate db:seed", abort_on_failure: true

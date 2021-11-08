@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 require 'rails/generators'
-require 'rails/generators/named_base'
+require 'rails/generators/base'
 
 module Zuul
   module Generators
-    class InstallGenerator < Rails::Generators::NamedBase
+    class InstallGenerator < Rails::Generators::Base
       desc "Install Zuul boilerplate for GraphQL + Pundit"
       # source_root File.expand_path('../templates', __FILE__)
 

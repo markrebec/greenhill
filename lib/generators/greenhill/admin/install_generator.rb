@@ -1,11 +1,14 @@
 # frozen_string_literal: true
 require 'rails/generators'
 require 'rails/generators/base'
+require 'greenhill/generators/commit_helper'
 
 module Greenhill
   module Admin
     module Generators
       class InstallGenerator < Rails::Generators::Base
+        include Greenhill::Generators::CommitHelper
+
         desc "Install and configure ActiveAdmin via Greenhill"
         source_root File.expand_path('../templates', __FILE__)
 
@@ -13,6 +16,7 @@ module Greenhill
 
         def install_active_admin
           generate "active_admin:install --skip-users #{options['use_webpacker'] ? '--use-webpacker' : ''}"
+          commit "runs active_admin:install generator"
         end
 
         def configure_active_admin
@@ -34,6 +38,7 @@ module Greenhill
 
 NAVIGATION
           end
+          commit "configures active_admin with devise, pundit and navigation for graphql and sidekiq"
         end
       end
     end

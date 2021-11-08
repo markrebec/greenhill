@@ -1,15 +1,19 @@
 # frozen_string_literal: true
 require 'rails/generators'
 require 'rails/generators/base'
+require 'greenhill/generators/commit_helper'
 
 module Greenhill
   module Devise
     module Generators
       class InstallGenerator < Rails::Generators::Base
+        include Greenhill::Generators::CommitHelper
+
         desc "Install Devise with JWT support via Greenhill"
 
         def install_devise
           generate 'devise:install'
+          commit "runs devise:install generator"
         end
 
         def configure_jwt
@@ -24,6 +28,7 @@ module Greenhill
 
 DEVISE
           end
+          commit "configures devise with jwt secret key via env vars"
         end
       end
     end
