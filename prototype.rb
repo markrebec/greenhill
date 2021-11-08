@@ -70,8 +70,10 @@ end
 
 gsub_file 'Gemfile', /gem 'tzinfo-data'/, "# gem 'tzinfo-data'"
 
+run 'mkdir vendor/greenhill'
+run "cp #{File.join(File.expand_path(File.dirname(__FILE__)), 'greenhill.gemspec')} #{File.join(destination_root, 'vendor/greenhill/greenhill.gemspec')}"
+run "cp -r #{File.join(File.expand_path(File.dirname(__FILE__)), 'lib')} #{File.join(destination_root, 'vendor/greenhill/lib')}"
 run "cp -r #{File.join(File.expand_path(File.dirname(__FILE__)), 'vendor/zuul')} #{File.join(destination_root, 'vendor/zuul')}"
-run "cp -r #{File.join(File.expand_path(File.dirname(__FILE__)), 'vendor/greenhill')} #{File.join(destination_root, 'vendor/greenhill')}"
 
 commit "adds default gems to Gemfile (and vendors greenhill/zuul for now)"
 
