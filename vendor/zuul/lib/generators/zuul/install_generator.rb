@@ -9,7 +9,7 @@ module Zuul
       # source_root File.expand_path('../templates', __FILE__)
 
       def inject_zuul_into_schema
-        inject_into_file "app/graphql/#{name.underscore}_schema.rb",
+        inject_into_file schema_file_path,
           "\n  context_class(Zuul::Pundit::Context)",
           after: "query(Types::QueryType)"
       end
@@ -34,6 +34,16 @@ module Zuul
         inject_into_file "app/graphql/types/mutation_type.rb",
           "\n    pundit_role nil",
           after: "class MutationType < Types::BaseObject"
+      end
+
+      private
+
+      def schema_file_path
+        @schema_file_path ||= begin
+          path = File.join('app', 'graphql')
+          file = Dir.children(path).select { |f| f.match?(/[a-z0-9_]+_schema\.rb$/) }.first
+          File.join(path, file)
+        end
       end
     end
   end

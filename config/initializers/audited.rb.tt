@@ -1,2 +1,0 @@
-Audited.max_audits = ENV.fetch('MAX_AUDITS', 10).to_i
-Audited.auditing_enabled = true
