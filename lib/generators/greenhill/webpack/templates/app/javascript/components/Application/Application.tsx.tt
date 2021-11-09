@@ -1,0 +1,5 @@
+import React from 'react'
+
+export const Application: React.FC = () => <div>Hello from React!</div>
+
+export default Application

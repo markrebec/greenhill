@@ -50,8 +50,6 @@ gem 'graphiql-rails'
 gem 'activeadmin'
 gem 'sidekiq'
 gem 'active_interaction'
-gem 'zuul', path: './vendor/zuul'
-gem 'greenhill', path: './vendor/greenhill'
 # TODO logging (structured, lograge, etc.), auditing, analytics
 
 gem_group :development, :test do
@@ -74,6 +72,9 @@ run 'mkdir vendor/greenhill'
 run "cp #{File.join(File.expand_path(File.dirname(__FILE__)), 'greenhill.gemspec')} #{File.join(destination_root, 'vendor/greenhill/greenhill.gemspec')}"
 run "cp -r #{File.join(File.expand_path(File.dirname(__FILE__)), 'lib')} #{File.join(destination_root, 'vendor/greenhill/lib')}"
 run "cp -r #{File.join(File.expand_path(File.dirname(__FILE__)), 'vendor/zuul')} #{File.join(destination_root, 'vendor/zuul')}"
+
+gem 'zuul', path: './vendor/zuul'
+gem 'greenhill', path: './vendor/greenhill'
 
 commit "adds default gems to Gemfile (and vendors greenhill/zuul for now)"
 
@@ -117,6 +118,9 @@ commit "adds a default application interaction"
 
 after_bundle do
   commit "bundles and prepares application"
+
+  generate 'greenhill:webpack:react'
+  generate 'greenhill:webpack:typescript'
 
   generate 'rspec:install'
   prepend_to_file 'spec/spec_helper.rb', <<-COVERAGE
