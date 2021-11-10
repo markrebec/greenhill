@@ -1,0 +1,6 @@
+schema: ./db/schema.graphql
+generates:
+  ./app/javascript/types.d.ts:
+    plugins:
+      - typescript
+    gqlImport: graphql-request#gql

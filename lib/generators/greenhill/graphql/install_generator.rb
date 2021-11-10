@@ -20,8 +20,8 @@ module Greenhill
         end
 
         def configure_batch_loaders
-          template 'record_loader.rb', 'app/graphql/record_loader.rb'
-          template 'association_loader.rb', 'app/graphql/association_loader.rb'
+          template 'app/graphql/record_loader.rb'
+          template 'app/graphql/association_loader.rb'
 
           prepend_to_file schema_file_path, "require 'graphql/batch'\n\n"
           inject_into_file schema_file_path, "\n  use(GraphQL::Batch)",
@@ -48,6 +48,28 @@ ROUTE
           commit "mounts graphiql within admin namespace and wrapped in admin user auth"
         end
 
+        def schema_dump_task
+          template 'lib/tasks/graphql.rake'
+          commit "adds a rake task to dump the GraphQL schema"
+        end
+
+        def install_client
+          run "yarn add graphql graphql-request"
+          commit "installs graphql and graphql-request client packages"
+        end
+
+        def install_codegen
+          run "yarn add -D @graphql-codegen/cli @graphql-codegen/typescript @graphql-codegen/typescript-graphql-request"
+          template 'codegen.yml'
+          inject_into_file 'package.json', before: '  "dependencies": {' do <<-SCRIPTS
+  "scripts": {
+    "generate": "bin/rails graphql:schema:dump && graphql-codegen"
+  },
+SCRIPTS
+          end
+          commit "installs graphql-codegen to generate types from the schema"
+        end
+
         private
 
         def schema_file_path
@@ -56,6 +78,10 @@ ROUTE
             file = Dir.children(path).select { |f| f.match?(/[a-z0-9_]+_schema\.rb$/) }.first
             File.join(path, file)
           end
+        end
+
+        def schema_class_name
+          @schema_class_name ||= File.basename(schema_file_path, '.rb').classify
         end
       end
     end

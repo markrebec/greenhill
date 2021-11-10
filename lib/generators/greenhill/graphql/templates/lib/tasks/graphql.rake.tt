@@ -1,0 +1,10 @@
+namespace :graphql do
+  namespace :schema do
+    desc "Dumps the GraphQL schemas so they can be used by TypeScript"
+    task dump: :environment do
+      schema = <%= schema_class_name %>.to_definition
+      path = Rails.root.join('db', 'schema.graphql')
+      File.write(path, schema)
+    end
+  end
+end
