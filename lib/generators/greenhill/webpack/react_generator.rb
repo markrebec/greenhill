@@ -9,8 +9,13 @@ module Greenhill
       class ReactGenerator < Rails::Generators::Base
         include Greenhill::Generators::CommitHelper
 
-        desc "Install react and typescript via Greenhill"
+        desc "Configure React for Typescript and HMR via Greenhill"
         source_root File.expand_path('../templates', __FILE__)
+
+        def add_types
+          run "yarn add @types/react @types/react-dom"
+          commit "adds react typescript types"
+        end
 
         def install_and_configure_plugin
           run "yarn add react-refresh @pmmmwh/react-refresh-webpack-plugin"
@@ -49,6 +54,7 @@ ACTION
         end
 
         def temp_application_pack
+          remove_file 'app/javascript/packs/hello_react.jsx'
           template 'app/javascript/components/Application/Application.tsx'
           insert_into_file 'app/javascript/packs/application.js' do <<-REACT
 import React from 'react'

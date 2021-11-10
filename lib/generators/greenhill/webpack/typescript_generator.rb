@@ -59,8 +59,8 @@ EXTENSIONS
         end
 
         def install_types
-          run "yarn add @types/rails__activestorage @types/rails__ujs @types/react @types/react-dom @types/webpack-env"
-          commit "installs relevant type libraries for rails/react/webpack"
+          run "yarn add @types/rails__activestorage @types/rails__ujs @types/webpack-env"
+          commit "installs relevant type libraries for rails/webpack"
         end
       end
     end

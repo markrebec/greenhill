@@ -119,8 +119,11 @@ commit "adds a default application interaction"
 after_bundle do
   commit "bundles and prepares application"
 
-  generate 'greenhill:webpack:react'
   generate 'greenhill:webpack:typescript'
+  generate 'greenhill:webpack:react'
+  # TODO eslint
+  # TODO loaders: css, url, etc.
+  # TODO axios, react-router, (react-query / apollo)
 
   generate 'rspec:install'
   prepend_to_file 'spec/spec_helper.rb', <<-COVERAGE
