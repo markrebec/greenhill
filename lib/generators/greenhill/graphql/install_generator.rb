@@ -61,12 +61,7 @@ ROUTE
         def install_codegen
           run "yarn add -D @graphql-codegen/cli @graphql-codegen/typescript @graphql-codegen/typescript-graphql-request"
           template 'codegen.yml'
-          inject_into_file 'package.json', before: '  "dependencies": {' do <<-SCRIPTS
-  "scripts": {
-    "generate": "bin/rails graphql:schema:dump && graphql-codegen"
-  },
-SCRIPTS
-          end
+          run "npx --yes npm-add-script -k \"graphql:types\" -v \"bin/rails graphql:schema:dump && graphql-codegen\" --force"
           commit "installs graphql-codegen to generate types from the schema"
         end
 

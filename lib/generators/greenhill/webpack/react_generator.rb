@@ -13,12 +13,12 @@ module Greenhill
         source_root File.expand_path('../templates', __FILE__)
 
         def add_types
-          run "yarn add @types/react @types/react-dom"
+          run "yarn add -D @types/react @types/react-dom"
           commit "adds react typescript types"
         end
 
         def install_and_configure_plugin
-          run "yarn add react-refresh @pmmmwh/react-refresh-webpack-plugin"
+          run "yarn add -D react-refresh @pmmmwh/react-refresh-webpack-plugin"
 
           inject_into_file 'config/webpack/development.js', after: "const environment = require('./environment')\n" do <<-REQUIRE
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin')
@@ -41,6 +41,9 @@ PLUGIN
 
 
 
+        ##########################
+        # TODO move this (and other app-related stuff) to a BoilerplateGenerator
+        ##########################
 
         def temp_controller_and_view
           inject_into_file 'app/controllers/application_controller.rb', before: /end[\n]*\Z/ do <<-ACTION
@@ -55,11 +58,11 @@ ACTION
 
         def temp_application_pack
           remove_file 'app/javascript/packs/hello_react.jsx'
-          template 'app/javascript/components/Application/Application.tsx'
+          directory 'app/javascript/components'
           insert_into_file 'app/javascript/packs/application.js' do <<-REACT
 import React from 'react'
 import ReactDOM from 'react-dom'
-import Application from 'components/Application/Application'
+import Application from 'components/Application'
 
 document.addEventListener('DOMContentLoaded', (): void => {
   ReactDOM.render(

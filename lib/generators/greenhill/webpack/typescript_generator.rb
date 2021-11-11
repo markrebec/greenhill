@@ -19,7 +19,7 @@ module Greenhill
         end
 
         def install_and_configure_preset
-          run "yarn add @babel/preset-typescript"
+          run "yarn add -D @babel/preset-typescript"
           inject_into_file 'babel.config.js',
             "        ['@babel/preset-typescript', { 'allExtensions': true, 'isTSX': true }],",
             after: "presets: [\n"
@@ -27,7 +27,7 @@ module Greenhill
         end
 
         def install_and_configure_plugin
-          run "yarn add fork-ts-checker-webpack-plugin"
+          run "yarn add -D fork-ts-checker-webpack-plugin"
           inject_into_file 'config/webpack/development.js', after: "const environment = require('./environment')\n" do <<-REQUIRE
 const path = require("path")
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin")
@@ -59,7 +59,7 @@ EXTENSIONS
         end
 
         def install_types
-          run "yarn add @types/rails__activestorage @types/rails__ujs @types/webpack-env"
+          run "yarn add -D @types/rails__activestorage @types/rails__ujs @types/webpack-env"
           commit "installs relevant type libraries for rails/webpack"
         end
       end

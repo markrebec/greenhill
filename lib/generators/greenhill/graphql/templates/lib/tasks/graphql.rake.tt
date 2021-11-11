@@ -7,4 +7,9 @@ namespace :graphql do
       File.write(path, schema)
     end
   end
+
+  desc "Generates Typescript types from the GraphQL schema"
+  task types: 'graphql:schema:dump' do
+    `yarn graphql-codegen`
+  end
 end

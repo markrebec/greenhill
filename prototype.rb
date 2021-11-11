@@ -26,8 +26,6 @@ end
 #
 ##################################
 #
-# - integrate graphql types w/ typescript via codegen (once frontend stuff is fleshed out)
-#
 # - audits / analytics / experiments / logging
 #
 #############################
@@ -38,6 +36,27 @@ end
 
 
 commit "initializes new rails app #{app_name}"
+
+if options[:database] != 'postgresql'
+  # TODO better command help/args/recommendations
+  say "Greenhill assumes you'll be using postgresql"
+  exit!
+end
+
+if options[:webpack] != 'react' || options[:skip_webpack_install] == true
+  # TODO better command help/args/recommendations
+  say "Greenhill assumes you'll be using react via webpack"
+  exit!
+end
+
+if options[:skip_test] != true
+    # TODO better command help/args/recommendations
+    yes_no = ask "You have opted to install Test::Unit.\nGreenhill recommends RSpec, and will be installing and configuring it. Are you sure you'd like to continue? [Y/n]"
+    if yes_no.downcase.in?(['n', 'no'])
+      exit!
+    end
+end
+
 
 
 # add default starter gems
@@ -121,7 +140,11 @@ after_bundle do
 
   generate 'greenhill:webpack:typescript'
   generate 'greenhill:webpack:react'
+  generate 'greenhill:webpack:jest'
   # TODO eslint
+  # TODO jest
+  # TODO storybook
+  # TODO styled-*
   # TODO loaders: css, url, etc.
   # TODO axios, react-router, (react-query / apollo)
 
@@ -149,7 +172,7 @@ COVERAGE
   # TODO specs / factories
   generate 'greenhill:user User'
 
-  # initialize the application database
-  rails_command "db:create db:migrate db:seed", abort_on_failure: true
-  commit "initializes database"
+  # initialize the application database, dumps graphql schema and generates graphql types
+  rails_command "db:create db:migrate db:seed graphql:types", abort_on_failure: true
+  commit "initializes database and generates graphql types"
 end
