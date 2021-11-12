@@ -39,6 +39,12 @@ PLUGIN
           commit "enables HMR in webpacker config"
         end
 
+        def move_dev_dependencies
+          run "yarn remove @babel/preset-react babel-plugin-transform-react-remove-prop-types prop-types"
+          run "yarn add -D @babel/preset-react"
+          gsub_file 'babel.config.js', /      isProductionEnv && \[\n        'babel-plugin-transform-react-remove-prop-types',\n        {\n          removeImport: true\n        }\n      \]/, ''
+          commit "removes prop-types and moves babel react preset to dev dependencies"
+        end
 
 
         ##########################

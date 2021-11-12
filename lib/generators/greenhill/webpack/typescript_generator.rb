@@ -13,13 +13,13 @@ module Greenhill
         source_root File.expand_path('../templates', __FILE__)
 
         def install_and_configure_typescript
-          run "yarn add typescript"
+          run "yarn add -D typescript"
           template "tsconfig.json"
           commit "installs and configures typescript"
         end
 
         def install_and_configure_preset
-          run "yarn add -D @babel/preset-typescript"
+          run "yarn add -D @babel/core @babel/preset-typescript"
           inject_into_file 'babel.config.js',
             "        ['@babel/preset-typescript', { 'allExtensions': true, 'isTSX': true }],",
             after: "presets: [\n"

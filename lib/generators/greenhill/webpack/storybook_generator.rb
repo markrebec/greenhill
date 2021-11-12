@@ -13,7 +13,7 @@ module Greenhill
         source_root File.expand_path('../templates', __FILE__)
 
         def install_storybook
-          run "yarn add -D @babel/core @storybook/addon-actions @storybook/addon-essentials @storybook/addon-links @storybook/react babel-loader"
+          run "yarn add -D @storybook/addon-actions @storybook/addon-essentials @storybook/addon-links @storybook/react babel-loader"
           directory 'storybook', '.storybook'
           run "npx --yes npm-add-script -k \"storybook\" -v \"start-storybook -p 6006\" --force"
           commit "installs and configures storybook with basic defaults"
