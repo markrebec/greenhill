@@ -142,8 +142,7 @@ after_bundle do
   generate 'greenhill:webpack:react'
   generate 'greenhill:webpack:jest'
   generate 'greenhill:webpack:eslint'
-  # TODO eslint
-  # TODO jest
+  generate 'greenhill:webpack:storybook'
   # TODO storybook
   # TODO styled-*
   # TODO loaders: css, url, etc.
