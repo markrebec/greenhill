@@ -22,7 +22,7 @@ module Greenhill
 
         def install_react_testing_library
           run "yarn add -D @testing-library/jest-dom @testing-library/react @types/testing-library__jest-dom"
-          template 'app/javascript/test/test-utils.tsx'
+          template 'app/javascript/test/utils.tsx'
           commit "installs and configures testing-library packages for jest and react"
         end
       end
