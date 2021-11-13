@@ -19,6 +19,16 @@ module Greenhill
         end
 
         def install_styled_system
+          run "yarn add -D styled-system @types/styled-system csstype"
+          commit "installs styled-system and csstype for theming"
+        end
+
+        # TODO this should probably actually live inside greenhill itself and provde overridable theming
+        # TODO and/or maybe move this into /app/javascript/theme instead of the root path
+        def init_primitives_and_constants
+          directory 'app/javascript/primitives'
+          template 'app/javascript/constants'
+          commit "installs theme primitives and constants"
         end
       end
     end

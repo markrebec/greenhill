@@ -1,11 +1,14 @@
 import React from 'react'
 import styled from 'styled-components'
+import ThemeProvider from './ThemeProvider'
 
 const AppDiv = styled.div`
   background: blue;
   color: white;
 `
 
-export const Application: React.FC = () => <AppDiv>Hello from React!</AppDiv>
+export const Application: React.FC = () => <ThemeProvider>
+  <AppDiv>Hello from React!</AppDiv>
+</ThemeProvider>
 
 export default Application
