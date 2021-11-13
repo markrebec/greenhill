@@ -144,6 +144,7 @@ after_bundle do
   generate 'greenhill:webpack:eslint'
   generate 'greenhill:webpack:storybook'
   generate 'greenhill:webpack:styled'
+  generate 'greenhill:webpack:boilerplate'
   # TODO styled-*
   # TODO loaders: css, url, etc.
   # TODO axios, react-router, (react-query / apollo)
