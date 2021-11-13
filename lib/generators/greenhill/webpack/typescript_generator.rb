@@ -62,6 +62,11 @@ EXTENSIONS
           run "yarn add -D @types/rails__activestorage @types/rails__ujs @types/webpack-env"
           commit "installs relevant type libraries for rails/webpack"
         end
+
+        def install_core_dependencies
+          run "yarn add -D lodash @types/lodash"
+          commit "installs additional core dependencies"
+        end
       end
     end
   end

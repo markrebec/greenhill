@@ -1,0 +1,21 @@
+import styled from 'styled-components'
+// import { styleFn } from 'styled-system'
+import { Typography, Common, CommonProps, TypographyProps } from '../../constants'
+// import { colorVariant, ColorVariantProps } from '../../variants'
+
+//const textColorVariant: styleFn = colorVariant({ scale: 'text.variants' })
+
+export type TextProps = CommonProps & TypographyProps //& ColorVariantProps
+
+export const Text = styled.span<TextProps>`
+${Typography};
+${Common};
+`
+Text.defaultProps = {
+  fontFamily: 'body'
+}
+
+//  ${textColorVariant};
+//`
+
+export default Text

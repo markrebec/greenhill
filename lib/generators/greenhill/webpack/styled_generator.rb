@@ -27,7 +27,8 @@ module Greenhill
         # TODO and/or maybe move this into /app/javascript/theme instead of the root path
         def init_primitives_and_constants
           directory 'app/javascript/primitives'
-          template 'app/javascript/constants'
+          template 'app/javascript/constants.ts'
+          directory 'app/javascript/stories' # TODO move this to storybook, and just add the template here?
           commit "installs theme primitives and constants"
         end
       end
