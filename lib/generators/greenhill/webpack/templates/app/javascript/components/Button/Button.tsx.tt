@@ -1,5 +1,11 @@
 import React from 'react'
+import styled from 'styled-components'
 
-export const Button: React.FC = ({ children, ...props }) => <button {...props}>{children}</button>
+const StyledButton = styled.button`
+  background: blue;
+  color: white;
+`
+
+export const Button: React.FC = ({ children, ...props }) => <StyledButton {...props}>{children}</StyledButton>
 
 export default Button

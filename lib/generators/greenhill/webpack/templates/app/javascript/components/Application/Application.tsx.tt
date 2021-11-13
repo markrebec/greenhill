@@ -1,5 +1,11 @@
 import React from 'react'
+import styled from 'styled-components'
 
-export const Application: React.FC = () => <div>Hello from React!</div>
+const AppDiv = styled.div`
+  background: blue;
+  color: white;
+`
+
+export const Application: React.FC = () => <AppDiv>Hello from React!</AppDiv>
 
 export default Application

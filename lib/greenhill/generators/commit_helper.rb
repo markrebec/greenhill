@@ -7,7 +7,7 @@ module Greenhill
 
       def commit(message)
         git add: "."
-        git commit: %Q{ -m '#{message.gsub(/'/, "\'")}' }        
+        git commit: %Q{ -m '#{message.gsub(/'/, "\'")}' }
       end
     end
   end
