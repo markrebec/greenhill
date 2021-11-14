@@ -14,10 +14,10 @@ export default {
 } as ComponentMeta<typeof Button>
 
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
-const Template: ComponentStory<typeof Button> = (args) => <Button {...args} />
+const Template: ComponentStory<typeof Button> = (args) => <Button {...args}>Click Me!</Button>
 
-export const BasicButton = Template.bind({})
+export const Basic = Template.bind({})
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
-BasicButton.args = {
-  children: 'Hello',
+Basic.args = {
+  variant: 'primary'
 }

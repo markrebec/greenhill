@@ -147,6 +147,8 @@ after_bundle do
   generate 'greenhill:webpack:boilerplate'
   # TODO any additional loaders: icons, css, url, etc.
   # TODO axios, react-router, (react-query / apollo)
+  # TODO finish cleaning up and standardize generator templates (.tt vs not)
+  # TODO reorganize and clean up theme primitives in a way that's more customizable
 
   generate 'rspec:install'
   prepend_to_file 'spec/spec_helper.rb', <<-COVERAGE
