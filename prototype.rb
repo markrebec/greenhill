@@ -145,8 +145,7 @@ after_bundle do
   generate 'greenhill:webpack:storybook'
   generate 'greenhill:webpack:styled'
   generate 'greenhill:webpack:boilerplate'
-  # TODO styled-*
-  # TODO loaders: css, url, etc.
+  # TODO any additional loaders: icons, css, url, etc.
   # TODO axios, react-router, (react-query / apollo)
 
   generate 'rspec:install'
@@ -157,7 +156,7 @@ after_bundle do
   require 'simplecov'
   SimpleCov.start\n
 COVERAGE
-  commit "runs rspec install generator"
+  commit "runs rspec install generator and configures with simplecov"
 
   generate 'greenhill:sidekiq:install'
   generate 'greenhill:devise:install'
@@ -168,12 +167,13 @@ COVERAGE
   generate "zuul:install"
   commit "runs zuul:install generator"
 
-  # TODO typescript, react, styled*, apollo, etc.
-
   # TODO specs / factories
   generate 'greenhill:user User'
 
   # initialize the application database, dumps graphql schema and generates graphql types
   rails_command "db:create db:migrate db:seed graphql:types", abort_on_failure: true
   commit "initializes database and generates graphql types"
+
+  run "yarn test"
+  commit "runs frontend tests and generates initial snapshots"
 end
