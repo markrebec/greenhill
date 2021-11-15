@@ -9,6 +9,8 @@ export {
   CommonProps, BorderProps, LayoutProps, PositionProps, FlexProps, GridProps
 } from './constants'
 
+export { ThemeProvider } from './ThemeProvider'
+
 export interface CustomTheme extends Theme {
   colors: Colors
 }

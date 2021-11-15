@@ -1,6 +1,6 @@
 import React from 'react'
 import Router from 'routes'
-import ThemeProvider from './ThemeProvider'
+import ThemeProvider from 'theme/ThemeProvider'
 
 export const Application: React.FC = () =>
   <ThemeProvider>

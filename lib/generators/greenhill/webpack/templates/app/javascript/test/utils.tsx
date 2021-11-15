@@ -1,6 +1,6 @@
 import React, { FC, ReactElement } from 'react'
 import { render, RenderOptions } from '@testing-library/react'
-import { ThemeProvider } from 'components/Application'
+import { ThemeProvider } from 'theme/ThemeProvider'
 
 // TODO add various providers, etc. here that are required for rendering components
 const TestProviders: FC = ({children}) => {

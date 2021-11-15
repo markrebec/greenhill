@@ -21,7 +21,7 @@ module Greenhill
 
         def install_storyshots
           run "yarn add -D @storybook/addon-storyshots"
-          template 'app/javascript/storyshots.test.ts'
+          template 'app/javascript/test/storyshots.test.ts'
           commit "installs storyshots and integrates with jest for storybook snapshots"
         end
       end
