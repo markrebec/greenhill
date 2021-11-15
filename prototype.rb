@@ -164,7 +164,7 @@ COVERAGE
   generate 'greenhill:devise:install'
   generate 'greenhill:pundit:install'
   generate 'greenhill:graphql:install'
-  generate "greenhill:admin:install #{webpack_install? ? '--use-webpacker' : ''}"
+  generate "greenhill:admin:install"
 
   generate "zuul:install"
   commit "runs zuul:install generator"
@@ -178,4 +178,7 @@ COVERAGE
 
   run "yarn test"
   commit "runs frontend tests and generates initial snapshots"
+
+  # TODO TEMPORARY run linter while developing to keep on top of it
+  run "yarn lint"
 end
