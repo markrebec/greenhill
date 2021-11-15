@@ -26,9 +26,11 @@ module Greenhill
         def mount_sidekiq_web
           prepend_to_file 'config/routes.rb', "require 'sidekiq/web'\n"
           route <<-ROUTE
+
   authenticate :user, ->(user) { user.admin? } do
     mount Sidekiq::Web => '/admin/sidekiq'
   end
+
 ROUTE
 
           commit "mounts sidekiq web UI within admin namespace and wrapped in admin user auth"

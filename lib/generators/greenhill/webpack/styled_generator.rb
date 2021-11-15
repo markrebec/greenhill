@@ -28,8 +28,7 @@ module Greenhill
         def init_primitives_and_constants
           directory 'app/javascript/primitives'
           template 'app/javascript/constants.ts'
-          directory 'app/javascript/variants'
-          directory 'app/javascript/stories' # TODO move this to storybook, and just add the template here?
+          directory 'app/javascript/stories' # TODO move this to storybook, and just add the palette stories template here?
           commit "installs theme primitives and constants"
         end
       end

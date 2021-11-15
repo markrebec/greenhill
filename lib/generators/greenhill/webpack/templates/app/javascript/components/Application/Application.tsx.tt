@@ -1,9 +1,0 @@
-import React from 'react'
-import ThemeProvider from './ThemeProvider'
-import Text from 'components/Text'
-
-export const Application: React.FC = () => <ThemeProvider>
-  <Text>Hello from React!</Text>
-</ThemeProvider>
-
-export default Application
