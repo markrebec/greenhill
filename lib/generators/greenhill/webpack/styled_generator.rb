@@ -26,8 +26,7 @@ module Greenhill
         # TODO this should probably actually live inside greenhill itself and provde overridable theming
         # TODO and/or maybe move this into /app/javascript/theme instead of the root path
         def init_primitives_and_constants
-          directory 'app/javascript/primitives'
-          template 'app/javascript/constants.ts'
+          directory 'app/javascript/theme'
           directory 'app/javascript/stories' # TODO move this to storybook, and just add the palette stories template here?
           commit "installs theme primitives and constants"
         end

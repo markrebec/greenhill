@@ -4,7 +4,7 @@ import styled, { StyledComponent, ThemeContext } from 'styled-components'
 import { Story } from '@storybook/react/types-6-0'
 
 
-import { Common, Flex, Layout, Position, CommonProps, LayoutProps, FlexProps } from '../constants'
+import { Common, Flex, Layout, Position, CommonProps, LayoutProps, FlexProps } from 'theme/constants'
 
 const Box = styled.div<CommonProps & LayoutProps & FlexProps>`
   ${Common};

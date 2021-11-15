@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { textStyle } from 'styled-system'
-import { Typography, Common, CommonProps, TypographyProps } from '../../constants'
+import { Typography, Common, CommonProps, TypographyProps } from 'theme/constants'
 
 export type TextProps = CommonProps & TypographyProps
 

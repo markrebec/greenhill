@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { buttonStyle } from 'styled-system'
-import { Common, Typography, Border, Layout, Flex, CommonProps, TypographyProps, BorderProps, LayoutProps, FlexProps } from '../../constants'
+import { Common, Typography, Border, Layout, Flex, CommonProps, TypographyProps, BorderProps, LayoutProps, FlexProps } from 'theme/constants'
 
 export type ButtonProps = CommonProps & TypographyProps & BorderProps & LayoutProps & FlexProps
 
