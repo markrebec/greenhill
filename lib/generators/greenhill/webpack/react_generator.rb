@@ -40,13 +40,10 @@ PLUGIN
         end
 
         def install_react_router
-          run "yarn add react-router-dom"
-          run "yarn add -D @types/react-router-dom"
-          commit "installs react-router and types"
-
+          run "yarn add react-router-dom react-router"
           directory 'app/javascript/routes'
           route "get '*unmatched', to: 'application#index'\n"
-          commit "adds client app routes and wildcard rails route to support rendering the app at unmatched routes"
+          commit "installs react router, adds client app routes and wildcard rails route to support rendering the app at unmatched routes"
         end
 
         def move_dev_dependencies
