@@ -13,12 +13,12 @@ module Greenhill
         source_root File.expand_path('../templates', __FILE__)
 
         def add_types
-          run "yarn add -D @types/react @types/react-dom"
+          run "yarn add @types/react @types/react-dom"
           commit "adds react typescript types"
         end
 
         def install_and_configure_plugin
-          run "yarn add -D react-refresh @pmmmwh/react-refresh-webpack-plugin"
+          run "yarn add react-refresh @pmmmwh/react-refresh-webpack-plugin"
 
           inject_into_file 'config/webpack/development.js', after: "const environment = require('./environment')\n" do <<-REQUIRE
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin')
@@ -47,8 +47,7 @@ PLUGIN
         end
 
         def move_dev_dependencies
-          run "yarn remove @babel/preset-react babel-plugin-transform-react-remove-prop-types prop-types"
-          run "yarn add -D @babel/preset-react"
+          run "yarn remove babel-plugin-transform-react-remove-prop-types prop-types"
           gsub_file 'babel.config.js', /      isProductionEnv && \[\n        'babel-plugin-transform-react-remove-prop-types',\n        {\n          removeImport: true\n        }\n      \]\n/, ''
           commit "removes prop-types and moves babel react preset to dev dependencies"
         end

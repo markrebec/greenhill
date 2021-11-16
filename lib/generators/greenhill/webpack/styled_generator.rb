@@ -13,15 +13,13 @@ module Greenhill
         source_root File.expand_path('../templates', __FILE__)
 
         def install_styled_components
-          run "yarn add styled-components"
-          run "yarn add -D babel-plugin-styled-components @types/styled-components"
+          run "yarn add styled-components babel-plugin-styled-components @types/styled-components"
           inject_into_file 'babel.config.js', "      'babel-plugin-styled-components',\n", after: "'@babel/plugin-transform-destructuring',\n"
           commit "installs styled-components and the babel plugin"
         end
 
         def install_styled_system
-          run "yarn add styled-system"
-          run "yarn add -D @types/styled-system csstype"
+          run "yarn add styled-system @types/styled-system csstype"
           commit "installs styled-system and csstype for theming"
         end
 

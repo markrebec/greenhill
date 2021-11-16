@@ -13,14 +13,14 @@ module Greenhill
         source_root File.expand_path('../templates', __FILE__)
 
         def install_storybook
-          run "yarn add -D @storybook/addon-actions @storybook/addon-essentials @storybook/addon-links @storybook/react babel-loader"
+          run "yarn add @storybook/addon-actions @storybook/addon-essentials @storybook/addon-links @storybook/react babel-loader"
           directory 'storybook', '.storybook'
           run "npx --yes npm-add-script -k \"storybook\" -v \"start-storybook -p 6006\" --force"
           commit "installs and configures storybook with basic defaults"
         end
 
         def install_storyshots
-          run "yarn add -D @storybook/addon-storyshots"
+          run "yarn add @storybook/addon-storyshots"
           template 'app/javascript/test/storyshots.test.ts'
           commit "installs storyshots and integrates with jest for storybook snapshots"
         end
