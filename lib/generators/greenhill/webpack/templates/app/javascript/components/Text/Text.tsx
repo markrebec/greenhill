@@ -1,8 +1,8 @@
 import styled from 'styled-components'
-import { textStyle } from 'styled-system'
+import { textStyle, TextStyleProps } from 'styled-system'
 import { Typography, Common, CommonProps, TypographyProps } from 'theme/constants'
 
-export type TextProps = CommonProps & TypographyProps
+export type TextProps = CommonProps & TypographyProps & TextStyleProps
 
 export const Text = styled.span<TextProps>`
 ${Typography};

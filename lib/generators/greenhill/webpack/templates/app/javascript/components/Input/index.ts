@@ -1,3 +1,4 @@
 import { Input } from './Input'
-export { Input }
+import { Label } from './Label'
+export { Input, Label }
 export default Input

@@ -1,8 +1,8 @@
 import styled from 'styled-components'
-import { buttonStyle } from 'styled-system'
+import { buttonStyle, ButtonStyleProps } from 'styled-system'
 import { Common, Typography, Border, Layout, Flex, CommonProps, TypographyProps, BorderProps, LayoutProps, FlexProps } from 'theme/constants'
 
-export type ButtonProps = CommonProps & TypographyProps & BorderProps & LayoutProps & FlexProps
+export type ButtonProps = CommonProps & TypographyProps & BorderProps & LayoutProps & FlexProps & ButtonStyleProps
 
 export const Button = styled.button<ButtonProps>`
   box-sizing: border-box;
