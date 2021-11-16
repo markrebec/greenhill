@@ -7,6 +7,10 @@ export type InputProps = CommonProps & TypographyProps & BorderProps & LayoutPro
 export const Input = styled.input<InputProps>`
   box-sizing: border-box;
   outline: none;
+  border: 1px solid ${props => props.theme.colors.dark};
+  &:focus {
+    box-shadow: 0px 0px 5px ${props => props.theme.colors.dark};
+  }
   ${Typography};
   ${Common};
   ${Border};
@@ -15,10 +19,6 @@ export const Input = styled.input<InputProps>`
 `
 Input.defaultProps = {
   fontFamily: 'body',
-  borderWidth: '1px',
-  borderStyle: 'solid',
-  borderColor: 'blacks.2',
-  boxShadow: 'none',
   px: [2],
   py: [1],
 }

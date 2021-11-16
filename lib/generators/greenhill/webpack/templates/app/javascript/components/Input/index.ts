@@ -1,4 +1,5 @@
 import { Input } from './Input'
 import { Label } from './Label'
-export { Input, Label }
+import { Field } from './Field'
+export { Input, Label, Field }
 export default Input

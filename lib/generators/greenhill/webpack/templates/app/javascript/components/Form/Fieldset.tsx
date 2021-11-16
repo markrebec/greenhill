@@ -4,6 +4,9 @@ import { Common, Layout, Flex, Position, Border, CommonProps, LayoutProps, FlexP
 export type FieldsetProps = CommonProps & LayoutProps & FlexProps & PositionProps & BorderProps
 
 export const Fieldset = styled.fieldset<FieldsetProps>`
+  padding: 0px;
+  margin: 0px;
+  border: none;
   ${Common};
   ${Layout};
   ${Flex};
@@ -11,8 +14,6 @@ export const Fieldset = styled.fieldset<FieldsetProps>`
   ${Border};
 `
 
-Fieldset.defaultProps = {
-  border: 'none',
-}
+Fieldset.defaultProps = {}
 
 export default Fieldset

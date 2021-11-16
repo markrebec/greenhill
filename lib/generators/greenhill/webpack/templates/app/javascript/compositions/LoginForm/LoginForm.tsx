@@ -1,18 +1,22 @@
 import React from 'react'
-import { Form, Fieldset, Input, Label, Button } from 'components'
+import { Box, Text, Fieldset, Input, Label, Field, Button } from 'components'
 
-export const LoginForm: React.FC = () => <Form method="post" action="/users/sign_in">
-  <Fieldset>
-    <Label>Email</Label>
-    <Input type="text" name="email" placeholder="email" />
-  </Fieldset>
+export const LoginForm: React.FC = () =>
+  <Box display="flex" flexDirection="column" justifyContent="space-between" maxWidth={[0]} mx="auto">
+    <Field label="Email" type="text" name="email" />
 
-  <Fieldset>
-    <Label>Password</Label>
-    <Input type="password" name="password" placeholder="password" />
-  </Fieldset>
+    <Field label="Password" type="password" name="password" />
 
-  <Button type="submit" variant="primary">Login</Button>
-</Form>
+    <Fieldset mb={[2, 4]}>
+      <Label>
+        <Input type="checkbox" name="remember" />
+        <Text>Remember me</Text>
+      </Label>
+    </Fieldset>
+
+    <Fieldset display="flex" flexDirection="row" justifyContent="flex-end">
+      <Button type="submit" variant="primary">Login</Button>
+    </Fieldset>
+  </Box>
 
 export default LoginForm

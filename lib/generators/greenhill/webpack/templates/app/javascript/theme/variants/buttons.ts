@@ -21,6 +21,9 @@ export const buttons: Buttons = {
       backgroundColor: colors.branding[2],
       borderColor: colors.branding[2],
     },
+    '&:focus': {
+      boxShadow: `0px 0px 5px ${colors.brand}`,
+    },
     '&:active': {
       backgroundColor: colors.brand,
       borderColor: colors.brand,
@@ -34,6 +37,9 @@ export const buttons: Buttons = {
     '&:hover, &:focus': {
       backgroundColor: colors.primaries[2],
       borderColor: colors.primaries[2],
+    },
+    '&:focus': {
+      boxShadow: `0px 0px 5px ${colors.primary}`,
     },
     '&:active': {
       backgroundColor: colors.primary,
@@ -49,6 +55,9 @@ export const buttons: Buttons = {
       backgroundColor: colors.secondaries[2],
       borderColor: colors.secondaries[2],
     },
+    '&:focus': {
+      boxShadow: `0px 0px 5px ${colors.secondary}`,
+    },
     '&:active': {
       backgroundColor: colors.secondary,
       borderColor: colors.secondary,
@@ -62,6 +71,9 @@ export const buttons: Buttons = {
     '&:hover, &:focus': {
       backgroundColor: colors.tertiaries[2],
       borderColor: colors.tertiaries[2],
+    },
+    '&:focus': {
+      boxShadow: `0px 0px 5px ${colors.tertiary}`,
     },
     '&:active': {
       backgroundColor: colors.tertiary,
@@ -77,6 +89,9 @@ export const buttons: Buttons = {
       backgroundColor: colors.accents[2],
       borderColor: colors.accents[2],
     },
+    '&:focus': {
+      boxShadow: `0px 0px 5px ${colors.accent}`,
+    },
     '&:active': {
       backgroundColor: colors.accent,
       borderColor: colors.accent,
@@ -90,6 +105,9 @@ export const buttons: Buttons = {
     '&:hover, &:focus': {
       backgroundColor: colors.infos[2],
       borderColor: colors.infos[2],
+    },
+    '&:focus': {
+      boxShadow: `0px 0px 5px ${colors.info}`,
     },
     '&:active': {
       backgroundColor: colors.info,
@@ -105,6 +123,9 @@ export const buttons: Buttons = {
       backgroundColor: colors.warnings[2],
       borderColor: colors.warnings[2],
     },
+    '&:focus': {
+      boxShadow: `0px 0px 5px ${colors.warning}`,
+    },
     '&:active': {
       backgroundColor: colors.warning,
       borderColor: colors.warning,
@@ -119,6 +140,9 @@ export const buttons: Buttons = {
       backgroundColor: colors.positives[2],
       borderColor: colors.positives[2],
     },
+    '&:focus': {
+      boxShadow: `0px 0px 5px ${colors.positive}`,
+    },
     '&:active': {
       backgroundColor: colors.positive,
       borderColor: colors.positive,
@@ -132,6 +156,9 @@ export const buttons: Buttons = {
     '&:hover, &:focus': {
       backgroundColor: colors.negatives[2],
       borderColor: colors.negatives[2],
+    },
+    '&:focus': {
+      boxShadow: `0px 0px 5px ${colors.negative}`,
     },
     '&:active': {
       backgroundColor: colors.negative,
