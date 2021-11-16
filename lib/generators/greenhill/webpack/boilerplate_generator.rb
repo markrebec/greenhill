@@ -26,6 +26,7 @@ ACTION
         def temp_application_pack
           remove_file 'app/javascript/packs/hello_react.jsx'
           directory 'app/javascript/components'
+          directory 'app/javascript/compositions'
           insert_into_file 'app/javascript/packs/application.js' do <<-REACT
 import React from 'react'
 import ReactDOM from 'react-dom'

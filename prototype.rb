@@ -138,39 +138,7 @@ commit "adds a default application interaction"
 after_bundle do
   commit "bundles and prepares application"
 
-  generate 'greenhill:webpack:typescript'
-  generate 'greenhill:webpack:react'
-  generate 'greenhill:webpack:jest'
-  generate 'greenhill:webpack:eslint'
-  generate 'greenhill:webpack:storybook'
-  generate 'greenhill:webpack:styled'
-  generate 'greenhill:webpack:boilerplate'
-  # TODO any additional loaders: icons, css, url, etc.
-  # TODO axios, react-router, (react-query / apollo)
-  # TODO finish cleaning up and standardize generator templates (.tt vs not)
-  # TODO reorganize and clean up theme primitives in a way that's more customizable
-
-  generate 'rspec:install'
-  prepend_to_file 'spec/spec_helper.rb', <<-COVERAGE
-  # Load and launch SimpleCov at the very top of your spec_helper.rb
-  # SimpleCov.start must be issued before any of your application code is required
-  # See https://github.com/simplecov-ruby/simplecov#getting-started
-  require 'simplecov'
-  SimpleCov.start\n
-COVERAGE
-  commit "runs rspec install generator and configures with simplecov"
-
-  generate 'greenhill:sidekiq:install'
-  generate 'greenhill:devise:install'
-  generate 'greenhill:pundit:install'
-  generate 'greenhill:graphql:install'
-  generate "greenhill:admin:install"
-
-  generate "zuul:install"
-  commit "runs zuul:install generator"
-
-  # TODO specs / factories
-  generate 'greenhill:user User'
+  generate 'greenhill:install'
 
   # initialize the application database, dumps graphql schema and generates graphql types
   rails_command "db:create db:migrate db:seed graphql:types", abort_on_failure: true
