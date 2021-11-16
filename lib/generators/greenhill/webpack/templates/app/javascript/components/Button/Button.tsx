@@ -20,6 +20,8 @@ Button.defaultProps = {
   borderWidth: '1px',
   borderStyle: 'solid',
   boxShadow: 'none',
+  px: [2],
+  py: [1],
 }
 
 export default Button

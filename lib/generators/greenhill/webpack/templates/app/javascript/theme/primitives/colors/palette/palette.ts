@@ -1,17 +1,17 @@
 import { Palette } from '.'
 
 export const defaultPalette: Palette = {
-  brand:     '#0D81D7', // 
-  primary:   '#0D81D7', // 
-  secondary: '#2BB802', // 
-  tertiary:  '#114F00', // 
-  accent:    '#B65B00', // 
-  info:      '#0D81D7', // 
-  positive:  '#2BB802', // 
-  negative:  '#402000', // 
-  warning:   '#B65B00', // 
-  light:     '#ffffff', // 
-  dark:      '#000000', // 
+  brand:     '#2040C0', // dark blue
+  primary:   '#114F00', // dark green
+  secondary: '#402000', // brown
+  tertiary:  '#202080', // purple
+  accent:    '#B65B00', // orange
+  info:      '#0D81D7', // blue
+  positive:  '#2BB802', // green
+  negative:  '#800000', // dark red
+  warning:   '#E0C002', // yellow
+  light:     '#f0f0f0',
+  dark:      '#222222',
   white:     '#ffffff',
   black:     '#000000',
   invert:    false,

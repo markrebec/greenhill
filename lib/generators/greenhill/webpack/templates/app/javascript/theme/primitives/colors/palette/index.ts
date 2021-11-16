@@ -3,8 +3,16 @@ import merge from './merge'
 import { swatchPalette, ColorSwatches } from './swatches'
 import { friendlyPalette } from './friendly'
 
+export const PaletteColors = ['brand', 'primary', 'secondary', 'tertiary', 'accent', 'info', 'positive', 'negative', 'warning', 'light', 'dark', 'white', 'black']
 export type PaletteColor = 'brand' | 'primary' | 'secondary' | 'tertiary' | 'accent' | 'info' | 'positive' | 'negative' | 'warning' | 'light' | 'dark' | 'white' | 'black'
+// type PaletteColorTuple = typeof PaletteColors
+// export type PaletteColor = PaletteColorTuple[number] // 'brand' | 'primary' | ...
+
+
+export const PaletteColorGroups = ['branding', 'primaries', 'secondaries', 'tertiaries', 'accents', 'infos', 'positives', 'negatives', 'warnings', 'lights', 'darks', 'whites', 'blacks']
 export type PaletteColorGroup = 'branding' | 'primaries' | 'secondaries' | 'tertiaries' | 'accents' | 'infos' | 'positives' | 'negatives' | 'warnings' | 'lights' | 'darks' | 'whites' | 'blacks'
+// type PaletteColorGroupTuple = typeof PaletteColorGroups
+// export type PaletteColorGroup = PaletteColorGroupTuple[number] // 'branding' | 'primaries' | ...
 
 export type ColorPalette = {
   [index in PaletteColor]: string

@@ -22,15 +22,12 @@ end
 # - fill out stuff like specs, factories, types, etc. (for included stuff like users)
 #
 # - various security stuff
+#   - jwt review (once SPA auth flow is setup)
 #   - cors (especially for potential subdomain/multi-tenant stuff)
 #
 ##################################
 #
 # - audits / analytics / experiments / logging
-#
-#############################
-#
-# - handle more generator flags (i.e. skip postgres, skip rspec)... OR MAYBE enforce those flags by default (if possible)?
 #
 ####
 
@@ -39,21 +36,44 @@ commit "initializes new rails app #{app_name}"
 
 if options[:database] != 'postgresql'
   # TODO better command help/args/recommendations
-  say "Greenhill assumes you'll be using postgresql"
-  exit!
+  say "Greenhill requires using postgresql. You can enable it now."
+  yes_no = ask "Would you like to continue? [Y/n]"
+  if yes_no.downcase.in?(['n', 'no'])
+    exit!
+  end
+  if options[:database] == 'mysql'
+    gsub_file 'Gemfile', /# Use mysql as the database for Active Record/, '# Use postgresql as the database for Active Record'
+    gsub_file 'Gemfile', /gem 'mysql2', '.*'/, "gem 'pg', `~> 1.1`"
+  elsif options[:database] == 'sqlite3'
+    gsub_file 'Gemfile', /# Use sqlite3 as the database for Active Record/, '# Use postgresql as the database for Active Record'
+    gsub_file 'Gemfile', /gem 'sqlite3', '.*'/, "gem 'pg', `~> 1.1`"
+  else
+    say "Unable to configure postgresql. Please use the `rails new -d postgresql` command line option."
+    exit!
+  end
+  self.options = self.options.merge({ database: 'postgresql' })
 end
 
 if options[:webpack] != 'react' || options[:skip_webpack_install] == true
   # TODO better command help/args/recommendations
-  say "Greenhill assumes you'll be using react via webpack"
-  exit!
+  say "Greenhill requires using react via webpack. You can enable it now."
+  yes_no = ask "Would you like to continue? [Y/n]"
+  if yes_no.downcase.in?(['n', 'no'])
+    exit!
+  end
+  self.options = self.options.merge({ webpack: 'react', skip_webpack_install: false })
 end
 
 if options[:skip_test] != true
     # TODO better command help/args/recommendations
-    yes_no = ask "You have opted to install Test::Unit.\nGreenhill recommends RSpec, and will be installing and configuring it. Are you sure you'd like to continue? [Y/n]"
+    say "You have opted to install Test::Unit."
+    yes_no = ask "Greenhill recommends RSpec, and will be installing and configuring it. Are you sure you'd like to continue? [Y/n]"
     if yes_no.downcase.in?(['n', 'no'])
       exit!
+    end
+    yes_no = ask "Would you like to skip installing Test::Unit, and instead rely on RSpec? [Y/n]"
+    if !yes_no.downcase.in?(['n', 'no'])
+      self.options = self.options.merge({ skip_test: true })
     end
 end
 
@@ -147,6 +167,7 @@ after_bundle do
   run "yarn test"
   commit "runs frontend tests and generates initial snapshots"
 
-  # TODO TEMPORARY run linter while developing to keep on top of it
+  # TODO TEMPORARY run linter and launch app while developing to keep on top of it
   run "yarn lint"
+  run "foreman start"
 end

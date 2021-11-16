@@ -19,6 +19,8 @@ Input.defaultProps = {
   borderStyle: 'solid',
   borderColor: 'blacks.2',
   boxShadow: 'none',
+  px: [2],
+  py: [1],
 }
 
 export const TextInput: React.FC<typeof Input> = (props) => <Input {...props} type="text" />
