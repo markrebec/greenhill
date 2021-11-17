@@ -32,10 +32,11 @@ module Greenhill
         commit "adds default policies for #{name.pluralize.underscore}"
       end
 
-      def sessions_controller
+      def devise_controllers
         template 'app/controllers/users/sessions_controller.rb'
-        gsub_file 'config/routes.rb', /devise_for :users/, "devise_for :users, controllers: { sessions: 'users/sessions' }"
-        commit "customizes devise sessions controller to respond with JSON and skip CSRF"
+        template 'app/controllers/users/registrations_controller.rb'
+        gsub_file 'config/routes.rb', /devise_for :users/, "devise_for :users, controllers: { sessions: 'users/sessions', registrations: 'users/registrations' }"
+        commit "customizes devise sessions and registrations controllers to respond with JSON and skip CSRF on create"
       end
 
       def graphql_type
