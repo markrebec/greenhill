@@ -25,6 +25,10 @@ end
 #   - jwt review (once SPA auth flow is setup)
 #   - cors (especially for potential subdomain/multi-tenant stuff)
 #
+# - really flesh out the login process
+#   - forgot/reset flow (and background jobs)
+#   - "remember me" vs jwt (change expiration strategy based on remember?)
+#
 ##################################
 #
 # - audits / analytics / experiments / logging

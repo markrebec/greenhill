@@ -18,7 +18,7 @@ module Greenhill
   end
 ACTION
           end
-          create_file 'app/views/application/index.html.erb', '<div id="root"></div>'
+          create_file 'app/views/application/index.html.erb', ''
           route "root to: 'application#index'\n"
           commit "WIP TEMP adds basic index action, route and view to render the react app"
         end
