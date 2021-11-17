@@ -3,8 +3,9 @@
 class Users::SessionsController < Devise::SessionsController
   # before_action :configure_sign_in_params, only: [:create]
 
-  respond_to :html, :json
-  skip_before_action :verify_authenticity_token, if: :json_request?
+  respond_to :html
+  respond_to :json, only: :create
+  skip_before_action :verify_authenticity_token, only: :create
 
   # GET /resource/sign_in
   # def new
@@ -21,14 +22,10 @@ class Users::SessionsController < Devise::SessionsController
   #   super
   # end
 
-  protected
+  # protected
 
   # If you have extra params to permit, append them to the sanitizer.
   # def configure_sign_in_params
   #   devise_parameter_sanitizer.permit(:sign_in, keys: [:attribute])
   # end
-
-  def json_request?
-    request.format.json?
-  end
 end
