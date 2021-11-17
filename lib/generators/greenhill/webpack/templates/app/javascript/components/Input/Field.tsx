@@ -1,12 +1,12 @@
 import React, { InputHTMLAttributes } from 'react'
 import Box from '../Box'
 import Text from '../Text'
-import Input from './Input'
+import Input, { InputProps } from './Input'
 import Label from './Label'
 import { Fieldset } from '../Form'
 
 export type InputType = typeof Input
-export type FieldProps = InputHTMLAttributes<HTMLInputElement> & {
+export type FieldProps = InputHTMLAttributes<HTMLInputElement> & InputProps & {
   label?: string
 }
 export const Field: React.FC<FieldProps> = ({ label, ...props }) => <Fieldset mb={[2, 4]}>
