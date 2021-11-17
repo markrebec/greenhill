@@ -32,6 +32,12 @@ module Greenhill
         commit "adds default policies for #{name.pluralize.underscore}"
       end
 
+      def sessions_controller
+        template 'app/controllers/users/sessions_controller.rb'
+        gsub_file 'config/routes.rb', /devise_for :users/, "devise_for :users, controllers: { sessions: 'users/sessions' }"
+        commit "customizes devise sessions controller to respond with JSON and skip CSRF"
+      end
+
       def graphql_type
         generate "zuul:type #{name.singularize.classify} email:string admin:boolean reset_password_sent_at:datetime"
         inject_into_file "app/graphql/types/#{name.singularize.underscore}_type.rb",
