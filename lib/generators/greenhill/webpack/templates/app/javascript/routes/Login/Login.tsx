@@ -1,7 +1,7 @@
-import React, { useState, useContext } from 'react'
+import React, { useState } from 'react'
 import { useNavigate, useLocation } from 'react-router'
 import axios from 'axios'
-import { ApplicationContext } from 'components/Application'
+import { useAppContext } from 'hooks'
 import { LoginForm } from 'compositions/LoginForm'
 
 export type LoginFormState = {
@@ -13,7 +13,7 @@ export type LoginFormState = {
 export const Login: React.FC = () => {
   const [ state, setState ] = useState<LoginFormState>({ email: undefined, password: undefined, rememberMe: false })
   const [ error, setError ] = useState<string>()
-  const { setToken } = useContext(ApplicationContext)
+  const { setToken } = useAppContext()
   const navigate = useNavigate()
   const location = useLocation()
   const from = location.state?.from?.pathname || "/"

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import {
   BrowserRouter,
   Routes,
@@ -6,12 +6,12 @@ import {
   Navigate,
   useLocation
 } from 'react-router-dom'
-import { ApplicationContext } from 'components/Application'
+import { useAppContext } from 'hooks'
 import { Home } from './Home'
 import { Login } from './Login'
 
 const RequireAuth: React.FC = ({ children }) => {
-  const { token } = useContext(ApplicationContext)
+  const { token } = useAppContext()
   const location = useLocation()
 
   if (!token) {
