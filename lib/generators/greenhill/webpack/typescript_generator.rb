@@ -64,7 +64,7 @@ EXTENSIONS
         end
 
         def install_core_dependencies
-          run "yarn add lodash @types/lodash"
+          run "yarn add lodash @types/lodash axios"
           commit "installs additional core dependencies"
         end
       end

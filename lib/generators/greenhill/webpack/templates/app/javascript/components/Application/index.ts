@@ -1,4 +1,4 @@
-import { Application } from './Application'
+import { Application, ApplicationContext } from './Application'
 
-export { Application }
+export { Application, ApplicationContext }
 export default Application
