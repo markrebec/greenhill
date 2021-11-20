@@ -15,15 +15,30 @@ module Greenhill
       def devise_user
         generate "devise #{name.singularize.classify}"
         commit "runs devise #{name.singularize.classify} generator"
+      end
+
+      def enable_jwt
         inject_into_file "app/models/#{name.singularize.underscore}.rb",
-          ",\n         :jwt_authenticatable, jwt_revocation_strategy: Devise::JWT::RevocationStrategies::Null",
-          after: ":recoverable, :rememberable, :validatable"    
-        commit "enables jwt_authenticatable for #{name.singularize.underscore}"
+          ",\n         :jwt_authenticatable, jwt_revocation_strategy: Devise::JWT::RevocationStrategies::Null\n",
+          after: ":recoverable, :rememberable, :validatable"
+        inject_into_file "app/models/#{name.singularize.underscore}.rb",
+          "\n  self.skip_session_storage = [:http_auth, :params_auth]\n",
+          after: ":jwt_authenticatable, jwt_revocation_strategy: Devise::JWT::RevocationStrategies::Null\n"
+
+        commit "enables JWT authentication for #{name.singularize.underscore}"
       end
 
       def admin_migration
-        generate "migration add_admin_to_#{name.pluralize.underscore} admin:boolean"
-        commit "adds an admin boolean flag to #{name.pluralize.underscore}"
+        generate "migration add_type_to_#{name.pluralize.underscore} type:string:index"
+        template "app/models/admin_user.rb", "app/models/admin_#{name.singularize.underscore}.rb"
+        inject_into_file "app/models/#{name.singularize.underscore}.rb",
+          after: "self.skip_session_storage = [:http_auth, :params_auth]\n" do <<-ADMIN
+  def admin?
+    false
+  end
+ADMIN
+        end
+        commit "adds a type field and AdminUser model to enable STI for users/admins"
       end
 
       def pundit_policies
@@ -36,7 +51,7 @@ module Greenhill
         directory 'app/controllers/users'
         directory 'app/controllers/admin'
         directory 'app/views/admin'
-        gsub_file 'config/routes.rb', /devise_for :users/, "devise_for :users, controllers: { sessions: 'users/sessions', registrations: 'users/registrations' }, defaults: { format: :json }\n  devise_for :admin, class_name: 'User', only: :sessions, controllers: { sessions: 'admin/sessions' }"
+        gsub_file 'config/routes.rb', /devise_for :users/, "devise_for :users, controllers: { sessions: 'users/sessions', registrations: 'users/registrations' }, defaults: { format: :json }\n  devise_for :admin, class_name: 'AdminUser', only: :sessions, controllers: { sessions: 'admin/sessions' }"
         commit "customizes devise sessions and registrations controllers to better work with the SPA/JWT auth flow"
       end
 
@@ -55,8 +70,8 @@ module Greenhill
 
       def development_seeds
         append_to_file 'db/seeds.rb',
-          "#{name.singularize.classify}.create!(email: 'admin@example.com', password: 'password', password_confirmation: 'password', admin: true) if Rails.env.development?"
-        commit "seeds a development-only admin #{name.singularize.underscore} account"
+          "Admin#{name.singularize.classify}.create!(email: 'admin@example.com', password: 'password', password_confirmation: 'password') if Rails.env.development?"
+        commit "seeds a development-only Admin#{name.singularize.underscore} account"
       end
     end
   end

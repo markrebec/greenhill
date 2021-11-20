@@ -1,0 +1,9 @@
+class Admin<%= name.singularize.classify %> < <%= name.singularize.classify %>
+  devise :database_authenticatable, :recoverable, :rememberable, :validatable
+
+  self.skip_session_storage = [:http_auth]
+
+  def admin?
+    true
+  end
+end

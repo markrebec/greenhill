@@ -5,13 +5,13 @@ ActiveAdmin.register <%= name.singularize.classify %> do
     selectable_column
     id_column
     column :email
-    column :admin
+    column :type
     column :created_at
     actions
   end
 
   filter :email
-  filter :admin
+  filter :type
   filter :created_at
 
   form do |f|
@@ -19,7 +19,6 @@ ActiveAdmin.register <%= name.singularize.classify %> do
       f.input :email
       f.input :password
       f.input :password_confirmation
-      f.input :admin
     end
     f.actions
   end
