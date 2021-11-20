@@ -33,6 +33,7 @@ module Greenhill
         template "app/models/admin_user.rb", "app/models/admin_#{name.singularize.underscore}.rb"
         inject_into_file "app/models/#{name.singularize.underscore}.rb",
           after: "self.skip_session_storage = [:http_auth, :params_auth]\n" do <<-ADMIN
+
   def admin?
     false
   end

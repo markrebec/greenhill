@@ -2,6 +2,7 @@
 
 class Admin::SessionsController < Devise::SessionsController
   # before_action :configure_sign_in_params, only: [:create]
+  prepend_before_action :set_admin_return_to, only: [:new, :create]
 
   # GET /resource/sign_in
   # def new
@@ -9,13 +10,9 @@ class Admin::SessionsController < Devise::SessionsController
   # end
 
   # POST /resource/sign_in
-  def create
-    # HACK to make sure we redirect back to the "admin" return path,
-    #      rather than the "user" return path (empty in this case),
-    #      which devise/warden prefers due to the model name (User).
-    session[:user_return_to] = session[:admin_return_to]
-    super
-  end
+  # def create
+  #   super
+  # end
 
   # DELETE /resource/sign_out
   # def destroy
@@ -28,4 +25,11 @@ class Admin::SessionsController < Devise::SessionsController
   # def configure_sign_in_params
   #   devise_parameter_sanitizer.permit(:sign_in, keys: [:attribute])
   # end
+
+  def set_admin_return_to
+    # HACK to make sure we redirect back to the "admin" return path,
+    #      rather than the "user" return path (empty in this case),
+    #      which devise/warden prefers due to the model name (User).
+    session[:user_return_to] = session[:admin_return_to].presence || "/admin"
+  end
 end

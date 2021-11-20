@@ -23,6 +23,7 @@ end
 #
 # - various security stuff
 #   - jwt review (once SPA auth flow is setup)
+#   - https://hasura.io/blog/best-practices-of-using-jwt-with-graphql/
 #   - cors (especially for potential subdomain/multi-tenant stuff)
 #
 # - really flesh out the login process
@@ -89,7 +90,7 @@ gem 'devise-jwt'
 gem 'pundit'
 gem 'graphql'
 gem 'graphql-batch'
-gem 'graphiql-rails'
+gem 'graphiql-rails', github: 'rmosolgo/graphiql-rails'
 gem 'activeadmin'
 gem 'sidekiq'
 gem 'active_interaction'

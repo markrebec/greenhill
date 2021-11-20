@@ -35,10 +35,15 @@ module Greenhill
             /# current_user: current_user/,
             'current_user: current_user'
 
-          commit "enables current_user context in graphql controller"
+          gsub_file 'app/controllers/graphql_controller.rb',
+            /# protect_from_forgery with: :null_session/,
+            'protect_from_forgery with: :null_session'
+
+          commit "enables current_user context and api-style forgery protection in graphql controller"
         end
 
         def mount_graphiql
+          template 'config/initializers/graphql.rb'
           route <<-ROUTE
 
   authenticate :admin, ->(user) { user.admin? } do

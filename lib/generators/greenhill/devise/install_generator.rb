@@ -24,11 +24,14 @@ module Greenhill
   # be a different value than your secret_key/secret_key_base above.
   config.jwt do |jwt|
     jwt.secret = ENV.fetch('JWT_SECRET')
+    jwt.dispatch_requests = [
+      ['POST', %r{^/graphql$}]
+    ]
   end
 
 DEVISE
           end
-          commit "configures devise with jwt secret key via env vars"
+          commit "configures devise with jwt secret key via env vars and reissues tokens on graphql requests"
         end
       end
     end

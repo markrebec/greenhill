@@ -5,7 +5,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # before_action :configure_account_update_params, only: [:update]
 
   respond_to :json
-  skip_before_action :verify_authenticity_token
+  protect_from_forgery with: :null_session
 
   # GET /resource/sign_up
   # def new

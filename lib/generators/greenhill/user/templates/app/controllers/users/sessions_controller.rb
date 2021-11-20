@@ -4,7 +4,7 @@ class Users::SessionsController < Devise::SessionsController
   # before_action :configure_sign_in_params, only: [:create]
 
   respond_to :json
-  skip_before_action :verify_authenticity_token
+  protect_from_forgery with: :null_session
 
   # GET /resource/sign_in
   # def new
