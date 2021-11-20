@@ -27,7 +27,7 @@ module Greenhill
           prepend_to_file 'config/routes.rb', "require 'sidekiq/web'\n"
           route <<-ROUTE
 
-  authenticate :user, ->(user) { user.admin? } do
+  authenticate :admin, ->(user) { user.admin? } do
     mount Sidekiq::Web => '/admin/sidekiq'
   end
 

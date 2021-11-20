@@ -41,7 +41,7 @@ module Greenhill
         def mount_graphiql
           route <<-ROUTE
 
-  authenticate :user, ->(user) { user.admin? } do
+  authenticate :admin, ->(user) { user.admin? } do
     mount GraphiQL::Rails::Engine, at: '/admin/graphiql', graphql_path: '/graphql'
   end
 
