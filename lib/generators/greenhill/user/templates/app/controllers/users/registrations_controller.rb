@@ -4,8 +4,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # before_action :configure_sign_up_params, only: [:create]
   # before_action :configure_account_update_params, only: [:update]
 
-  respond_to :html
-  respond_to :json, only: :create
+  respond_to :json
   skip_before_action :verify_authenticity_token
 
   # GET /resource/sign_up

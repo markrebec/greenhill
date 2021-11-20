@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { FormEvent, useState } from 'react'
 import { useNavigate, useLocation } from 'react-router'
 import axios from 'axios'
 import { useAppContext } from 'hooks'
@@ -19,7 +19,8 @@ export const Login: React.FC = () => {
   const from = location.state?.from?.pathname || "/"
 
   // TODO create default axios client for re-use
-  const submitLogin = (): void => {
+  const submitLogin = (e: FormEvent): void => {
+    e.preventDefault()
     axios.post(
       '/users/sign_in',
       { user: state },

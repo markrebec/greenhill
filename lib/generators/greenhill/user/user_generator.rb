@@ -34,9 +34,10 @@ module Greenhill
 
       def devise_controllers
         directory 'app/controllers/users'
-        directory 'app/views/users'
-        gsub_file 'config/routes.rb', /devise_for :users/, "devise_for :users, controllers: { sessions: 'users/sessions', registrations: 'users/registrations' }"
-        commit "customizes devise sessions and registrations controllers to respond with JSON and skip CSRF on create"
+        directory 'app/controllers/admin'
+        directory 'app/views/admin'
+        gsub_file 'config/routes.rb', /devise_for :users/, "devise_for :users, controllers: { sessions: 'users/sessions', registrations: 'users/registrations' }, defaults: { format: :json }\n  devise_for :admin, class_name: 'User', only: :sessions, controllers: { sessions: 'admin/sessions' }"
+        commit "customizes devise sessions and registrations controllers to better work with the SPA/JWT auth flow"
       end
 
       def graphql_type

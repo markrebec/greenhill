@@ -20,12 +20,12 @@ module Greenhill
         end
 
         def configure_active_admin
-          gsub_file 'config/initializers/active_admin.rb', /# config\.authentication_method = :authenticate_admin_user!/, 'config.authentication_method = :authenticate_user!'
+          gsub_file 'config/initializers/active_admin.rb', /# config\.authentication_method = :authenticate_admin_user!/, 'config.authentication_method = :authenticate_admin!'
           gsub_file 'config/initializers/active_admin.rb', /# config\.authorization_adapter = ActiveAdmin::CanCanAdapter/, 'config.authorization_adapter = ActiveAdmin::PunditAdapter'
           gsub_file 'config/initializers/active_admin.rb', /# config\.pundit_default_policy = "MyDefaultPunditPolicy"/, 'config.pundit_default_policy = "AdminPolicy"'
           gsub_file 'config/initializers/active_admin.rb', /# config\.pundit_policy_namespace = :admin/, 'config.pundit_policy_namespace = :admin'
-          gsub_file 'config/initializers/active_admin.rb', /# config\.current_user_method = :current_admin_user/, 'config.current_user_method = :current_user'
-          gsub_file 'config/initializers/active_admin.rb', /config\.logout_link_path = :destroy_admin_user_session_path/, 'config.logout_link_path = :destroy_user_session_path'
+          gsub_file 'config/initializers/active_admin.rb', /# config\.current_user_method = :current_admin_user/, 'config.current_user_method = :current_admin'
+          gsub_file 'config/initializers/active_admin.rb', /config\.logout_link_path = :destroy_admin_user_session_path/, 'config.logout_link_path = :destroy_admin_session_path'
           gsub_file 'config/initializers/active_admin.rb', /# config\.logout_link_method = :get/, 'config.logout_link_method = :delete'
           inject_into_file 'config/initializers/active_admin.rb', before: '  # == Download Links' do <<-NAVIGATION
 

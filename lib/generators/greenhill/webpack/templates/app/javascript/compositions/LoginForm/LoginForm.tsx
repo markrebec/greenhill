@@ -1,16 +1,16 @@
-import React from 'react'
-import { Box, Text, Fieldset, Input, Label, Field, Button } from 'components'
+import React, { FormEvent } from 'react'
+import { Text, Form, Fieldset, Input, Label, Field, Button } from 'components'
 
 export type LoginFormProps = {
   error?: string
-  onSubmit?: () => void
+  onSubmit?: (e: FormEvent) => void
   onEmailChange?: (email: string) => void
   onPasswordChange?: (password: string) => void
   onRememberMeChange?: (remember: boolean) => void
 }
 
 export const LoginForm: React.FC<LoginFormProps> = ({ error, onSubmit, onEmailChange, onPasswordChange, onRememberMeChange }) => {
-  return <Box display="flex" flexDirection="column" justifyContent="space-between" maxWidth={[0]} mx="auto">
+  return <Form onSubmit={onSubmit} display="flex" flexDirection="column" justifyContent="space-between" maxWidth={[0]} mx="auto">
     {error && <Text color="negative">{error}</Text>}
 
     <Field label="Email" type="text" name="user[email]" autoFocus onChange={e => { if (onEmailChange) onEmailChange(e.target.value) }} />
@@ -25,9 +25,9 @@ export const LoginForm: React.FC<LoginFormProps> = ({ error, onSubmit, onEmailCh
     </Fieldset>
 
     <Fieldset display="flex" flexDirection="row" justifyContent="flex-end">
-      <Button type="submit" variant="primary" onClick={onSubmit}>Login</Button>
+      <Button type="submit" variant="primary">Login</Button>
     </Fieldset>
-  </Box>
+  </Form>
 }
 
 export default LoginForm

@@ -15,7 +15,7 @@ const RequireAuth: React.FC = ({ children }) => {
   const location = useLocation()
 
   if (!token) {
-    return <Navigate to="/users/sign_in" state={{ from: location }} />
+    return <Navigate to="/login" state={{ from: location }} />
   } else {
     return <>{children}</>
   }
@@ -24,8 +24,9 @@ const RequireAuth: React.FC = ({ children }) => {
 export const Router: React.FC = () =>
   <BrowserRouter>
     <Routes>
-      <Route path="/" element={<RequireAuth><Home /></RequireAuth>} />
-      <Route path="/users/sign_in" element={<Login />} />
+      <Route path="/" element={<Home />} />
+      <Route path="/foobar" element={<RequireAuth><span>You are logged in...</span></RequireAuth>} />
+      <Route path="/login" element={<Login />} />
       {/* TODO add not found route/redirect */}
     </Routes>
   </BrowserRouter>
