@@ -1,8 +1,11 @@
 # frozen_string_literal: true
+require 'responders/auth_json_responder'
 
 class Users::SessionsController < Devise::SessionsController
   # before_action :configure_sign_in_params, only: [:create]
 
+
+  responders :auth_json
   respond_to :json
   protect_from_forgery with: :null_session
 

@@ -2,16 +2,16 @@ import React, { FormEvent, useState } from 'react'
 import { useNavigate, useLocation } from 'react-router'
 import axios from 'axios'
 import { useAppContext } from 'hooks'
-import { LoginForm } from 'compositions/LoginForm'
+import { RegistrationForm } from 'compositions/RegistrationForm'
 
-export type LoginFormState = {
+export type RegistrationFormState = {
   email: string
   password: string
-  rememberMe: boolean
+  password_confirmation: string
 }
 
-export const Login: React.FC = () => {
-  const [ state, setState ] = useState<LoginFormState>({ email: '', password: '', rememberMe: false })
+export const Register: React.FC = () => {
+  const [ state, setState ] = useState<RegistrationFormState>({ email: '', password: '', password_confirmation: '' })
   const [ error, setError ] = useState<string>()
   const { setToken } = useAppContext()
   const navigate = useNavigate()
@@ -19,10 +19,10 @@ export const Login: React.FC = () => {
   const from = location.state?.from?.pathname || "/"
 
   // TODO create default axios client for re-use
-  const submitLogin = (e: FormEvent): void => {
+  const submitRegistration = (e: FormEvent): void => {
     e.preventDefault()
     axios.post(
-      '/users/sign_in',
+      '/users',
       { user: state },
       { headers: { 'Accept': 'application/json' } }
     ).then((response) => {
@@ -37,12 +37,12 @@ export const Login: React.FC = () => {
     })
   }
 
-  return <LoginForm
+  return <RegistrationForm
     error={error}
     onEmailChange={email => setState({ ...state, email })}
     onPasswordChange={password => setState({ ...state, password })}
-    onRememberMeChange={rememberMe => setState({ ...state, rememberMe })}
-    onSubmit={submitLogin} />
+    onPasswordConfirmationChange={password => setState({ ...state, password_confirmation: password })}
+    onSubmit={submitRegistration} />
 }
 
-export default Login
+export default Register

@@ -9,6 +9,7 @@ import {
 import { useAppContext } from 'hooks'
 import { Home } from './Home'
 import { Login } from './Login'
+import { Register } from './Register'
 
 const RequireAuth: React.FC = ({ children }) => {
   const { token } = useAppContext()
@@ -27,6 +28,7 @@ export const Router: React.FC = () =>
       <Route path="/" element={<Home />} />
       <Route path="/foobar" element={<RequireAuth><span>You are logged in...</span></RequireAuth>} />
       <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
       {/* TODO add not found route/redirect */}
     </Routes>
   </BrowserRouter>

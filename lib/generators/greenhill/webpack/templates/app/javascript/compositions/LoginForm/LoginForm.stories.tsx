@@ -7,4 +7,4 @@ export default {
   component: LoginForm,
 } as ComponentMeta<typeof LoginForm>
 
-export const Example: ComponentStory<typeof LoginForm> = (props) => <LoginForm {...props} />
+export const Example: ComponentStory<typeof LoginForm> = (props) => <LoginForm {...props} onSubmit={(e) => e.preventDefault()} />

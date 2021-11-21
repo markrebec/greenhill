@@ -1,9 +1,11 @@
 # frozen_string_literal: true
+require 'responders/auth_json_responder'
 
 class Users::RegistrationsController < Devise::RegistrationsController
   # before_action :configure_sign_up_params, only: [:create]
   # before_action :configure_account_update_params, only: [:update]
 
+  responders :auth_json
   respond_to :json
   protect_from_forgery with: :null_session
 
