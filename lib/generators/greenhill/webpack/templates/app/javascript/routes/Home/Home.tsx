@@ -8,7 +8,7 @@ export const Home: React.FC = () => {
 
   return <Box>
     <Text>This is the Home page</Text>
-    { !user.id && <Box>
+    { !user && <Box>
       <Link to="/login">Login</Link> <Text>or</Text> <Link to="/register">Sign up</Link> 
     </Box> }
   </Box>
