@@ -1,4 +1,4 @@
-import { Authenticated } from './Authenticated'
+import { Authenticated, Unauthenticated } from './Authenticated'
 
-export { Authenticated }
+export { Authenticated, Unauthenticated }
 export default Authenticated

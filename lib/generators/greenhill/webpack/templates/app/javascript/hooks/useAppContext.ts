@@ -1,8 +1,8 @@
 import { useContext } from 'react'
-import { ApplicationContext } from 'components/Application'
+import { ApplicationContext, AppContext } from 'components/Application'
 
-export const useAppContext = () => {
-  const appContext = useContext(ApplicationContext)
+export const useAppContext = (): AppContext => {
+  const appContext = useContext<AppContext>(ApplicationContext)
   return appContext
 }
 

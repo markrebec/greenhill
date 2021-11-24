@@ -13,8 +13,13 @@ const parseToken = (token: string) => {
 
 const valid = (token: string | undefined): boolean => {
   if (!token) return false
-  const parsed = parseToken(token)
-  return parsed.exp && parsed.exp > Math.round(Date.now() / 1000)
+
+  try {
+    const parsed = parseToken(token)
+    return parsed.exp && parsed.exp > Math.round(Date.now() / 1000)
+  } catch (error) {
+    return false
+  }
 }
 
 export const useToken = (): { token?: string, setToken?: (t?: string) => void } | undefined => {
@@ -22,8 +27,8 @@ export const useToken = (): { token?: string, setToken?: (t?: string) => void } 
   const tokenValid = valid(token)
 
   useEffect(() => {
-    if (!tokenValid) setToken(undefined)
-  }, [tokenValid, setToken])
+    if (token && !tokenValid) setToken(undefined)
+  }, [token, tokenValid, setToken])
 
   return {
     token: tokenValid ? token : undefined,
