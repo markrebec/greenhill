@@ -27,7 +27,7 @@ module Greenhill
         end
 
         def install_and_configure_plugin
-          run "yarn add fork-ts-checker-webpack-plugin"
+          run "yarn add fork-ts-checker-webpack-plugin@^6.5.0" # TODO: bump to 7 when bumping to webpack 5
           inject_into_file 'config/webpack/development.js', after: "const environment = require('./environment')\n" do <<-REQUIRE
 const path = require("path")
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin")
