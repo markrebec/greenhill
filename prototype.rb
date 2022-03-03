@@ -124,7 +124,8 @@ run "cp -r #{File.join(File.expand_path(File.dirname(__FILE__)), 'lib')} #{File.
 run "cp -r #{File.join(File.expand_path(File.dirname(__FILE__)), 'vendor/zuul')} #{File.join(destination_root, 'vendor/zuul')}"
 
 gem 'zuul', path: './vendor/zuul'
-gem 'greenhill', path: './vendor/greenhill'
+### TODO TODO TODO release these gems!
+gem 'greenhill', path: '../greenhill'
 
 commit "adds default gems to Gemfile (and vendors greenhill/zuul for now)"
 
