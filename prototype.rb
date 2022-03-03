@@ -36,6 +36,10 @@ end
 #
 ####
 
+if Rails::VERSION::MAJOR > 6
+  say "Greenhill may currently only be used with Rails versions 6.x"
+  exit!
+end
 
 commit "initializes new rails app #{app_name}"
 
@@ -112,6 +116,8 @@ end
 
 gsub_file 'Gemfile', /gem 'tzinfo-data'/, "# gem 'tzinfo-data'"
 
+
+# TODO release gems, then update this manual stuff
 run 'mkdir vendor/greenhill'
 run "cp #{File.join(File.expand_path(File.dirname(__FILE__)), 'greenhill.gemspec')} #{File.join(destination_root, 'vendor/greenhill/greenhill.gemspec')}"
 run "cp -r #{File.join(File.expand_path(File.dirname(__FILE__)), 'lib')} #{File.join(destination_root, 'vendor/greenhill/lib')}"
