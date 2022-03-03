@@ -44,13 +44,17 @@ module Greenhill
 
         def mount_graphiql
           template 'config/initializers/graphql.rb'
-          route <<-ROUTE
+          graphiql_route = <<-ROUTE
 
   authenticate :admin, ->(user) { user.admin? } do
     mount GraphiQL::Rails::Engine, at: '/admin/graphiql', graphql_path: '/graphql'
   end
 
 ROUTE
+
+          gsub_file 'config/routes.rb',
+          /if Rails\.env\.development\?\n    mount GraphiQL::Rails::Engine, at: "\/graphiql", graphql_path: "\/graphql"\n  end/,
+          graphiql_route
 
           commit "mounts graphiql within admin namespace and wrapped in admin user auth"
         end
