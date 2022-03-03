@@ -1,5 +1,6 @@
 import React, { FormEvent, useState } from 'react'
 import { useNavigate, useLocation } from 'react-router'
+import type { LocationWithFromPath } from './'
 import axios from 'axios'
 import { useAppContext } from 'hooks'
 import { RegistrationForm } from 'compositions/RegistrationForm'
@@ -15,7 +16,7 @@ export const Register: React.FC = () => {
   const [ error, setError ] = useState<string>()
   const { setToken } = useAppContext()
   const navigate = useNavigate()
-  const location = useLocation()
+  const location: LocationWithFromPath = useLocation()
   const from = location.state?.from?.pathname || "/"
 
   // TODO create default axios client for re-use
