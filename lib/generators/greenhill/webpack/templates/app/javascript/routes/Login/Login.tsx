@@ -1,6 +1,6 @@
 import React, { FormEvent, useState } from 'react'
 import { useNavigate, useLocation } from 'react-router'
-import type { LocationWithFromPath } from './'
+import type { LocationWithFromPath } from '../'
 import axios from 'axios'
 import { useAppContext } from 'hooks'
 import { LoginForm } from 'compositions/LoginForm'
