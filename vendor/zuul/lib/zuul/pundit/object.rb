@@ -15,7 +15,9 @@ module Zuul
       end
 
       def pundit_subject
-        graphql_definition.name.safe_constantize
+        # graphql_definition is deprecated in graphql ruby 2.0
+        # graphql_definition.name.safe_constantize
+        name.gsub(/^Types::(.*)Type$/, '\1').safe_constantize
       end
 
       def field(*args, **kwargs, &block)
