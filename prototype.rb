@@ -14,10 +14,11 @@ end
 # TODO
 #
 # - generic & basic layouts for rails views (and eventually SPA)
-#   - include flash messages
+#   - include flash messages / toasts
 #   - add a default homepage with instructions?
 #   - override devise views
 #   - still use components?? maybe "react-rails"?? allows for (potentially) re-using the same UI across rails views and the SPA... would have to account for context/theming, etc. though
+#   - NOTE: I think most of these notes ^ were meant around a non-react version of apps (which, honestly, fuck that)
 #
 # - fill out stuff like specs, factories, types, etc. (for included stuff like users)
 #
@@ -32,7 +33,21 @@ end
 #
 ##################################
 #
+# - separate generators and templates (i.e. breakout webpack/boilerplate, webpack/typescript, etc.)
+# - really think about what should be in what generators (i.e. should the react boilerplate for login be included in the user generator?)
+# - how important is it that each generator must be run together/in order? how can we make them more idempotent? maybe really break them down into tiny atoms, and gather them back up for the main generators? (users is: devise, models, react auth, pundit, zuul, etc.)
+#   - should we completely separate "core" (sidekiq, graphql, jest/eslint/typescript, etc.) from "boilerplate"? where does stuff like pundit, zuul, devise, etc. fall?
+#
+##################################
+#
 # - audits / analytics / experiments / logging
+#
+# - documentation (YARD, spectaql, jekyll, storybook)
+#
+##################################
+#
+# - Rails 7 + webpack
+# - better workflow, specifically for typescript templates?
 #
 ####
 
