@@ -174,13 +174,34 @@ template 'lib/tasks/auto_annotate_models.rake'
 template '.env'
 template '.env', '.env.example'
 template 'Procfile'
-append_to_file '.gitignore', '.env'
+append_to_file '.gitignore', <<-IGNORE
+
+# Ignore dotenv config
+.env
+IGNORE
 commit "performs some additional configuration"
 
 # copy default application interaction
 template 'app/interactions/application_interaction.rb'
 commit "adds a default application interaction"
 
+# yarn 2.0
+run "yarn set version berry"
+append_to_file '.yarnrc.yml', 'nodeLinker: node-modules'
+append_to_file '.gitignore', <<-IGNORE
+
+# Ignore rules for yarn 2.0
+node_modules
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+IGNORE
+run "yarn install"
+commit "installs and configures yarn 2.0"
 
 after_bundle do
   commit "bundles and prepares application"
