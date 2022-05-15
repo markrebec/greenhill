@@ -1,4 +1,4 @@
-import { Application } from './Application'
+import { Application } from './Application/Application'
 import { Authenticated, Unauthenticated } from './Authenticated'
 import { Box } from './Box'
 import { Button } from './Button'
@@ -15,4 +15,5 @@ export {
   Input, Label, Field,
   Text,
 }
+
 export default Application

@@ -1,4 +1,4 @@
-web: bundle exec rails s -b 0.0.0.0 -p $PORT
+web: bundle exec rails s -p $PORT
 jobs: bundle exec sidekiq
-webpack: bin/webpack-dev-server
+webpack: bin/webpacker-dev-server
 storybook: yarn storybook --quiet

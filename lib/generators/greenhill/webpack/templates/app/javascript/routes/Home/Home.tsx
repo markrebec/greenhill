@@ -11,6 +11,9 @@ export const Home: React.FC = () => {
     { !user && <Box>
       <Link to="/login">Login</Link> <Text>or</Text> <Link to="/register">Sign up</Link> 
     </Box> }
+    { user && <Box>
+      <Link to="/logout">Logout</Link> <Text>or</Text> <Link to="/foobar">Double-check login status</Link> 
+    </Box>}
   </Box>
 }
 

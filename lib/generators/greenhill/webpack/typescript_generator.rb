@@ -13,43 +13,32 @@ module Greenhill
         source_root File.expand_path('../templates', __FILE__)
 
         def install_and_configure_typescript
-          run "yarn add typescript @babel/core @babel/preset-typescript"
+          run "yarn add typescript @babel/preset-typescript"
           template "tsconfig.json"
-          inject_into_file 'babel.config.js',
-            "        ['@babel/preset-typescript', { 'allExtensions': true, 'isTSX': true }],",
-            after: "presets: [\n"
+          # inject_into_file 'babel.config.js',
+          #   "      ['@babel/preset-typescript', { 'allExtensions': true, 'isTSX': true }],\n",
+          #   after: "presets: [\n"
           commit "installs and configures typescript and babel preset"
         end
 
         def install_and_configure_plugin
-          run "yarn add fork-ts-checker-webpack-plugin@^6.5.0" # TODO: bump to 7 when bumping to webpack 5
-          inject_into_file 'config/webpack/development.js', after: "const environment = require('./environment')\n" do <<-REQUIRE
-const path = require("path")
-const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin")
-REQUIRE
-          end
-          inject_into_file 'config/webpack/development.js', before: "\nmodule.exports = environment.toWebpackConfig()" do <<-PLUGIN
-environment.plugins.append(
-  "ForkTsCheckerWebpackPlugin",
-  new ForkTsCheckerWebpackPlugin({
-    typescript: {
-      configFile: path.resolve(__dirname, "../../tsconfig.json"),
-      // non-async so type checking will block compilation
-      async: false,
-    }
-  })
-)
-PLUGIN
-          end
-          commit "installs and configures blocking type checking for webpack"
+          run 'yarn add fork-ts-checker-webpack-plugin'
+          inject_into_file 'config/webpack/webpack.config.js',
+            "const ForkTSCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');\n",
+            after: "const { webpackConfig, merge } = require('shakapacker');\n"
+          inject_into_file 'config/webpack/webpack.config.js',
+            "    new ForkTSCheckerWebpackPlugin()\n",
+            after: "plugins: [\n"
+          commit "installs and configures type checking for webpack"
         end
 
         def enable_extensions
-          inject_into_file 'config/webpacker.yml', after: "  extensions:\n" do <<-EXTENSIONS
-    - .ts
-    - .tsx
-EXTENSIONS
-          end
+          # TODO not needed with shakapacker / webpack 5 ?
+#           inject_into_file 'config/webpacker.yml', after: "  extensions:\n" do <<-EXTENSIONS
+#     - .ts
+#     - .tsx
+# EXTENSIONS
+#           end
           commit "enables typescript extensions in webpacker"
         end
 

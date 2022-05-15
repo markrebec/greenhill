@@ -17,18 +17,7 @@ module Greenhill
       end
 
       def todo_rename_me_install_generators
-        generate 'greenhill:webpack:typescript'
-        generate 'greenhill:webpack:react'
-        generate 'greenhill:webpack:jest'
-        generate 'greenhill:webpack:eslint'
-        generate 'greenhill:webpack:storybook'
-        generate 'greenhill:webpack:styled'
-        generate 'greenhill:webpack:boilerplate'
-        # TODO any additional loaders: icons, css, url, etc.
-        # TODO axios, react-router, (react-query / apollo)
-        # TODO finish cleaning up and standardize generator templates (.tt vs not)
-        # TODO reorganize and clean up theme primitives in a way that's more customizable
-      
+        # TODO: move to rspec generator
         generate 'rspec:install'
         prepend_to_file 'spec/spec_helper.rb', <<-COVERAGE
         # Load and launch SimpleCov at the very top of your spec_helper.rb
@@ -50,6 +39,9 @@ module Greenhill
       
         # TODO specs / factories
         generate 'greenhill:user User'
+
+
+        generate 'greenhill:webpack:install'
       end
     end
   end

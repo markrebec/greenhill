@@ -14,7 +14,7 @@ module Greenhill
 
         def install_styled_components
           run "yarn add styled-components babel-plugin-styled-components @types/styled-components"
-          inject_into_file 'babel.config.js', "      'babel-plugin-styled-components',\n", after: "'@babel/plugin-transform-destructuring',\n"
+          inject_into_file 'babel.config.js', "      'babel-plugin-styled-components',\n", after: "plugins: [\n"
           commit "installs styled-components and the babel plugin"
         end
 
@@ -26,6 +26,7 @@ module Greenhill
         # TODO this should probably actually live inside greenhill itself and provde overridable theming
         # TODO and/or maybe move this into /app/javascript/theme instead of the root path
         def init_primitives_and_constants
+          run "yarn add color"
           directory 'app/javascript/theme'
           directory 'app/javascript/stories' # TODO move this to storybook, and just add the palette stories template here?
           commit "installs theme primitives and constants"

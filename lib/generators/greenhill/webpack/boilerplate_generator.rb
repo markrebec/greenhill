@@ -24,12 +24,12 @@ ACTION
         end
 
         def temp_application_pack
-          remove_file 'app/javascript/packs/hello_react.jsx'
           directory 'app/javascript/components'
           directory 'app/javascript/compositions'
           directory 'app/javascript/hooks'
           directory 'app/javascript/routes'
-          insert_into_file 'app/javascript/packs/application.js' do <<-REACT
+          run 'mv app/javascript/application.js app/javascript/application.tsx'
+          insert_into_file 'app/javascript/application.tsx' do <<-REACT
 import React from 'react'
 import ReactDOM from 'react-dom'
 import Application from 'components/Application'
@@ -42,7 +42,6 @@ document.addEventListener('DOMContentLoaded', (): void => {
 })
 REACT
           end
-          run 'mv app/javascript/packs/application.js app/javascript/packs/application.tsx'
           commit "WIP TEMP placeholder application templates"
         end
       end

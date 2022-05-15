@@ -51,10 +51,10 @@ end
 #
 ####
 
-if Rails::VERSION::MAJOR > 6
-  say "Greenhill may currently only be used with Rails versions 6.x"
-  exit!
-end
+# if Rails::VERSION::MAJOR > 6
+#   say "Greenhill may currently only be used with Rails versions 6.x"
+#   exit!
+# end
 
 commit "initializes new rails app #{app_name}"
 
@@ -78,41 +78,27 @@ if options[:database] != 'postgresql'
   self.options = self.options.merge({ database: 'postgresql' })
 end
 
-if options[:webpack] != 'react' || options[:skip_webpack_install] == true
-  # TODO better command help/args/recommendations
-  say "Greenhill requires using react via webpack. You can enable it now."
-  yes_no = ask "Would you like to continue? [Y/n]"
-  if yes_no.downcase.in?(['n', 'no'])
-    exit!
-  end
-  self.options = self.options.merge({ webpack: 'react', skip_webpack_install: false })
-end
-
-if options[:skip_test] != true
-    # TODO better command help/args/recommendations
-    say "You have opted to install Test::Unit."
-    yes_no = ask "Greenhill recommends RSpec, and will be installing and configuring it. Are you sure you'd like to continue? [Y/n]"
-    if yes_no.downcase.in?(['n', 'no'])
-      exit!
-    end
-    yes_no = ask "Would you like to skip installing Test::Unit, and instead rely on RSpec? [Y/n]"
-    if !yes_no.downcase.in?(['n', 'no'])
-      self.options = self.options.merge({ skip_test: true })
-    end
-end
-
-
+self.options = self.options.merge({
+  skip_javascript: true,
+  skip_test: true,
+})
 
 # add default starter gems
 gem 'devise'
 gem 'devise-jwt'
 gem 'pundit'
+
 gem 'graphql'
 gem 'graphql-batch'
 gem 'graphiql-rails'
+
 gem 'activeadmin'
+
 gem 'sidekiq'
+
 gem 'active_interaction'
+
+gem 'shakapacker'
 # TODO logging (structured, lograge, etc.), auditing, analytics
 
 gem_group :development, :test do
@@ -125,6 +111,7 @@ gem_group :development, :test do
 end
 
 gem_group :development do
+  gem 'rack-mini-profiler', '~> 2.0'
   gem 'solargraph'
   gem 'annotate'
 end
@@ -133,12 +120,13 @@ gsub_file 'Gemfile', /gem 'tzinfo-data'/, "# gem 'tzinfo-data'"
 
 
 # TODO release gems, then update this manual stuff
-run 'mkdir vendor/greenhill'
-run "cp #{File.join(File.expand_path(File.dirname(__FILE__)), 'greenhill.gemspec')} #{File.join(destination_root, 'vendor/greenhill/greenhill.gemspec')}"
-run "cp -r #{File.join(File.expand_path(File.dirname(__FILE__)), 'lib')} #{File.join(destination_root, 'vendor/greenhill/lib')}"
-run "cp -r #{File.join(File.expand_path(File.dirname(__FILE__)), 'vendor/zuul')} #{File.join(destination_root, 'vendor/zuul')}"
+# run 'mkdir vendor/greenhill'
+# run "cp #{File.join(File.expand_path(File.dirname(__FILE__)), 'greenhill.gemspec')} #{File.join(destination_root, 'vendor/greenhill/greenhill.gemspec')}"
+# run "cp -r #{File.join(File.expand_path(File.dirname(__FILE__)), 'lib')} #{File.join(destination_root, 'vendor/greenhill/lib')}"
 
+run "cp -r #{File.join(File.expand_path(File.dirname(__FILE__)), 'vendor/zuul')} #{File.join(destination_root, 'vendor/zuul')}"
 gem 'zuul', path: './vendor/zuul'
+
 ### TODO TODO TODO release these gems!
 gem 'greenhill', path: '../greenhill'
 
@@ -185,23 +173,6 @@ commit "performs some additional configuration"
 template 'app/interactions/application_interaction.rb'
 commit "adds a default application interaction"
 
-# yarn 2.0
-run "yarn set version berry"
-append_to_file '.yarnrc.yml', 'nodeLinker: node-modules'
-append_to_file '.gitignore', <<-IGNORE
-
-# Ignore rules for yarn 2.0
-node_modules
-.pnp.*
-.yarn/*
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/sdks
-!.yarn/versions
-IGNORE
-run "yarn install"
-commit "installs and configures yarn 2.0"
 
 after_bundle do
   commit "bundles and prepares application"
@@ -215,7 +186,8 @@ after_bundle do
   run "yarn test"
   commit "runs frontend tests and generates initial snapshots"
 
-  # TODO TEMPORARY run linter and launch app while developing to keep on top of it
+  # TODO TEMPORARY run tests and linter, and launch app while developing to keep on top of it
+  run "bundle exec rspec"
   run "yarn lint"
   run "foreman start"
 end
