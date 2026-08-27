@@ -31,29 +31,29 @@ For a project overview and an index of all documentation, see `README.md`.
 ## After Code Changes
 
 - Run `bun lint --fix` after modifying any source or test file.
-- Run `bun format` after modifying any source or test file in a TypeScript project (not nexus).
+- Run `bun format` after modifying any TypeScript source or test file (`src/`).
 - Keep diffs scoped to the change. When a codegen, format, or build step (for example `bun run graphql:types`) reformats or regenerates files unrelated to the current change, revert those files before committing.
 - `bun lint --fix` and formatters autocorrect whole files, including pre-existing style on lines the change did not touch. Prefer reverting autocorrect on untouched lines to keep the diff reviewable; use judgment, do not over-engineer.
 
 ## Testing
 
-- Run tests from the monorepo root with `bun run test` (not bare `bun test`). This uses `--filter` to run each workspace's tests from its own directory, ensuring per-package `bunfig.toml` preloads (e.g., happy-dom for portal) are applied.
+- Run `bun run test` for the full suite (JS via `bun test`, Ruby via `bundle exec rspec`). This is a single flat package, not a workspace — no `--filter` needed.
 - Tests must verify real behavior, not tautologies. Never assert that a mock equals itself or that stubbed return values match their own setup. Each assertion should exercise actual logic.
 - Define factory helpers (`createMockDb()`, `createMockLogger()`, etc.) at the top of test files rather than rebuilding mock objects inline in each test.
 
 ## Dependencies
 
 - Pin exact versions when adding dependencies. Do not use `^`, `~`, `>`, `>=`, or range specifiers in package.json.
-- Use `workspace:*` for inter-package dependencies.
 
 ## Environment & Config
 
 - Document every env var in `.env.example`.
 
-## Shared Configuration
+## Configuration
 
-- ESLint, Prettier, and TypeScript configs live in `packages/config/`. All packages extend from there.
-- `.editorconfig` is at the monorepo root.
+- ESLint (`eslint.config.mjs`), Prettier (`.prettierrc.json`), and TypeScript (`tsconfig.json`) configs live at the repo root — this is a single app, not a multi-package workspace, so there's no shared `packages/config/` to extend from.
+- `src/` is the React app root directly (not one of several apps) — nested folders like `components/`, `hooks/`, etc. live straight under `src/`, not under a per-app subdirectory.
+- The Rails asset pipeline is skipped entirely (`--skip-asset-pipeline`); the React build is self-contained via bun+Vite and lands as static files in `public/`. If ActiveAdmin gets added later, revisit this — it still requires Sprockets as of ActiveAdmin 3.x (Propshaft support is beta/experimental in the 4.0 line).
 
 ## Adding More Rules
 
