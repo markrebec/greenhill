@@ -1,0 +1,42 @@
+{
+  "name": "meeteor",
+  "version": "0.0.1",
+  "author": "Mark Rebec <mark@markrebec.com>",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev:server": "bin/rails s",
+    "dev:client": "vite dev",
+    "dev": "concurrently 'bun run dev:server' 'bun run dev:client'",
+    "prebuild": "rm -rf public/assets public/index.html",
+    "build": "vite build",
+    "build:prod": "NODE_ENV=production vite build --mode production",
+    "lint": "eslint src && bundle exec rubocop",
+    "lint:fix": "eslint src --fix && bundle exec rubocop -A",
+    "format": "prettier src -w",
+    "test": "bun test && bundle exec rspec",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "react": "19.2.8",
+    "react-dom": "19.2.8"
+  },
+  "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "@types/node": "26.4.0",
+    "@types/react": "19.2.18",
+    "@types/react-dom": "19.2.5",
+    "@vitejs/plugin-react": "6.1.0",
+    "concurrently": "10.0.5",
+    "eslint": "10.9.1",
+    "eslint-config-prettier": "10.1.8",
+    "eslint-plugin-react": "7.37.5",
+    "eslint-plugin-react-hooks": "7.1.1",
+    "eslint-plugin-simple-import-sort": "14.0.0",
+    "eslint-plugin-unused-imports": "4.4.1",
+    "prettier": "3.9.6",
+    "typescript": "5.9.3",
+    "typescript-eslint": "8.68.0",
+    "vite": "8.2.2"
+  }
+}
