@@ -1,0 +1,12 @@
+AllCops:
+  NewCops: enable
+  TargetRubyVersion: 3.4
+  Exclude:
+    - "db/**/*"
+    - "config/**/*"
+    - "bin/{rails,rake}"
+    - "vendor/**/*"
+
+require:
+  - rubocop-rails
+  - rubocop-rspec
