@@ -66,6 +66,12 @@ For a project overview and an index of all documentation, see `README.md`.
 - Always check live git state (`git branch --show-current`, `git status`) when you need the current branch name or working tree state. The session-start snapshot goes stale after the first commit or branch switch.
 - Never run `bundle exec rails graphql:schema:dump` directly. Always use `bun run graphql:types` from the monorepo root — it chains the schema export with frontend codegen.
 
+## Multi-PR & Staged Deploys
+
+- For work that must deploy in ordered stages, use ordered branch names: `<user>/<topic>-phase-N`.
+- Stack the PRs: each phase's PR targets the previous phase's branch so its review diff is scoped to that phase. State the deploy order and link the stack in each PR body. All phases ultimately merge into the default branch in order, not nested; GitHub auto-retargets a dependent PR to the default branch when the branch below it is merged and deleted (the repo auto-deletes merged branches).
+- Backend and frontend deploy together as one app/pipeline (not as separate service releases), but still stage zero-downtime migrations when a change isn't safely atomic: (migration plus backend code that tolerates both the old and new schema) → (backend code that actively depends on the new schema) → (frontend that depends on the new API shape). One release per dependency hop. Never ship a migration in the same release as code that assumes it's already applied; never ship a frontend that depends on backend behavior that hasn't shipped yet.
+
 ## Package-Specific Rules
 
 - Always read the nearest `CLAUDE.md` up the directory tree for any file you are working on, and apply it alongside this root file.
