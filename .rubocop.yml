@@ -7,6 +7,10 @@ AllCops:
     - "bin/{rails,rake}"
     - "vendor/**/*"
 
-require:
+plugins:
   - rubocop-rails
   - rubocop-rspec
+
+# Per-class/module doc comments aren't our house style (see root CLAUDE.md).
+Style/Documentation:
+  Enabled: false
