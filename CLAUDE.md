@@ -66,16 +66,6 @@ For a project overview and an index of all documentation, see `README.md`.
 - Always check live git state (`git branch --show-current`, `git status`) when you need the current branch name or working tree state. The session-start snapshot goes stale after the first commit or branch switch.
 - Never run `bundle exec rails graphql:schema:dump` directly. Always use `bun run graphql:types` from the monorepo root — it chains the schema export with frontend codegen.
 
-## Multi-PR & Staged Deploys
-
-- For work that must deploy in ordered stages, use ordered branch names: `<user>/<topic>-phase-N`.
-- Stack the PRs: each phase's PR targets the previous phase's branch so its review diff is scoped to that phase. State the deploy order and link the stack in each PR body. All phases ultimately merge into the default branch in order, not nested; GitHub auto-retargets a dependent PR to the default branch when the branch below it is merged and deleted (the repo auto-deletes merged branches).
-- Sequence deploy-ordered branches by dependency, because nexus migrations run AFTER the app rolls over and frontend apps may roll over BEFORE nexus: (migration plus passive code that does not read the new schema) → (code that reads or writes the new schema) → (frontend that consumes the new API). One release per dependency hop. Never ship a migration in the same release as the code that depends on it; never ship a frontend that queries a field a not-yet-rolled nexus lacks.
-
-## Running Scripts
-
-- Always run scripts from the monorepo root unless explicitly directed otherwise. Root-level scripts coordinate cross-service sequences — for example, `bun run graphql:types` exports the schema from nexus before running codegen in portal, and `bun db:migrate` runs Rails migrations before syncing Prisma in db-manager. Running a script from inside a service directory skips these upstream steps.
-
 ## Package-Specific Rules
 
 - Always read the nearest `CLAUDE.md` up the directory tree for any file you are working on, and apply it alongside this root file.
