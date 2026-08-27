@@ -9,6 +9,9 @@ Rails.application.routes.draw do
   # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
   # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
 
-  # Defines the root path route ("/")
-  # root "posts#index"
+  # Rails' static file middleware serves public/index.html for real GET / traffic
+  # before the router is ever consulted. This route only exists so route helpers
+  # like root_path/root_url resolve (Devise calls them internally, e.g. as the
+  # sign-in/sign-out redirect fallback) — it's not meant to serve real requests.
+  root to: proc { [200, { "Content-Type" => "text/plain" }, ["OK"]] }
 end
