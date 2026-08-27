@@ -1,0 +1,15 @@
+volumes:
+  postgres: {}
+
+services:
+  postgres:
+    restart: unless-stopped
+    image: postgres:18-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: meeteor
+      POSTGRES_PASSWORD: meeteor
+      POSTGRES_DB: meeteor_development
+    volumes:
+      - postgres:/var/lib/postgresql
