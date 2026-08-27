@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
-  devise_for :users, only: [:sessions], controllers: { sessions: "users/sessions" }
+  devise_for :users, only: [:sessions, :registrations, :passwords],
+    controllers: { sessions: "users/sessions", registrations: "users/registrations", passwords: "users/passwords" }
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

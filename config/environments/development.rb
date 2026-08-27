@@ -34,6 +34,12 @@ Rails.application.configure do
   # Don't care if the mailer can't send.
   config.action_mailer.raise_delivery_errors = false
 
+  # Capture mail in ActionMailer::Base.deliveries instead of trying real SMTP —
+  # lets password-reset etc. be verified (e.g. in `rails console`) without a
+  # real mail server. Revisit with letter_opener or similar if a visual preview
+  # becomes worth the extra dependency.
+  config.action_mailer.delivery_method = :test
+
   # Make template changes take effect immediately.
   config.action_mailer.perform_caching = false
 
