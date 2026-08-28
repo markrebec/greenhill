@@ -22,4 +22,11 @@ class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable, :validatable and :omniauthable
   devise :database_authenticatable, :registerable, :rememberable, :recoverable
+
+  # Ransack (used by ActiveAdmin's filters) requires an explicit allowlist.
+  # Deliberately excludes encrypted_password, reset_password_token,
+  # reset_password_sent_at, remember_created_at.
+  def self.ransackable_attributes(_auth_object = nil)
+    %w[id email created_at updated_at]
+  end
 end
