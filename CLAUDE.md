@@ -52,8 +52,10 @@ For a project overview and an index of all documentation, see `README.md`.
 ## Configuration
 
 - ESLint (`eslint.config.mjs`), Prettier (`.prettierrc.json`), and TypeScript (`tsconfig.json`) configs live at the repo root — this is a single app, not a multi-package workspace, so there's no shared `packages/config/` to extend from.
-- `src/` is the React app root directly (not one of several apps) — nested folders like `components/`, `hooks/`, etc. live straight under `src/`, not under a per-app subdirectory.
-- The main app's asset pipeline is skipped entirely (`--skip-asset-pipeline`); the React build is self-contained via bun+Vite and lands as static files in `public/`. ActiveAdmin is the one exception: it requires Sprockets (`sprockets-rails` + `sassc`), scoped to its own assets only (`app/assets/`, `app/assets/config/manifest.js`) — doesn't touch the bun+Vite pipeline.
+- `src/` is the React app root directly (not one of several apps) — nested folders like `components/`, `hooks/`, etc. live straight under `src/`, not under a per-app subdirectory. Vite's entrypoint lives at `src/entrypoints/application.tsx` (`vite_ruby`'s convention).
+- The main app is served through `vite_rails`, not the asset pipeline (`--skip-asset-pipeline` at generation time still applies). There is one dev URL — `localhost:3000` — always; `app/views/layouts/application.html.erb`'s `vite_javascript_tag`/`vite_client_tag` point at the Vite dev server (`bin/vite dev`, port 3036) when it's running, or resolve to the built manifest in `public/vite/` otherwise. Never visit the Vite dev server's own port directly. ActiveAdmin is the one exception to all of this: it requires Sprockets (`sprockets-rails` + `sassc`), scoped to its own assets only (`app/assets/`, `app/assets/config/manifest.js`) — doesn't touch the Vite pipeline.
+- A `.tsx` entrypoint needs `vite_javascript_tag 'application.tsx'` (explicit extension) — `vite_typescript_tag` only handles plain `.ts`.
+- API requests from the client are same-origin, plain relative paths (`/users/sign_in`, not `/api/users/sign_in`) — no CORS, no dev-server proxy needed, since the page is always served by Rails.
 
 ## Adding More Rules
 
