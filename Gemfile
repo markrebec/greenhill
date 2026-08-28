@@ -51,6 +51,9 @@ gem 'activeadmin'
 gem 'sassc'
 gem 'sprockets-rails'
 
+# GraphQL API
+gem 'graphql'
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem 'debug', platforms: %i[mri windows], require: 'debug/prelude'
@@ -83,3 +86,4 @@ group :development do
   # the unmaintained `annotate` gem.
   gem 'annotaterb'
 end
+gem 'graphiql-rails', group: :development

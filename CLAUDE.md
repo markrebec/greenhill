@@ -66,7 +66,7 @@ For a project overview and an index of all documentation, see `README.md`.
 ## Git & Environment
 
 - Always check live git state (`git branch --show-current`, `git status`) when you need the current branch name or working tree state. The session-start snapshot goes stale after the first commit or branch switch.
-- Never run `bundle exec rails graphql:schema:dump` directly. Always use `bun run graphql:types` from the monorepo root — it chains the schema export with frontend codegen.
+- Never run `bundle exec rake graphql:schema:idl` directly. Always use `bun run graphql:types` — it chains the schema export (`schema.graphql` at repo root) with frontend codegen (`graphql-codegen`, config in `codegen.ts`).
 
 ## Multi-PR & Staged Deploys
 

@@ -1,31 +1,28 @@
+import { useQuery } from '@apollo/client/react'
 import { type FormEvent, useState } from 'react'
 
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { ME_QUERY } from '@/graphql/queries/me'
 import { api } from '@/lib/api'
-
-type User = {
-  id: number
-  email: string
-}
 
 export function LoginForm() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [user, setUser] = useState<User | null>(null)
   const [error, setError] = useState<string | null>(null)
+  const { data, loading, refetch } = useQuery(ME_QUERY)
+  const user = data?.me
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault()
     setError(null)
 
     try {
-      const response = await api.post<User>('users/sign_in', { user: { email, password } })
-      setUser(response.data)
+      await api.post('users/sign_in', { user: { email, password } })
+      await refetch()
     } catch (err) {
-      setUser(null)
       if (err && typeof err === 'object' && 'response' in err) {
         const response = (err as { response?: { data?: { error?: string } } }).response
         setError(response?.data?.error ?? 'Sign in failed')
@@ -37,7 +34,17 @@ export function LoginForm() {
 
   const handleSignOut = async () => {
     await api.delete('users/sign_out')
-    setUser(null)
+    await refetch()
+  }
+
+  if (loading) {
+    return (
+      <Card className="mx-auto w-full max-w-sm">
+        <CardContent>
+          <p className="text-sm text-muted-foreground">Loading…</p>
+        </CardContent>
+      </Card>
+    )
   }
 
   if (user) {
