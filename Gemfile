@@ -37,6 +37,14 @@ gem 'image_processing', '~> 1.2'
 # Authentication
 gem 'devise'
 
+# Admin dashboard. Needs Sprockets for its own assets (Rails 8 defaults to
+# Propshaft; ActiveAdmin 3.x doesn't support it yet, 4.0's support is still
+# beta) — scoped to ActiveAdmin's own assets only, doesn't touch the separate
+# bun+Vite pipeline for the main app.
+gem 'activeadmin'
+gem 'sassc'
+gem 'sprockets-rails'
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem 'debug', platforms: %i[mri windows], require: 'debug/prelude'
