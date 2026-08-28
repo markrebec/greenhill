@@ -26,4 +26,9 @@ Rails.application.routes.draw do
   # Renders the React app shell (see StaticController) — vite_javascript_tag in
   # the layout points at the Vite dev server or the built manifest as needed.
   root to: 'static#index'
+
+  # Catch-all for client-side routing (React Router) — anything that didn't
+  # match a real route above falls through to the same app shell. Must stay
+  # last so it never shadows /graphql, /admin/*, /users/*, /up, etc.
+  get "*path", to: "static#index"
 end

@@ -1,9 +1,7 @@
-import { LoginForm } from '@/components/LoginForm'
+import { RouterProvider } from 'react-router'
+
+import { router } from '@/router'
 
 export function App() {
-  return (
-    <div className="flex min-h-screen items-center justify-center p-4">
-      <LoginForm />
-    </div>
-  )
+  return <RouterProvider router={router} />
 }
