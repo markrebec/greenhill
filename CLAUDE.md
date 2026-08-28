@@ -53,7 +53,7 @@ For a project overview and an index of all documentation, see `README.md`.
 
 - ESLint (`eslint.config.mjs`), Prettier (`.prettierrc.json`), and TypeScript (`tsconfig.json`) configs live at the repo root — this is a single app, not a multi-package workspace, so there's no shared `packages/config/` to extend from.
 - `src/` is the React app root directly (not one of several apps) — nested folders like `components/`, `hooks/`, etc. live straight under `src/`, not under a per-app subdirectory.
-- The Rails asset pipeline is skipped entirely (`--skip-asset-pipeline`); the React build is self-contained via bun+Vite and lands as static files in `public/`. If ActiveAdmin gets added later, revisit this — it still requires Sprockets as of ActiveAdmin 3.x (Propshaft support is beta/experimental in the 4.0 line).
+- The main app's asset pipeline is skipped entirely (`--skip-asset-pipeline`); the React build is self-contained via bun+Vite and lands as static files in `public/`. ActiveAdmin is the one exception: it requires Sprockets (`sprockets-rails` + `sassc`), scoped to its own assets only (`app/assets/`, `app/assets/config/manifest.js`) — doesn't touch the bun+Vite pipeline.
 
 ## Adding More Rules
 
