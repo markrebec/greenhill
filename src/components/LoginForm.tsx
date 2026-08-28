@@ -1,5 +1,9 @@
 import { type FormEvent, useState } from 'react'
 
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 import { api } from '@/lib/api'
 
 type User = {
@@ -38,31 +42,50 @@ export function LoginForm() {
 
   if (user) {
     return (
-      <div>
-        <p>Signed in as {user.email}</p>
-        <button onClick={handleSignOut}>Sign out</button>
-      </div>
+      <Card className="mx-auto w-full max-w-sm">
+        <CardHeader>
+          <CardTitle>Signed in</CardTitle>
+          <CardDescription>{user.email}</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Button variant="outline" onClick={handleSignOut}>
+            Sign out
+          </Button>
+        </CardContent>
+      </Card>
     )
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
-        <label htmlFor="email">Email</label>
-        <input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-      </div>
-      <div>
-        <label htmlFor="password">Password</label>
-        <input
-          id="password"
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-      </div>
-      {error && <p role="alert">{error}</p>}
-      <button type="submit">Sign in</button>
-    </form>
+    <Card className="mx-auto w-full max-w-sm">
+      <CardHeader>
+        <CardTitle>Sign in</CardTitle>
+        <CardDescription>Enter your email and password to continue</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+          <div className="flex flex-col gap-2">
+            <Label htmlFor="email">Email</Label>
+            <Input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+          </div>
+          <div className="flex flex-col gap-2">
+            <Label htmlFor="password">Password</Label>
+            <Input
+              id="password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
+          {error && (
+            <p role="alert" className="text-sm text-destructive">
+              {error}
+            </p>
+          )}
+          <Button type="submit">Sign in</Button>
+        </form>
+      </CardContent>
+    </Card>
   )
 }
