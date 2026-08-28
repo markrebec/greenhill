@@ -44,12 +44,31 @@ RUN bundle install && \
     # -j 1 disable parallel compilation to avoid a QEMU bug: https://github.com/rails/bootsnap/issues/495
     bundle exec bootsnap precompile -j 1 --gemfile
 
+# Install bun (just the binary — no need for the full oven/bun image/OS) and
+# the JS dependencies. bin/vite build is a Ruby/Bundler binstub (vite_ruby),
+# so the client build has to run in this Ruby-equipped stage, not a
+# standalone JS-only one.
+COPY --from=docker.io/oven/bun:1.3.10 /usr/local/bin/bun /usr/local/bin/bun
+COPY package.json bun.lock ./
+RUN bun install --frozen-lockfile
+
 # Copy application code
 COPY . .
 
 # Precompile bootsnap code for faster boot times.
 # -j 1 disable parallel compilation to avoid a QEMU bug: https://github.com/rails/bootsnap/issues/495
 RUN bundle exec bootsnap precompile -j 1 app/ lib/
+
+# Build the React client (public/vite/) and precompile ActiveAdmin's and
+# GraphiQL's Sprockets assets (public/assets/) — two separate asset
+# pipelines, see CLAUDE.md. SECRET_KEY_BASE_DUMMY lets assets:precompile
+# boot Rails without a real RAILS_MASTER_KEY at build time.
+RUN SECRET_KEY_BASE_DUMMY=1 bin/vite build && \
+    SECRET_KEY_BASE_DUMMY=1 bin/rails assets:precompile
+
+# Drop the raw JS source and node_modules now that the client is built —
+# only the built public/vite/ output ships in the final image.
+RUN rm -rf node_modules src
 
 
 

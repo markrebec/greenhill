@@ -30,11 +30,14 @@
 /tmp/storage/*
 !/tmp/storage/.keep
 
-# Ignore assets.
+# Ignore assets — both are rebuilt fresh in the image (Sprockets via
+# assets:precompile, Vite via bin/vite build), so any local build output
+# on the host must not leak into the build context.
 /node_modules/
 /app/assets/builds/*
 !/app/assets/builds/.keep
 /public/assets
+/public/vite*
 
 # Ignore CI service files.
 /.github
@@ -45,6 +48,10 @@
 
 # Ignore development files
 /.devcontainer
+
+# Ignore local editor/tooling state — never meant to ship in the image.
+/.claude
+/.ruby-lsp
 
 # Ignore Docker-related files
 /.dockerignore
