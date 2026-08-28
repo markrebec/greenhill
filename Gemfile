@@ -64,4 +64,8 @@ end
 group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem 'web-console'
+
+  # Annotates models, factories, fixtures, etc. with schema info. Successor to
+  # the unmaintained `annotate` gem.
+  gem 'annotaterb'
 end

@@ -38,5 +38,16 @@ module Meeteor
 
     # Don't generate system test files.
     config.generators.system_tests = nil
+
+    # Tags SQL queries in logs with the controller/action that issued them —
+    # traded for the marginalia gem, which has a real compatibility gap with
+    # Rails 8.1's query path (its hooks don't catch prepared-statement queries).
+    config.active_record.query_log_tags_enabled = true
+    config.active_record.query_log_tags = [
+      :application,
+      :namespaced_controller,
+      :action,
+      :job,
+    ]
   end
 end
