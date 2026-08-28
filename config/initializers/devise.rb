@@ -258,7 +258,11 @@ Devise.setup do |config|
 
   # Set this configuration to false if you want /users/sign_out to sign out
   # only the current scope. By default, Devise signs out all scopes.
-  # config.sign_out_all_scopes = true
+  # Independent sign-out per scope: signing out of the customer-facing User
+  # session shouldn't also sign an admin out of /admin, and vice versa.
+  # Verified: Devise's actual default here is true (cross-scope sign-out)
+  # despite this line being commented out upstream.
+  config.sign_out_all_scopes = false
 
   # ==> Navigation configuration
   # Lists the formats that should be treated as navigational. Formats like

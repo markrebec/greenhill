@@ -14,11 +14,7 @@ Rails.application.routes.draw do
   # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
   # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
 
-  # Rails' static file middleware serves public/index.html for real GET / traffic
-  # before the router is ever consulted, in normal operation. This route is the
-  # fallback for when it can't (see StaticController) — root always renders the
-  # React app, not a placeholder — and it's also what root_path/root_url resolve
-  # to (Devise calls them internally, e.g. as the sign-in/sign-out redirect
-  # fallback).
+  # Renders the React app shell (see StaticController) — vite_javascript_tag in
+  # the layout points at the Vite dev server or the built manifest as needed.
   root to: 'static#index'
 end
