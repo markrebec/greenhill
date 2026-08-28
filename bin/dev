@@ -1,4 +1,6 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-exec './bin/rails', 'server', *ARGV
+# Runs Rails + the Vite dev server together (see Procfile.dev for the same
+# two processes, for anyone who prefers running it via foreman/overmind).
+exec 'bun', 'run', 'dev'

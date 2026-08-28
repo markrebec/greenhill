@@ -6,11 +6,9 @@
   "type": "module",
   "scripts": {
     "dev:server": "bin/rails s",
-    "dev:client": "vite dev",
+    "dev:client": "bin/vite dev",
     "dev": "concurrently 'bun run dev:server' 'bun run dev:client'",
-    "prebuild": "rm -rf public/assets public/index.html",
-    "build": "vite build",
-    "build:prod": "NODE_ENV=production vite build --mode production",
+    "build": "bin/vite build",
     "lint": "eslint src && bundle exec rubocop",
     "lint:fix": "eslint src --fix && bundle exec rubocop -A",
     "format": "prettier src -w",
@@ -38,6 +36,7 @@
     "prettier": "3.9.6",
     "typescript": "5.9.3",
     "typescript-eslint": "8.68.0",
-    "vite": "8.2.2"
+    "vite": "8.2.2",
+    "vite-plugin-ruby": "5.2.3"
   }
 }

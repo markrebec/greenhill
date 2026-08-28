@@ -29,12 +29,16 @@
 !/tmp/storage/
 !/tmp/storage/.keep
 
-/public/assets
-/public/index.html
-
 # Ignore node dependencies.
 /node_modules
 
 # Ignore key files for decrypting credentials and more.
 /config/*.key
+
+# Vite Ruby — build output (public/vite in production, public/vite-dev /
+# public/vite-test for autoBuild in those environments).
+/public/vite*
+# Vite uses dotenv and suggests to ignore local-only env files. See
+# https://vitejs.dev/guide/env-and-mode.html#env-files
+*.local
 

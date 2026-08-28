@@ -34,6 +34,12 @@ gem 'thruster', require: false
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 gem 'image_processing', '~> 1.2'
 
+# Vite integration — single dev URL (Rails renders the view; the vite_*_tag
+# helpers point at the Vite dev server for the actual JS/HMR), same view
+# code resolves to the built manifest in production. Direct successor to
+# webpacker/shakapacker for Vite instead of webpack.
+gem 'vite_rails'
+
 # Authentication
 gem 'devise'
 

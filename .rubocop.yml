@@ -4,7 +4,7 @@ AllCops:
   Exclude:
     - "db/**/*"
     - "config/**/*"
-    - "bin/{rails,rake}"
+    - "bin/{rails,rake,vite}"
     - "vendor/**/*"
 
 plugins:
