@@ -262,6 +262,14 @@ ActiveAdmin.setup do |config|
   #     end
   #   end
 
+  config.namespace :admin do |admin|
+    admin.build_menu :utility_navigation do |menu|
+      menu.add parent: "Engineering", label: "GraphQL", url: "/admin/graphiql", html_options: { target: :_blank }
+      admin.add_current_user_to_menu menu
+      admin.add_logout_button_to_menu menu
+    end
+  end
+
   # == Download Links
   #
   # You can disable download links on resource listing pages,

@@ -1,12 +1,17 @@
 Rails.application.routes.draw do
-  if Rails.env.development?
-    mount GraphiQL::Rails::Engine, at: "/graphiql", graphql_path: "/graphql"
-  end
   post "/graphql", to: "graphql#execute"
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
   devise_for :users, only: [:sessions, :registrations, :passwords],
     controllers: { sessions: "users/sessions", registrations: "users/registrations", passwords: "users/passwords" }
+
+  # GraphiQL — gated behind an AdminUser session (linked from ActiveAdmin's
+  # "Engineering" menu, see config/initializers/active_admin.rb). Querying
+  # most fields (e.g. `me`) also needs a signed-in User in the same browser,
+  # since the schema resolves off that session, not the admin one.
+  authenticate :admin_user do
+    mount GraphiQL::Rails::Engine, at: "/admin/graphiql", graphql_path: "/graphql"
+  end
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

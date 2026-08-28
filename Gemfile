@@ -54,6 +54,11 @@ gem 'sprockets-rails'
 # GraphQL API
 gem 'graphql'
 
+# In-browser GraphQL IDE, mounted at /admin/graphiql (see config/routes.rb)
+# gated behind an AdminUser session — not development-only, since the gate
+# is auth, not environment.
+gem 'graphiql-rails'
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem 'debug', platforms: %i[mri windows], require: 'debug/prelude'
@@ -86,4 +91,3 @@ group :development do
   # the unmaintained `annotate` gem.
   gem 'annotaterb'
 end
-gem 'graphiql-rails', group: :development
