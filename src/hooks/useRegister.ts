@@ -26,6 +26,7 @@ export function useRegister() {
   const navigate = useNavigate()
   const location = useLocation()
   const [loading, setLoading] = useState(false)
+  const [needsConfirmation, setNeedsConfirmation] = useState(false)
 
   const form = useForm<RegisterValues>({
     resolver: zodResolver(schema),
@@ -36,12 +37,18 @@ export function useRegister() {
     setLoading(true)
 
     try {
-      // Devise auto-signs-in on successful registration (verified in Phase 1).
+      // Registration succeeds either way, but a new (unconfirmed) account no
+      // longer auto-signs-in now that :confirmable is on — check whether a
+      // session actually got created rather than assuming one did.
       await api.post('users', { user: values })
-      await client.refetchQueries({ include: [ME_QUERY] })
+      const { data } = await client.query({ query: ME_QUERY, fetchPolicy: 'network-only' })
 
-      const from = (location.state as { from?: { pathname?: string } } | null)?.from?.pathname ?? '/dashboard'
-      navigate(from, { replace: true })
+      if (data?.me) {
+        const from = (location.state as { from?: { pathname?: string } } | null)?.from?.pathname ?? '/dashboard'
+        navigate(from, { replace: true })
+      } else {
+        setNeedsConfirmation(true)
+      }
     } catch (err) {
       applyApiErrors(err, form.setError, ['email', 'password', 'password_confirmation'], 'Registration failed')
     } finally {
@@ -49,5 +56,5 @@ export function useRegister() {
     }
   })
 
-  return { form, onSubmit, loading }
+  return { form, onSubmit, loading, needsConfirmation }
 }

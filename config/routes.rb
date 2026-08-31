@@ -2,8 +2,14 @@ Rails.application.routes.draw do
   post "/graphql", to: "graphql#execute"
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
-  devise_for :users, only: [:sessions, :registrations, :passwords],
-    controllers: { sessions: "users/sessions", registrations: "users/registrations", passwords: "users/passwords" }
+  devise_for :users, only: [:sessions, :registrations, :passwords, :confirmations, :unlocks],
+    controllers: {
+      sessions: "users/sessions",
+      registrations: "users/registrations",
+      passwords: "users/passwords",
+      confirmations: "users/confirmations",
+      unlocks: "users/unlocks",
+    }
 
   # GraphiQL — gated behind an AdminUser session (linked from ActiveAdmin's
   # "Engineering" menu, see config/initializers/active_admin.rb). Querying

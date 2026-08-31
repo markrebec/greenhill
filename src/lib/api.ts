@@ -56,3 +56,18 @@ export function applyApiErrors<T extends FieldValues>(
 
   setError('root', { message: data?.error ?? fallback })
 }
+
+// Same error-shape handling as applyApiErrors, but for call sites with no
+// form to attach field errors to (e.g. an auto-fired GET on page load) —
+// just flattens whatever Devise sent back into one displayable string.
+export function extractApiErrorMessage(err: unknown, fallback: string): string {
+  const data = apiErrorData(err)
+
+  if (data?.errors) {
+    return Object.entries(data.errors)
+      .map(([field, messages]) => `${humanize(field)} ${messages.join(', ')}`)
+      .join('; ')
+  }
+
+  return data?.error ?? fallback
+}

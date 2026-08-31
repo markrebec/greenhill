@@ -41,6 +41,11 @@ export function Login() {
             </Link>
           </p>
           <p className="text-center text-sm text-muted-foreground">
+            <Link to="/resend-confirmation" className="underline">
+              Resend confirmation email
+            </Link>
+          </p>
+          <p className="text-center text-sm text-muted-foreground">
             Don&apos;t have an account?{' '}
             <Link to="/register" className="underline">
               Sign up

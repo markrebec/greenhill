@@ -7,11 +7,25 @@ import { Input } from '@/components/ui/input'
 import { useRegister } from '@/hooks/useRegister'
 
 export function Register() {
-  const { form, onSubmit, loading } = useRegister()
+  const { form, onSubmit, loading, needsConfirmation } = useRegister()
   const {
     register,
     formState: { errors },
   } = form
+
+  if (needsConfirmation) {
+    return (
+      <Card className="mx-auto w-full max-w-sm">
+        <CardHeader>
+          <CardTitle>Check your email</CardTitle>
+          <CardDescription>
+            We&apos;ve sent a confirmation link to your email address. Click it to confirm your account before signing
+            in.
+          </CardDescription>
+        </CardHeader>
+      </Card>
+    )
+  }
 
   return (
     <Card className="mx-auto w-full max-w-sm">
