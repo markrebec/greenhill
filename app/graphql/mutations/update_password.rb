@@ -2,12 +2,14 @@
 
 module Mutations
   class UpdatePassword < Mutations::BaseMutation
-    argument :current_password, String, required: true
-    argument :password, String, required: true
-    argument :password_confirmation, String, required: true
+    description 'Updates the signed-in user\'s password.'
 
-    field :user, Types::UserType, null: true
-    field :errors, [String], null: false
+    argument :current_password, String, required: true, description: "The user's current password."
+    argument :password, String, required: true, description: 'The new password.'
+    argument :password_confirmation, String, required: true, description: 'Confirmation of the new password.'
+
+    field :errors, [String], null: false, description: 'Validation or authorization errors, if any.'
+    field :user, Types::UserType, null: true, description: 'The updated user, if successful.'
 
     # Explicit :: to reach the top-level interaction, not this mutation class
     # itself (both are named UpdatePassword, in different namespaces).

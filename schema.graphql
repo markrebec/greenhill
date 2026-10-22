@@ -3,7 +3,13 @@ An ISO 8601-encoded datetime
 """
 scalar ISO8601DateTime @specifiedBy(url: "https://tools.ietf.org/html/rfc3339")
 
+"""
+The entry point for all GraphQL mutations.
+"""
 type Mutation {
+  """
+  Updates the signed-in user's password.
+  """
   updatePassword(
     """
     Parameters for UpdatePassword
@@ -12,6 +18,9 @@ type Mutation {
   ): UpdatePasswordPayload
 }
 
+"""
+The entry point for all GraphQL queries.
+"""
 type Query {
   """
   The currently signed-in user.
@@ -27,8 +36,20 @@ input UpdatePasswordInput {
   A unique identifier for the client performing the mutation.
   """
   clientMutationId: String
+
+  """
+  The user's current password.
+  """
   currentPassword: String!
+
+  """
+  The new password.
+  """
   password: String!
+
+  """
+  Confirmation of the new password.
+  """
   passwordConfirmation: String!
 }
 
@@ -40,12 +61,34 @@ type UpdatePasswordPayload {
   A unique identifier for the client performing the mutation.
   """
   clientMutationId: String
+
+  """
+  Validation or authorization errors, if any.
+  """
   errors: [String!]!
+
+  """
+  The updated user, if successful.
+  """
   user: User
 }
 
+"""
+A registered user.
+"""
 type User {
+  """
+  When the user was created.
+  """
   createdAt: ISO8601DateTime!
+
+  """
+  The user's email address.
+  """
   email: String!
+
+  """
+  The user's unique identifier.
+  """
   id: ID!
 }

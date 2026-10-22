@@ -10,7 +10,21 @@ AllCops:
 plugins:
   - rubocop-rails
   - rubocop-rspec
+  - rubocop-graphql
 
 # Per-class/module doc comments aren't our house style (see root CLAUDE.md).
 Style/Documentation:
+  Enabled: false
+
+# Our mutations inherit from GraphQL::Schema::RelayClassicMutation, which
+# already auto-generates a named input type per mutation (e.g.
+# UpdatePasswordInput) — the extracted input type this cop wants already
+# exists, just generated for us rather than hand-declared.
+GraphQL/ExtractInputType:
+  Enabled: false
+
+# We deliberately keep each field next to its resolver method (or inline
+# resolver block), not grouped into a separate "fields" section — matches
+# how mutations in this repo are structured too.
+GraphQL/FieldDefinitions:
   Enabled: false
