@@ -108,4 +108,7 @@ group :development do
   # Annotates models, factories, fixtures, etc. with schema info. Successor to
   # the unmaintained `annotate` gem.
   gem 'annotaterb'
+
+  # Pretty-prints objects in bin/rails console and other dev-only output.
+  gem 'amazing_print'
 end
