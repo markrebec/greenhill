@@ -112,6 +112,9 @@ GEM
     connection_pool (3.0.2)
     crass (1.0.7)
     csv (3.3.6)
+    data_migrate (11.3.1)
+      activerecord (>= 6.1)
+      railties (>= 6.1)
     date (3.5.1)
     debug (1.11.1)
       irb (~> 1.10)
@@ -247,6 +250,9 @@ GEM
     net-smtp (0.5.1)
       net-protocol
     net-ssh (7.3.3)
+    nilify_blanks (2.0.0)
+      activerecord (>= 6.1)
+      activesupport (>= 6.1)
     nio4r (2.7.5)
     nokogiri (1.19.4-aarch64-linux-gnu)
       racc (~> 1.4)
@@ -471,6 +477,7 @@ DEPENDENCIES
   bootsnap
   brakeman
   bundler-audit
+  data_migrate
   debug
   devise
   dotenv-rails
@@ -481,6 +488,7 @@ DEPENDENCIES
   image_processing (~> 1.2)
   jbuilder
   kamal
+  nilify_blanks
   pg (~> 1.1)
   puma (>= 5.0)
   rails (~> 8.1.3, >= 8.1.3.1)
@@ -530,6 +538,7 @@ CHECKSUMS
   connection_pool (3.0.2) sha256=33fff5ba71a12d2aa26cb72b1db8bba2a1a01823559fb01d29eb74c286e62e0a
   crass (1.0.7) sha256=94868719948664c89ddcaf0a37c65048413dfcb1c869470a5f7a7ceb5390b295
   csv (3.3.6) sha256=aba61e7e507a66f03d45cb1f3c4b6359861c3504038b422962875dce099e4456
+  data_migrate (11.3.1) sha256=18b9b2189d15e482d5335f3fc2248b8b447204bd8257ded872dd077737168ffb
   date (3.5.1) sha256=750d06384d7b9c15d562c76291407d89e368dda4d4fff957eb94962d325a0dc0
   debug (1.11.1) sha256=2e0b0ac6119f2207a6f8ac7d4a73ca8eb4e440f64da0a3136c30343146e952b6
   devise (5.0.4) sha256=d605f2b85854e74e56ee789e2d398702bc2d06e6bcd894717a670a3199c74cc1
@@ -590,6 +599,7 @@ CHECKSUMS
   net-sftp (4.0.0) sha256=65bb91c859c2f93b09826757af11b69af931a3a9155050f50d1b06d384526364
   net-smtp (0.5.1) sha256=ed96a0af63c524fceb4b29b0d352195c30d82dd916a42f03c62a3a70e5b70736
   net-ssh (7.3.3) sha256=831def58b2c51dcef66ec00d29397d4f210de89c19fe78f95873ca30f386e86a
+  nilify_blanks (2.0.0) sha256=1040382d540721c16c5e09c6eb3813bf3fdc43c1a8ea7fb1b707df93779255d9
   nio4r (2.7.5) sha256=6c90168e48fb5f8e768419c93abb94ba2b892a1d0602cb06eef16d8b7df1dca1
   nokogiri (1.19.4-aarch64-linux-gnu) sha256=1269fb644a6de405057a53dd5c762b1209b43ca7424f839454d3dbc677c31a8f
   nokogiri (1.19.4-aarch64-linux-musl) sha256=35c65b9ce72b3bb03207bdbe7067915019dc18c1b9b59139684bd6690fdd01af

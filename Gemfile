@@ -63,6 +63,16 @@ gem 'graphiql-rails'
 # (app/interactions/), not controllers/models. See ApplicationInteraction.
 gem 'active_interaction'
 
+# Tracks one-off data migrations (db/data_schema.rb) separately from schema
+# migrations (db/schema.rb) — `bin/rails g data_migration <name>`.
+gem 'data_migrate'
+
+# Turns blank string attributes into nil before validation/save. Not wired
+# into any model yet (`nilify_blanks` is opt-in per-model) — meeteor's only
+# models so far are Devise-managed (User/AdminUser) with NOT NULL
+# default("") string columns that this would break if applied globally.
+gem 'nilify_blanks'
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem 'debug', platforms: %i[mri windows], require: 'debug/prelude'
