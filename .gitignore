@@ -32,6 +32,9 @@
 # Ignore node dependencies.
 /node_modules
 
+# Ignore SimpleCov's coverage report.
+/coverage
+
 # Ignore key files for decrypting credentials and more.
 /config/*.key
 

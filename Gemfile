@@ -94,6 +94,9 @@ group :development, :test do
   gem 'faker'
   gem 'rspec-rails'
 
+  # Test coverage reporting
+  gem 'simplecov', require: false
+
   # Loads env vars from .env
   gem 'dotenv-rails'
 end
