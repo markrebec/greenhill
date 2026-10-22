@@ -8,6 +8,9 @@ class MeeteorSchema < GraphQL::Schema
   use GraphQL::Dataloader
 
   # GraphQL-Ruby calls this when something goes wrong while running a query:
+  # a fallback for plain queries (no `errors` field to fold into) and any
+  # mutation that doesn't inherit from Mutations::InteractionMutation, which
+  # catches this same error itself and folds it into its own `errors` field.
   rescue_from(Pundit::NotAuthorizedError) do |_err, _obj, _args, _ctx, _field|
     raise GraphQL::ExecutionError, 'You are not authorized to perform this action.'
   end

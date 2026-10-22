@@ -1,4 +1,24 @@
 """
+A client-presentable error, generally returned from mutations.
+"""
+type ClientError {
+  """
+  A machine-readable code identifying the type of error.
+  """
+  code: String
+
+  """
+  A user-presentable description of the error.
+  """
+  message: String!
+
+  """
+  The input path this error applies to, if any.
+  """
+  path: [String!]
+}
+
+"""
 An ISO 8601-encoded datetime
 """
 scalar ISO8601DateTime @specifiedBy(url: "https://tools.ietf.org/html/rfc3339")
@@ -65,7 +85,7 @@ type UpdatePasswordPayload {
   """
   Validation or authorization errors, if any.
   """
-  errors: [String!]!
+  errors: [ClientError!]!
 
   """
   The updated user, if successful.
