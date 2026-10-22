@@ -2,7 +2,8 @@
 
 module Mutations
   class BaseMutation < GraphQL::Schema::RelayClassicMutation
-    include Punditable
+    # Explicit :: — see the same note in Types::BaseObject.
+    include ::Punditable
 
     argument_class Types::BaseArgument
     field_class Types::BaseField

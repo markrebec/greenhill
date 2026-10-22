@@ -78,4 +78,27 @@ RSpec.describe Mutations::UpdatePassword do
       expect(payload['errors']).not_to be_empty
     end
   end
+
+  context 'when the user policy denies update?' do
+    let(:result) { execute(current_user: user) }
+
+    before do
+      allow(UserPolicy).to receive(:new).and_return(instance_double(UserPolicy, update?: false))
+    end
+
+    it 'returns a null payload' do
+      expect(result.dig('data', 'updatePassword')).to be_nil
+    end
+
+    it 'returns a top-level GraphQL error' do
+      expect(result['errors']).to contain_exactly(
+        hash_including('message' => 'You are not authorized to perform this action.')
+      )
+    end
+
+    it 'does not change the password' do
+      result
+      expect(user.reload.valid_password?('password123')).to be true
+    end
+  end
 end

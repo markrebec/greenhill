@@ -14,7 +14,10 @@ module Mutations
     # Explicit :: to reach the top-level interaction, not this mutation class
     # itself (both are named UpdatePassword, in different namespaces).
     def resolve(current_password:, password:, password_confirmation:)
-      outcome = ::UpdatePassword.run(user: context[:current_user], current_password: current_password,
+      current_user = context[:current_user]
+      authorize(current_user, :update?) if current_user
+
+      outcome = ::UpdatePassword.run(user: current_user, current_password: current_password,
                                      password: password, password_confirmation: password_confirmation)
 
       return { user: nil, errors: outcome.errors.full_messages } unless outcome.valid?

@@ -26,7 +26,10 @@ module Types
 
     field :me, Types::UserType, null: true, description: 'The currently signed-in user.'
     def me
-      context[:current_user]
+      current_user = context[:current_user]
+      return nil unless current_user
+
+      authorize(current_user, :show?)
     end
   end
 end
