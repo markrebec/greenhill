@@ -9,7 +9,7 @@ import tseslint from 'typescript-eslint'
 
 export default defineConfig(
   {
-    ignores: ['dist/**', 'node_modules/**', 'public/**'],
+    ignores: ['dist/**', 'node_modules/**', 'public/**', 'src/graphql/generated/**'],
   },
   eslint.configs.recommended,
   ...tseslint.configs.recommended,
