@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe Punditable do
   let(:dummy_class) do
@@ -27,19 +27,19 @@ RSpec.describe Punditable do
 
   before { instance.context = { current_user: user } }
 
-  it 'resolves pundit_user from context[:current_user]' do
+  it "resolves pundit_user from context[:current_user]" do
     expect(instance.pundit_user).to eq(user)
   end
 
-  it 'resolves policy(record) to the matching Policy class' do
+  it "resolves policy(record) to the matching Policy class" do
     expect(instance.call_policy(user)).to be_a(UserPolicy)
   end
 
-  it 'authorizes using the resolved pundit_user' do
+  it "authorizes using the resolved pundit_user" do
     expect(instance.call_authorize(user, :show?)).to eq(user)
   end
 
-  it 'raises when the pundit_user is not authorized' do
+  it "raises when the pundit_user is not authorized" do
     instance.context = { current_user: create(:user) }
 
     expect { instance.call_authorize(user, :show?) }.to raise_error(Pundit::NotAuthorizedError)

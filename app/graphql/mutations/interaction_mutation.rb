@@ -6,9 +6,9 @@ module Mutations
   # translates it into a GraphQL response based on the mutation's declared
   # fields, including the `errors` field (added automatically).
   class InteractionMutation < Mutations::BaseMutation
-    description 'A mutation whose work is offloaded to an interaction.'
+    description "A mutation whose work is offloaded to an interaction."
 
-    field :errors, [Types::ClientError], null: false, description: 'Validation or authorization errors, if any.'
+    field :errors, [Types::ClientError], null: false, description: "Validation or authorization errors, if any."
 
     # Set after declaring :errors above, so resolve_with_support can tell
     # mutation-declared fields apart from this class' own built-in ones.
@@ -18,7 +18,7 @@ module Mutations
       result = super
       return result unless result.is_a?(Graphqlable)
 
-      interaction_result_fields(result).merge(errors: result.errors.to_graphql(field.path.split('.')),
+      interaction_result_fields(result).merge(errors: result.errors.to_graphql(field.path.split(".")),
                                               client_mutation_id: inputs[:input][:client_mutation_id])
     rescue Pundit::NotAuthorizedError
       { errors: [not_authorized_error], client_mutation_id: inputs[:input][:client_mutation_id] }
@@ -36,7 +36,7 @@ module Mutations
     end
 
     def not_authorized_error
-      { message: 'You are not authorized to perform this action.', code: 'notAuthorized', path: field.path.split('.') }
+      { message: "You are not authorized to perform this action.", code: "notAuthorized", path: field.path.split(".") }
     end
   end
 end

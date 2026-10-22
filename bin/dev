@@ -3,4 +3,4 @@
 
 # Runs Rails + the Vite dev server together (see Procfile.dev for the same
 # two processes, for anyone who prefers running it via foreman/overmind).
-exec 'bun', 'run', 'dev'
+exec "bun", "run", "dev"

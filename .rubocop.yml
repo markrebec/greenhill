@@ -16,6 +16,13 @@ plugins:
 Style/Documentation:
   Enabled: false
 
+# Prefer double quotes even for non-interpolated strings, to avoid awkward
+# backslash-escaping (e.g. an apostrophe in a plain string).
+Style/StringLiterals:
+  EnforcedStyle: double_quotes
+Style/StringLiteralsInInterpolation:
+  EnforcedStyle: double_quotes
+
 # Our mutations inherit from GraphQL::Schema::RelayClassicMutation, which
 # already auto-generates a named input type per mutation (e.g.
 # UpdatePasswordInput) — the extracted input type this cop wants already

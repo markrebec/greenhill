@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class UpdatePassword < ApplicationInteraction
-  object :user, class: 'User'
+  object :user, class: "User"
   string :current_password
   string :password
   string :password_confirmation
