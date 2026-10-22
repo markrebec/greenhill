@@ -43,6 +43,9 @@ gem 'vite_rails'
 # Authentication
 gem 'devise'
 
+# Authorization
+gem 'pundit'
+
 # Admin dashboard. Needs Sprockets for its own assets (Rails 8 defaults to
 # Propshaft; ActiveAdmin 3.x doesn't support it yet, 4.0's support is still
 # beta) — scoped to ActiveAdmin's own assets only, doesn't touch the separate
@@ -96,6 +99,11 @@ group :development, :test do
 
   # Test coverage reporting
   gem 'simplecov', require: false
+
+  # Matchers for testing Pundit policies (permit/forbid). require: false
+  # because the gem's actual require path is 'pundit/matchers', not
+  # 'pundit-matchers' (no top-level entry file matching the gem name).
+  gem 'pundit-matchers', require: false
 
   # Loads env vars from .env
   gem 'dotenv-rails'
