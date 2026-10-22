@@ -57,6 +57,14 @@ For a project overview and an index of all documentation, see `README.md`.
 - A `.tsx` entrypoint needs `vite_javascript_tag 'application.tsx'` (explicit extension) — `vite_typescript_tag` only handles plain `.ts`.
 - API requests from the client are same-origin, plain relative paths (`/users/sign_in`, not `/api/users/sign_in`) — no CORS, no dev-server proxy needed, since the page is always served by Rails.
 
+## Documentation
+
+- After a change worth documenting for someone getting the app running or
+  understanding its architecture (a new dependency, a new setup/run step, a
+  config change, an architecture shift), update `README.md` to reflect it.
+- When unsure whether a change meets that bar, ask rather than deciding
+  either way.
+
 ## Adding More Rules
 
 - Only add actionable rules to this file. "Always", "Never", "Only", no subjective language.
