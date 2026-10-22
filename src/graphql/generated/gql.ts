@@ -1,6 +1,6 @@
 /* eslint-disable */
-import * as types from './graphql';
-import type { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/core';
+import * as types from './graphql'
+import type { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/core'
 
 /**
  * Map of all GraphQL operations in the project.
@@ -14,11 +14,14 @@ import type { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-
  * Learn more about it here: https://the-guild.dev/graphql/codegen/plugins/presets/preset-client#reducing-bundle-size
  */
 type Documents = {
-    "\n  query Me {\n    me {\n      id\n      email\n    }\n  }\n": typeof types.MeDocument,
-};
+  '\n  mutation UpdatePassword($currentPassword: String!, $password: String!, $passwordConfirmation: String!) {\n    updatePassword(input: {\n      currentPassword: $currentPassword\n      password: $password\n      passwordConfirmation: $passwordConfirmation\n    }) {\n      user { id }\n      errors { message code path }\n    }\n  }\n': typeof types.UpdatePasswordDocument
+  '\n  query Me {\n    me {\n      id\n      email\n    }\n  }\n': typeof types.MeDocument
+}
 const documents: Documents = {
-    "\n  query Me {\n    me {\n      id\n      email\n    }\n  }\n": types.MeDocument,
-};
+  '\n  mutation UpdatePassword($currentPassword: String!, $password: String!, $passwordConfirmation: String!) {\n    updatePassword(input: {\n      currentPassword: $currentPassword\n      password: $password\n      passwordConfirmation: $passwordConfirmation\n    }) {\n      user { id }\n      errors { message code path }\n    }\n  }\n':
+    types.UpdatePasswordDocument,
+  '\n  query Me {\n    me {\n      id\n      email\n    }\n  }\n': types.MeDocument,
+}
 
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
@@ -32,15 +35,24 @@ const documents: Documents = {
  * The query argument is unknown!
  * Please regenerate the types.
  */
-export function gql(source: string): unknown;
+export function gql(source: string): unknown
 
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function gql(source: "\n  query Me {\n    me {\n      id\n      email\n    }\n  }\n"): (typeof documents)["\n  query Me {\n    me {\n      id\n      email\n    }\n  }\n"];
+export function gql(
+  source: '\n  mutation UpdatePassword($currentPassword: String!, $password: String!, $passwordConfirmation: String!) {\n    updatePassword(input: {\n      currentPassword: $currentPassword\n      password: $password\n      passwordConfirmation: $passwordConfirmation\n    }) {\n      user { id }\n      errors { message code path }\n    }\n  }\n',
+): (typeof documents)['\n  mutation UpdatePassword($currentPassword: String!, $password: String!, $passwordConfirmation: String!) {\n    updatePassword(input: {\n      currentPassword: $currentPassword\n      password: $password\n      passwordConfirmation: $passwordConfirmation\n    }) {\n      user { id }\n      errors { message code path }\n    }\n  }\n']
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(
+  source: '\n  query Me {\n    me {\n      id\n      email\n    }\n  }\n',
+): (typeof documents)['\n  query Me {\n    me {\n      id\n      email\n    }\n  }\n']
 
 export function gql(source: string) {
-  return (documents as any)[source] ?? {};
+  return (documents as any)[source] ?? {}
 }
 
-export type DocumentType<TDocumentNode extends DocumentNode<any, any>> = TDocumentNode extends DocumentNode<  infer TType,  any>  ? TType  : never;
+export type DocumentType<TDocumentNode extends DocumentNode<any, any>> =
+  TDocumentNode extends DocumentNode<infer TType, any> ? TType : never
