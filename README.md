@@ -42,7 +42,7 @@ A Rails + React/TypeScript starter application.
 bundle install
 bun install
 cp .env.example .env   # adjust if needed
-docker compose up -d postgres
+docker compose up -d
 bin/rails db:prepare
 ```
 
