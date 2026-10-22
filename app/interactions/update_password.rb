@@ -10,8 +10,7 @@ class UpdatePassword < ApplicationInteraction
 
   def execute
     user.update(password: password, password_confirmation: password_confirmation)
-    errors.merge!(user.errors) if user.errors.any?
-    user
+    interpret_record(user)
   end
 
   private
