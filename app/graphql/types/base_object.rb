@@ -6,6 +6,7 @@ module Types
     # autoloading (tries Types::BaseObject::Punditable) before falling back
     # to the real top-level constant, which only works by load-order luck.
     include ::Punditable
+    include Types::Associations
 
     edge_type_class(Types::BaseEdge)
     connection_type_class(Types::BaseConnection)
