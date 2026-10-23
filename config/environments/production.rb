@@ -46,8 +46,16 @@ Rails.application.configure do
   # Don't log any deprecations.
   config.active_support.report_deprecations = false
 
-  # Replace the default in-process memory cache store with a durable alternative.
-  config.cache_store = :solid_cache_store
+  # Separate Redis instance from Sidekiq/Flipper — allkeys-lru eviction is
+  # fine here since cache data is disposable/recomputable, unlike a queued
+  # job or a feature flag's state.
+  config.cache_store = :redis_cache_store, {
+    url: ENV.fetch("CACHE_REDIS_URL", "redis://localhost:6380/0"),
+    connect_timeout: 30,
+    read_timeout: 0.5,
+    write_timeout: 0.5,
+    reconnect_attempts: 1,
+  }
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.

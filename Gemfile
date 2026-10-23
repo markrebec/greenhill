@@ -19,7 +19,6 @@ gem "tzinfo-data", platforms: %i[windows jruby]
 
 # Use the database-backed adapter for Action Cable
 gem "solid_cable"
-gem "solid_cache"
 
 # Redis client — backs the Rails cache store, Sidekiq, and Flipper (see each
 # gem's own section below)

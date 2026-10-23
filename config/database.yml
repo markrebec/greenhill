@@ -67,10 +67,6 @@ production:
     database: meeteor_production
     username: meeteor
     password: <%= ENV["MEETEOR_DATABASE_PASSWORD"] %>
-  cache:
-    <<: *primary_production
-    database: meeteor_production_cache
-    migrations_paths: db/cache_migrate
   cable:
     <<: *primary_production
     database: meeteor_production_cable
