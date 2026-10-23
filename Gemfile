@@ -20,11 +20,20 @@ gem "tzinfo-data", platforms: %i[windows jruby]
 # Use the database-backed adapter for Action Cable
 gem "solid_cable"
 gem "solid_cache"
-gem "solid_queue"
 
 # Redis client — backs the Rails cache store, Sidekiq, and Flipper (see each
 # gem's own section below)
 gem "redis"
+
+# Background job processing, backed by Redis (see config/initializers/sidekiq.rb).
+# sidekiq-scheduler adds cron-like recurring jobs, sidekiq-unique-jobs dedupes/
+# prevents concurrent-duplicate jobs, sidekiq-throttled adds per-job rate/
+# concurrency limiting — open-source equivalents of Sidekiq Pro/Enterprise
+# features we don't want to pay for.
+gem "sidekiq"
+gem "sidekiq-scheduler"
+gem "sidekiq-throttled"
+gem "sidekiq-unique-jobs"
 
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", require: false

@@ -7,7 +7,8 @@
   "scripts": {
     "dev:server": "bin/rails s",
     "dev:client": "bin/vite dev",
-    "dev": "concurrently 'bun run dev:server' 'bun run dev:client'",
+    "dev:worker": "bundle exec sidekiq -C config/sidekiq.yml",
+    "dev": "concurrently 'bun run dev:server' 'bun run dev:client' 'bun run dev:worker'",
     "build": "bin/vite build",
     "lint": "eslint src && bundle exec rubocop",
     "lint:fix": "eslint src --fix && bundle exec rubocop -A",

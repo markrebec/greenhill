@@ -1,3 +1,7 @@
+require "sidekiq/web"
+require "sidekiq_unique_jobs/web"
+require "sidekiq-scheduler/web"
+
 Rails.application.routes.draw do
   post "/graphql", to: "graphql#execute"
   devise_for :admin_users, ActiveAdmin::Devise.config
@@ -17,6 +21,7 @@ Rails.application.routes.draw do
   # since the schema resolves off that session, not the admin one.
   authenticate :admin_user do
     mount GraphiQL::Rails::Engine, at: "/admin/graphiql", graphql_path: "/graphql"
+    mount Sidekiq::Web => "/admin/sidekiq"
   end
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

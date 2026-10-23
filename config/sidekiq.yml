@@ -1,0 +1,9 @@
+:concurrency: <%= ENV.fetch("SIDEKIQ_CONCURRENCY", 5) %>
+:queues:
+  - default
+
+# sidekiq-scheduler cron jobs go here once a real one exists, e.g.:
+# :schedule:
+#   my_job:
+#     cron: '0 0 * * * *'
+#     class: MyJob

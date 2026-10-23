@@ -39,6 +39,10 @@ module Meeteor
     # Don't generate system test files.
     config.generators.system_tests = nil
 
+    # Use Sidekiq for background jobs in every environment except test (see
+    # config/environments/test.rb, which overrides this to :test).
+    config.active_job.queue_adapter = :sidekiq
+
     # Tags SQL queries in logs with the controller/action that issued them —
     # traded for the marginalia gem, which has a real compatibility gap with
     # Rails 8.1's query path (its hooks don't catch prepared-statement queries).
