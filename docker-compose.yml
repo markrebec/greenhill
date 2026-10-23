@@ -1,5 +1,6 @@
 volumes:
   postgres: {}
+  redis-jobs: {}
 
 services:
   postgres:
@@ -13,3 +14,23 @@ services:
       POSTGRES_DB: meeteor_development
     volumes:
       - postgres:/var/lib/postgresql
+
+  # Backs Sidekiq + Flipper — both need noeviction so a queued job or a
+  # flag's state never silently disappears under memory pressure.
+  redis-jobs:
+    restart: unless-stopped
+    image: redis:8-alpine
+    command: redis-server --maxmemory-policy noeviction --appendonly yes
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-jobs:/data
+
+  # Backs Rails.cache only — disposable/recomputable data, so it's safe to
+  # evict under memory pressure and skip persistence entirely.
+  redis-cache:
+    restart: unless-stopped
+    image: redis:8-alpine
+    command: redis-server --maxmemory-policy allkeys-lru --maxmemory 256mb
+    ports:
+      - "6380:6379"
