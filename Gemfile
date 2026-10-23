@@ -34,6 +34,12 @@ gem "sidekiq-scheduler"
 gem "sidekiq-throttled"
 gem "sidekiq-unique-jobs"
 
+# Feature flagging, backed by the same Redis instance as Sidekiq (see
+# config/initializers/flipper.rb) — flag state needs noeviction too.
+gem "flipper"
+gem "flipper-redis"
+gem "flipper-ui"
+
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", require: false
 

@@ -22,6 +22,7 @@ Rails.application.routes.draw do
   authenticate :admin_user do
     mount GraphiQL::Rails::Engine, at: "/admin/graphiql", graphql_path: "/graphql"
     mount Sidekiq::Web => "/admin/sidekiq"
+    mount Flipper::UI.app(Flipper) => "/admin/flipper"
   end
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
