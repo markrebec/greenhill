@@ -12,7 +12,7 @@ export function Layout() {
     <div className="flex min-h-screen flex-col">
       <header className="flex items-center justify-between border-b px-6 py-4">
         <Link to="/" className="font-semibold">
-          Meeteor
+          Greenhill
         </Link>
         <nav className="flex items-center gap-2">
           {!loading && user && (

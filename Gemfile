@@ -89,7 +89,7 @@ gem "active_interaction"
 gem "data_migrate"
 
 # Turns blank string attributes into nil before validation/save. Not wired
-# into any model yet (`nilify_blanks` is opt-in per-model) — meeteor's only
+# into any model yet (`nilify_blanks` is opt-in per-model) — greenhill's only
 # models so far are Devise-managed (User/AdminUser) with NOT NULL
 # default("") string columns that this would break if applied globally.
 gem "nilify_blanks"

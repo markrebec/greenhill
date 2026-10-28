@@ -24,7 +24,7 @@ RSpec.describe Mutations::UpdatePassword do
 
   def execute(current_user:, current_password: "password123", password: "newpassword123",
               password_confirmation: "newpassword123", client_mutation_id: nil)
-    MeeteorSchema.execute(
+    GreenhillSchema.execute(
       query,
       variables: {
         currentPassword: current_password,

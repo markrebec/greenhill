@@ -8,8 +8,8 @@ export function Home() {
 
   return (
     <div className="flex max-w-sm flex-col items-center gap-4 text-center">
-      <h1 className="text-2xl font-semibold">Meeteor</h1>
-      <p className="text-muted-foreground">Welcome to Meeteor.</p>
+      <h1 className="text-2xl font-semibold">Greenhill</h1>
+      <p className="text-muted-foreground">Welcome to Greenhill.</p>
       <Button asChild>
         <Link to={user ? '/dashboard' : '/register'}>{user ? 'Go to dashboard' : 'Get started'}</Link>
       </Button>

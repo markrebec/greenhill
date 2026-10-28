@@ -9,9 +9,9 @@ services:
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_USER: meeteor
-      POSTGRES_PASSWORD: meeteor
-      POSTGRES_DB: meeteor_development
+      POSTGRES_USER: greenhill
+      POSTGRES_PASSWORD: greenhill
+      POSTGRES_DB: greenhill_development
     volumes:
       - postgres:/var/lib/postgresql
 

@@ -6,7 +6,7 @@ RSpec.describe Types::QueryType do
   let(:query) { "query { me { id } } " }
 
   def execute(current_user:)
-    MeeteorSchema.execute(query, context: { current_user: current_user })
+    GreenhillSchema.execute(query, context: { current_user: current_user })
   end
 
   context "when signed in" do

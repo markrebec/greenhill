@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class MeeteorSchema < GraphQL::Schema
+class GreenhillSchema < GraphQL::Schema
   mutation(Types::MutationType)
   query(Types::QueryType)
 

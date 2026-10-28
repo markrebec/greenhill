@@ -1,4 +1,4 @@
-# meeteor
+# greenhill
 
 A Rails + React/TypeScript starter application.
 
@@ -24,9 +24,14 @@ A Rails + React/TypeScript starter application.
   under `app/interactions/`, not in controllers or models directly.
 - **UI components**: Tailwind CSS v4 + Radix primitives, following shadcn's
   conventions (`src/components/ui/`).
-- **Background jobs / cache**: Rails 8's built-in Solid Queue / Solid Cache /
-  Solid Cable — all database-backed, no separate services required for
-  local development.
+- **Background jobs**: Sidekiq, backed by Redis (`redis-jobs` in
+  `docker-compose.yml`). Feature flags (Flipper) share the same Redis
+  instance — both need `noeviction`, see `config/initializers/{sidekiq,flipper}.rb`.
+- **Cache**: `Rails.cache` via `redis_cache_store`, backed by its own
+  separate Redis instance (`redis-cache`) with `allkeys-lru` eviction.
+- **Action Cable**: Rails 8's built-in Solid Cable (database-backed) — the
+  one piece of the original Solid trio still in use; no Action Cable usage
+  yet.
 
 ## Requirements
 

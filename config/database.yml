@@ -17,8 +17,8 @@ default: &default
   encoding: unicode
   host: <%= ENV.fetch("POSTGRES_HOST", "localhost") %>
   port: <%= ENV.fetch("POSTGRES_PORT", 5432) %>
-  username: <%= ENV.fetch("POSTGRES_USER", "meeteor") %>
-  password: <%= ENV.fetch("POSTGRES_PASSWORD", "meeteor") %>
+  username: <%= ENV.fetch("POSTGRES_USER", "greenhill") %>
+  password: <%= ENV.fetch("POSTGRES_PASSWORD", "greenhill") %>
   # For details on connection pooling, see Rails configuration guide
   # https://guides.rubyonrails.org/configuring.html#database-pooling
   max_connections: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
@@ -26,14 +26,14 @@ default: &default
 
 development:
   <<: *default
-  database: meeteor_development
+  database: greenhill_development
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
 # Do not set this db to the same as development or production.
 test:
   <<: *default
-  database: meeteor_test
+  database: greenhill_test
 
 # As with config/credentials.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is
@@ -64,10 +64,10 @@ test:
 production:
   primary: &primary_production
     <<: *default
-    database: meeteor_production
-    username: meeteor
-    password: <%= ENV["MEETEOR_DATABASE_PASSWORD"] %>
+    database: greenhill_production
+    username: greenhill
+    password: <%= ENV["GREENHILL_DATABASE_PASSWORD"] %>
   cable:
     <<: *primary_production
-    database: meeteor_production_cable
+    database: greenhill_production_cable
     migrations_paths: db/cable_migrate
