@@ -82,6 +82,7 @@ For a project overview and an index of all documentation, see `README.md`.
 - Never combine a framework-level change with a product-feature or one-off change in the same commit, even when they touch the same file. Split them into separate commits so the framework-level one stays cherry-pickable on its own.
 - A change belongs in its own framework-level commit if it would still make sense in a brand new project forked fresh from greenhill. Everything else is product-specific.
 - Before committing, check whether a fix picked up incidentally while doing unrelated work (e.g. while touching a file for another reason) is framework-level. If so, commit it separately, before or after the unrelated change, not folded into it.
+- Auto-memory (`~/.claude/projects/<cwd-path>/memory/`) does not travel with `git clone` — it's keyed by working directory, outside the repo. When forking a new product from greenhill, manually copy greenhill's own framework-level memory files (environment/tooling gotchas, Rails/React/shadcn patterns tied to shared code — not anything about a specific product's state) into the new repo's memory directory. There is no automated tooling for this; do it by hand each time.
 
 ## Multi-PR & Staged Deploys
 
