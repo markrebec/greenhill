@@ -76,6 +76,13 @@ For a project overview and an index of all documentation, see `README.md`.
 - Always check live git state (`git branch --show-current`, `git status`) when you need the current branch name or working tree state. The session-start snapshot goes stale after the first commit or branch switch.
 - Never run `bundle exec rake graphql:schema:idl` directly. Always use `bun run graphql:types` — it chains the schema export (`schema.graphql` at repo root) with frontend codegen (`graphql-codegen`, config in `codegen.ts`).
 
+## Framework Base vs. Product Work
+
+- This repo is a fork of (or, if this is greenhill itself, is) a shared base kept in sync with forked product repos via `git cherry-pick` across the `greenhill`/`<product>` git remotes — never a generator, never manual re-diffing.
+- Never combine a framework-level change with a product-feature or one-off change in the same commit, even when they touch the same file. Split them into separate commits so the framework-level one stays cherry-pickable on its own.
+- A change belongs in its own framework-level commit if it would still make sense in a brand new project forked fresh from greenhill. Everything else is product-specific.
+- Before committing, check whether a fix picked up incidentally while doing unrelated work (e.g. while touching a file for another reason) is framework-level. If so, commit it separately, before or after the unrelated change, not folded into it.
+
 ## Multi-PR & Staged Deploys
 
 - For work that must deploy in ordered stages, use ordered branch names: `<user>/<topic>-phase-N`.
