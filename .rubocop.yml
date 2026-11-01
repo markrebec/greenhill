@@ -12,6 +12,19 @@ plugins:
   - rubocop-rspec
   - rubocop-graphql
 
+# ActiveAdmin's `register` DSL is one long block per resource by design
+# (index/filter/show/form all live inside it).
+Metrics/BlockLength:
+  Exclude:
+    - "app/admin/**/*"
+
+# A multi-line hash/array/heredoc literal is one piece of data, not several
+# statements — count it as a single line in methods and examples.
+Metrics/MethodLength:
+  CountAsOne: ["array", "hash", "heredoc"]
+RSpec/ExampleLength:
+  CountAsOne: ["array", "hash", "heredoc"]
+
 # Per-class/module doc comments aren't our house style (see root CLAUDE.md).
 Style/Documentation:
   Enabled: false

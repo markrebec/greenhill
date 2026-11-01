@@ -27,6 +27,10 @@ A Rails + React/TypeScript starter application.
 - **Background jobs**: Sidekiq, backed by Redis (`redis-jobs` in
   `docker-compose.yml`). Feature flags (Flipper) share the same Redis
   instance — both need `noeviction`, see `config/initializers/{sidekiq,flipper}.rb`.
+  Application jobs are native `Sidekiq::Job` classes, since
+  sidekiq-unique-jobs doesn't support ActiveJob; ActiveJob (on the
+  `:sidekiq` adapter) only carries jobs Rails enqueues itself, like mailer
+  `deliver_later`.
 - **Cache**: `Rails.cache` via `redis_cache_store`, backed by its own
   separate Redis instance (`redis-cache`) with `allkeys-lru` eviction.
 - **Action Cable**: Rails 8's built-in Solid Cable (database-backed) — the

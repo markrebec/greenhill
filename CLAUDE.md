@@ -27,11 +27,13 @@ For a project overview and an index of all documentation, see `README.md`.
 
 - Follow DRY principles: extract shared logic into reusable helpers rather than duplicating code.
 - Use generators wherever possible for both ruby/rails and typescript/react, rather than copying or writing things from scratch. For example `rails g controller Name`.
+- Write every application job as a native `Sidekiq::Job`, never an ActiveJob class. `ApplicationJob` and the `:sidekiq` ActiveJob adapter exist only for jobs Rails itself enqueues (mailer `deliver_later`, Active Storage).
 
 ## After Code Changes
 
 - Run `bun lint --fix` after modifying any source or test file.
 - Run `bun format` after modifying any TypeScript source or test file (`src/`).
+- Run `bundle exec rubocop --cache false` before committing Ruby changes. Cached runs can report clean while CI fails.
 - Keep diffs scoped to the change. When a codegen, format, or build step (for example `bun run graphql:types`) reformats or regenerates files unrelated to the current change, revert those files before committing.
 - `bun lint --fix` and formatters autocorrect whole files, including pre-existing style on lines the change did not touch. Prefer reverting autocorrect on untouched lines to keep the diff reviewable; use judgment, do not over-engineer.
 
