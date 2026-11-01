@@ -13,4 +13,35 @@ RSpec.describe GreenhillSchema do
         .to raise_error(GraphQL::RequiredImplementationMissingError, /No GraphQL type for Object/)
     end
   end
+
+  describe "connection page sizes" do
+    let(:connection_type) do
+      item_type = Class.new(Types::BaseObject) do
+        graphql_name "PageSizeSpecItem"
+        field :id, GraphQL::Types::ID, null: false
+      end
+      Class.new(Types::BaseObject) do
+        graphql_name "PageSizeSpecQuery"
+        field :items, item_type.connection_type, null: false
+        define_method(:items) { (1..100).map { |id| { id: id } } }
+      end
+    end
+
+    let(:schema) do
+      query_type = connection_type
+      Class.new(described_class) { query(query_type) }
+    end
+
+    def count(arguments = "")
+      schema.execute("{ items#{arguments} { nodes { id } } }").dig("data", "items", "nodes").size
+    end
+
+    it "returns a default page when none is asked for" do
+      expect(count).to eq(20)
+    end
+
+    it "caps the page size" do
+      expect(count("(first: 100)")).to eq(50)
+    end
+  end
 end

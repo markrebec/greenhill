@@ -26,6 +26,11 @@ class GreenhillSchema < GraphQL::Schema
       raise(GraphQL::RequiredImplementationMissingError, "No GraphQL type for #{obj.class.name}")
   end
 
+  # Connections without `first`/`last` return a page, never everything.
+  # max_complexity (below) also caps big pages of rich nodes.
+  default_page_size(20)
+  default_max_page_size(50)
+
   # Limit the depth and size of incoming queries:
   max_depth(15)
   max_query_string_tokens(5000)
