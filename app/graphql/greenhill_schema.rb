@@ -15,11 +15,15 @@ class GreenhillSchema < GraphQL::Schema
     raise GraphQL::ExecutionError, "You are not authorized to perform this action."
   end
 
-  # Union and Interface Resolution
-  def self.resolve_type(_abstract_type, _obj, _ctx)
-    # TODO: Implement this method
-    # to return the correct GraphQL object type for `obj`
-    raise(GraphQL::RequiredImplementationMissingError)
+  # Union and interface resolution: a model maps to the object type named
+  # after it (Podcast -> Types::PodcastType).
+  def self.resolve_type(_abstract_type, obj, _ctx)
+    type_for(obj)
+  end
+
+  def self.type_for(obj)
+    "Types::#{obj.class.name}Type".safe_constantize ||
+      raise(GraphQL::RequiredImplementationMissingError, "No GraphQL type for #{obj.class.name}")
   end
 
   # Limit the depth and size of incoming queries:
