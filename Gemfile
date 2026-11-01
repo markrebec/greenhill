@@ -127,6 +127,11 @@ group :development, :test do
   gem "dotenv-rails"
 end
 
+group :test do
+  # Stubs HTTP requests and blocks real network access from specs
+  gem "webmock", "3.34.0"
+end
+
 group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
