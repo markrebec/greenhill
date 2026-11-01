@@ -50,7 +50,7 @@ gem "kamal", require: false
 gem "thruster", require: false
 
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
-gem "image_processing", "~> 1.2"
+gem "image_processing", "~> 2.2"
 
 # Vite integration — single dev URL (Rails renders the view; the vite_*_tag
 # helpers point at the Vite dev server for the actual JS/HMR), same view
