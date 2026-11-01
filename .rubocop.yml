@@ -12,6 +12,12 @@ plugins:
   - rubocop-rspec
   - rubocop-graphql
 
+# ActiveAdmin's `register` DSL is one long block per resource by design
+# (index/filter/show/form all live inside it).
+Metrics/BlockLength:
+  Exclude:
+    - "app/admin/**/*"
+
 # Per-class/module doc comments aren't our house style (see root CLAUDE.md).
 Style/Documentation:
   Enabled: false
