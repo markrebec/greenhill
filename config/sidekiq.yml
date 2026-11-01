@@ -2,8 +2,10 @@
 :queues:
   - default
 
-# sidekiq-scheduler cron jobs go here once a real one exists, e.g.:
-# :schedule:
-#   my_job:
-#     cron: '0 0 * * * *'
-#     class: MyJob
+# sidekiq-scheduler cron jobs go here once a real one exists, nested under
+# :scheduler: (a top-level :schedule: key is ignored), e.g.:
+# :scheduler:
+#   :schedule:
+#     my_job:
+#       cron: '0 0 * * * *'
+#       class: MyJob
