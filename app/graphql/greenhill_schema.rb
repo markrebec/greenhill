@@ -48,8 +48,11 @@ class GreenhillSchema < GraphQL::Schema
   end
 
   # Given a string UUID, find the object
+  # Nil (rather than an error) for a malformed ID or a deleted record.
   def self.object_from_id(global_id, _query_ctx)
     # For example, use Rails' GlobalID library (https://github.com/rails/globalid):
     GlobalID.find(global_id)
+  rescue ActiveRecord::RecordNotFound
+    nil
   end
 end
