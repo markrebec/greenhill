@@ -11,6 +11,12 @@ const config: CodegenConfig = {
       },
       config: {
         useTypeImports: true,
+        // Custom scalars arrive as JSON strings (ISO 8601 timestamps; BigInt
+        // as a decimal string so it can't lose precision).
+        scalars: {
+          ISO8601DateTime: 'string',
+          BigInt: 'string',
+        },
       },
     },
   },
