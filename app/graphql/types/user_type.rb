@@ -2,6 +2,8 @@
 
 module Types
   class UserType < Types::BaseObject
+    include Types::PolicyAuthorized
+
     description "A registered user."
 
     field :created_at, GraphQL::Types::ISO8601DateTime, null: false, description: "When the user was created."

@@ -15,12 +15,21 @@ class GreenhillSchema < GraphQL::Schema
     raise GraphQL::ExecutionError, "You are not authorized to perform this action."
   end
 
-  # Union and Interface Resolution
-  def self.resolve_type(_abstract_type, _obj, _ctx)
-    # TODO: Implement this method
-    # to return the correct GraphQL object type for `obj`
-    raise(GraphQL::RequiredImplementationMissingError)
+  # Union and interface resolution: a model maps to the object type named
+  # after it (Podcast -> Types::PodcastType).
+  def self.resolve_type(_abstract_type, obj, _ctx)
+    type_for(obj)
   end
+
+  def self.type_for(obj)
+    "Types::#{obj.class.name}Type".safe_constantize ||
+      raise(GraphQL::RequiredImplementationMissingError, "No GraphQL type for #{obj.class.name}")
+  end
+
+  # Connections without `first`/`last` return a page, never everything.
+  # max_complexity (below) also caps big pages of rich nodes.
+  default_page_size(20)
+  default_max_page_size(50)
 
   # Limit the depth and size of incoming queries:
   max_depth(15)
@@ -39,8 +48,11 @@ class GreenhillSchema < GraphQL::Schema
   end
 
   # Given a string UUID, find the object
+  # Nil (rather than an error) for a malformed ID or a deleted record.
   def self.object_from_id(global_id, _query_ctx)
     # For example, use Rails' GlobalID library (https://github.com/rails/globalid):
     GlobalID.find(global_id)
+  rescue ActiveRecord::RecordNotFound
+    nil
   end
 end
