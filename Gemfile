@@ -51,6 +51,10 @@ gem "thruster", require: false
 
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 gem "image_processing", "~> 2.2"
+# image_processing 2.x no longer pulls in a backend — ruby-vips backs Active
+# Storage's default :vips variant processor and image analyzer (libvips is
+# installed in the Dockerfile).
+gem "ruby-vips", "2.3.0", require: false
 
 # Vite integration — single dev URL (Rails renders the view; the vite_*_tag
 # helpers point at the Vite dev server for the actual JS/HMR), same view
