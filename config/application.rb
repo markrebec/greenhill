@@ -39,6 +39,11 @@ module Greenhill
     # Don't generate system test files.
     config.generators.system_tests = nil
 
+    # UUID primary keys on every table, and UUID columns for references to
+    # them (`rails g model ... user:references`). Defaults to uuidv7() — see
+    # config/initializers/uuid_primary_keys.rb.
+    config.generators.orm :active_record, primary_key_type: :uuid
+
     # Use Sidekiq for background jobs in every environment except test (see
     # config/environments/test.rb, which overrides this to :test).
     config.active_job.queue_adapter = :sidekiq
