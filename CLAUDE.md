@@ -40,7 +40,7 @@ For a project overview and an index of all documentation, see `README.md`.
 
 ## Testing
 
-- Run `bun run test` for the full suite (JS via `bun test`, Ruby via `bundle exec rspec`). This is a single flat package, not a workspace — no `--filter` needed.
+- Run `bun run test` for the full suite (JS via `bun test`, Ruby via `bundle exec rspec`). This is a single flat package, not a workspace — no `--filter` needed. CI's `test` job runs the same command.
 - Tests must verify real behavior, not tautologies. Never assert that a mock equals itself or that stubbed return values match their own setup. Each assertion should exercise actual logic.
 - Define factory helpers (`createMockDb()`, `createMockLogger()`, etc.) at the top of test files rather than rebuilding mock objects inline in each test.
 
