@@ -39,11 +39,15 @@ A Rails + React/TypeScript starter application.
 - **Action Cable**: Rails 8's built-in Solid Cable (database-backed) — the
   one piece of the original Solid trio still in use; no Action Cable usage
   yet.
+- **Development mail**: delivered over SMTP to [Mailpit](https://mailpit.axllent.org)
+  (`mailpit` in `docker-compose.yml`), which catches every message and shows
+  it at `http://localhost:8025`. Nothing leaves your machine.
 
 ## Requirements
 
 - Ruby 3.4.9 (see `.ruby-version`)
-- PostgreSQL (18 via Docker Compose for local dev — see `docker-compose.yml`)
+- PostgreSQL (18 via Docker Compose for local dev — see `docker-compose.yml`,
+  which also runs Redis and Mailpit)
 - [Bun](https://bun.sh) — used to run all JS/TS tooling and most of the
   scripts below (`package.json`)
 - Docker, for local Postgres and for building the production image

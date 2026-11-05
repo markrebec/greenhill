@@ -1,6 +1,7 @@
 volumes:
   postgres: {}
   redis-jobs: {}
+  mailpit: {}
 
 services:
   postgres:
@@ -34,3 +35,16 @@ services:
     command: redis-server --maxmemory-policy allkeys-lru --maxmemory 256mb
     ports:
       - "6380:6379"
+
+  # Catches all mail sent in development (SMTP on 1025) and shows it in a web
+  # UI at http://localhost:8025. Messages persist across restarts in the volume.
+  mailpit:
+    restart: unless-stopped
+    image: axllent/mailpit:v1
+    environment:
+      MP_DATABASE: /data/mailpit.db
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+    volumes:
+      - mailpit:/data
