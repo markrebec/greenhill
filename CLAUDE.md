@@ -47,6 +47,7 @@ For a project overview and an index of all documentation, see `README.md`.
 ## Dependencies
 
 - Pin exact versions when adding dependencies. Do not use `^`, `~`, `>`, `>=`, or range specifiers in package.json.
+- Declare gems that load native libraries at require time (e.g. `ruby-vips`) with `require: false` unless the app needs them at boot.
 
 ## Environment & Config
 
