@@ -10,6 +10,10 @@ require "sidekiq_unique_jobs/testing"
 Sidekiq::Testing.fake!
 SidekiqUniqueJobs.config.enabled = false
 
+# Sidekiq::Queues, not Sidekiq::Job: sidekiq-unique-jobs patches
+# Sidekiq::Job.clear_all to also delete lock digests from Redis, which would
+# make every spec need a live Redis. With uniqueness disabled there are no
+# digests to delete.
 RSpec.configure do |config|
-  config.before { Sidekiq::Job.clear_all }
+  config.before { Sidekiq::Queues.clear_all }
 end
