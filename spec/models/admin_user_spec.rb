@@ -6,7 +6,7 @@ require "rails_helper"
 #
 # Table name: admin_users
 #
-#  id                     :bigint           not null, primary key
+#  id                     :uuid             not null, primary key
 #  email                  :string           default(""), not null
 #  encrypted_password     :string           default(""), not null
 #  failed_attempts        :integer          default(0), not null

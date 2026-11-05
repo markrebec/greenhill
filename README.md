@@ -4,7 +4,10 @@ A Rails + React/TypeScript starter application.
 
 ## Architecture
 
-- **Backend**: Rails 8.1 (Ruby 3.4.9), PostgreSQL.
+- **Backend**: Rails 8.1 (Ruby 3.4.9), PostgreSQL. Every table's primary
+  key is a time-ordered UUIDv7 (Postgres 18's native `uuidv7()`), and
+  references are UUID columns — see `config/initializers/uuid_primary_keys.rb`
+  and the generator default in `config/application.rb`.
 - **Frontend**: a single React/TypeScript app under `src/`, built with Vite
   (via `vite_rails`) and served directly by Rails — there's one dev URL,
   `http://localhost:3000`, always. There is no separate API host and no

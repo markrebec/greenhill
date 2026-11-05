@@ -27,6 +27,7 @@ For a project overview and an index of all documentation, see `README.md`.
 
 - Follow DRY principles: extract shared logic into reusable helpers rather than duplicating code.
 - Use generators wherever possible for both ruby/rails and typescript/react, rather than copying or writing things from scratch. For example `rails g controller Name`.
+- Give every table a UUID primary key (`create_table ..., id: :uuid`, defaulting to Postgres 18's `uuidv7()` via `config/initializers/uuid_primary_keys.rb`) and every reference a UUID column (`t.references ..., type: :uuid`, including polymorphic ones). Never use integer ids. The generators default to this; check migrations from gems' own generators, and `spec/db/uuid_primary_keys_spec.rb` fails on any table that doesn't comply.
 - Write every application job as a native `Sidekiq::Job`, never an ActiveJob class. `ApplicationJob` and the `:sidekiq` ActiveJob adapter exist only for jobs Rails itself enqueues (mailer `deliver_later`, Active Storage).
 
 ## After Code Changes
