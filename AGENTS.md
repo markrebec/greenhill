@@ -24,7 +24,7 @@ For a project overview and an index of all documentation, see `README.md`.
 - When writing a handoff, also update the authoritative plan (if one exists) to reflect current status — mark completed items, add new open questions, update "in progress" markers.
 - When a handoff corresponds to a plan phase, add a reference to the handoff file path in the plan's implementation progress section so future sessions can trace the full history.
 - Session plans and handoffs are local working documents kept outside the repo for session continuity. They are never committed.
-- Promote durable knowledge out of session memory and working docs into the repo: prescriptive rules go to the nearest `CLAUDE.md`; architecture or domain explanations go to `docs/` (cross-cutting), linked from the docs index in `README.md`. Plans and handoffs stay in your local session-docs location; when one contains durable architecture, distill that into `docs/` rather than committing the working file.
+- Promote durable knowledge out of session memory and working docs into the repo: prescriptive rules go to the nearest `AGENTS.md`; architecture or domain explanations go to `docs/` (cross-cutting), linked from the docs index in `README.md`. Plans and handoffs stay in your local session-docs location; when one contains durable architecture, distill that into `docs/` rather than committing the working file.
 
 ## Coding Practices
 
@@ -76,7 +76,7 @@ For a project overview and an index of all documentation, see `README.md`.
 
 - Only add actionable rules to this file. "Always", "Never", "Only", no subjective language.
 - Do not place code-snippets into the rules. Place reusable code snippets in the appropriate directory and reference them directly.
-- On git push, suggest new rules to add from any conversations since the last push, and if accepted, add them to the most appropriate CLAUDE.md file.
+- On git push, suggest new rules to add from any conversations since the last push, and if accepted, add them to the most appropriate AGENTS.md file.
 
 ## Git & Environment
 
@@ -99,8 +99,8 @@ For a project overview and an index of all documentation, see `README.md`.
 
 ## Package-Specific Rules
 
-- Always read the nearest `CLAUDE.md` up the directory tree for any file you are working on, and apply it alongside this root file.
+- Always read the nearest `AGENTS.md` up the directory tree for any file you are working on, and apply it alongside this root file.
 
 ## Personal claude rules
-- Read any `.claude_rules.md` files which exist and apply those rules as if they were in the nearest `CLAUDE.md`
+- Read any `.claude_rules.md` files which exist and apply those rules as if they were in the nearest `AGENTS.md`
 

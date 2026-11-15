@@ -25,7 +25,7 @@ Metrics/MethodLength:
 RSpec/ExampleLength:
   CountAsOne: ["array", "hash", "heredoc"]
 
-# Per-class/module doc comments aren't our house style (see root CLAUDE.md).
+# Per-class/module doc comments aren't our house style (see root AGENTS.md).
 Style/Documentation:
   Enabled: false
 
