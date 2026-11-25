@@ -133,7 +133,7 @@ end
 
 group :test do
   # Stubs HTTP requests and blocks real network access from specs
-  gem "webmock", "3.34.0"
+  gem "webmock", "3.38.0"
 end
 
 group :development do
